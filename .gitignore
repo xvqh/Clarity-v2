@@ -1,0 +1,12 @@
+# Node related
+
+node_modules
+package-lock.json
+yarn.lock
+bun.lockdb
+
+# Config files
+
+# Storage files
+
+json.sqlite
