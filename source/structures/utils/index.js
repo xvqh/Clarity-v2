@@ -40,6 +40,7 @@ module.exports = {
         const reg = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
         return reg.test(string)
     },
+    
     emoji(client, name, option) {
         let emojis = client.emojis.cache.find(x => x.name === name);
         if (!emojis) return `:${name}:`;
@@ -57,6 +58,7 @@ module.exports = {
                 .join("_");
         }
     },
+
     getJoinPosition(user, guild) {
         if (!guild.members.cache.has(user.id)) return 'Inconnu';
 
@@ -71,6 +73,7 @@ module.exports = {
             if (arr[i].id == user.id) return i + 1;
         }
     },
+
     async getUser(client, userid) {
         let userInfos
         userInfos = await client.axios.get('https://discord.com/api/users/' + userid, {
@@ -81,120 +84,27 @@ module.exports = {
         if (userInfos) userInfos = userInfos.data
         return userInfos
     },
-    /**
-     * 
-     * @param {Clarity} client 
-     * @returns 
-     */
-    async getOwners(client, guildId) {
-        return new Promise(async (resolve) => {
-            if (!client.config.isPublic) {
-                let data = await client.axios.get(`http://54.39.133.73:2400/api/owners/${client.user.id}`, {
-                    headers: { authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310" }
-                })
-                //console.log(data?.data)
-                return resolve(data?.data)
-            } else {
-                let data = await client.axios.get(`http://54.39.133.73:2400/api/public/owners`, {
-                    headers: {
-                        authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310"
-                    },
-                    data: {
-                        botId: client.user.id,
-                        guildId: guildId
-                    }
-                })
-              //  console.log(data?.data)
-                return resolve(data?.data)
-            }
-        })
-    },
-    /**
-     * 
-     * @param {Clarity} client 
-     * @param {string} userId 
-     * @param {string} guildId 
-     * @returns 
-     */
-    async addOwner(client, userId, guildId){
-        return new Promise(async(resolve) => {
-            if(!client.config.isPublic){
-                let data = await client.axios.post(`http://54.39.133.73:2400/api/owners/${client.user.id}/${userId}`, {}, {
-                    headers: {authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310"}
-                })
-                return resolve(data?.data)
-            } else {
-                let data = await client.axios.post(`http://54.39.133.73:2400/api/public/owners`, {
-                    botId: client.user.id,
-                    userId: userId,
-                    guildId: guildId
-                }, {
-                    headers: {authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310"}
-                })
-                return resolve(data?.data)
-            }
-        })
-    },
-    /**
-     * 
-     * @param {Clarity} client 
-     * @param {string} guildId 
-     * @returns 
-     */
-    async clearOwners(client, guildId){
-        return new Promise(async(resolve) => {
-            if(!client.config.isPublic){
-                let data = await client.axios.delete(`http://54.39.133.73:2400/api/owners/${client.user.id}`, {
-                    headers: {authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310"}
-                })
-                return resolve(data?.data)
-            } else {
-                let data = await client.axios.delete(`http://54.39.133.73:2400/api/public/owners/${guildId}`, {
-                    headers: {authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310"}
-                })
-                return resolve(data?.data)
-            }
-        })
-    },
+
     async isBuy(client, userId){
         return await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_buyers WHERE user_id = $1`,
             [userId]
           );
     },
-    /**
-     * 
-     * @param {Clarity} client
-     * @param {string} userId 
-     * @param {string} guildId 
-     * @returns 
-     */
-     async removeOwner(client, userId, guildId){
-        return new Promise(async(resolve) => {
-            if(!client.config.isPublic){
-                let data = await client.axios.delete(`http://54.39.133.73:2400/api/owners/${client.user.id}/${userId}`, {
-                    headers: {authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310"}
-                })
-                return resolve(data?.data)
-            } else {
-                let data = await client.axios.delete(`http://54.39.133.73:2400/api/public/owners/${guildId}/${userId}`, {
-                    headers: {authorization: "dhjdhfdggf48548547fd6gj4fjddf5454310"}
-                })
-                return resolve(data?.data)
-            }
-        })
-    },
+
     async formatTimestamp(timestamp) {
         const date = new Date(timestamp);
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         return date.toLocaleDateString('fr-FR', options);
     },
+
     json2array(json) {
         try{
         var obj = json ? JSON.parse(json) : {}
         return obj
         } catch(err){return json}
     },
+
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
