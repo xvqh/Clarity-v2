@@ -18,7 +18,7 @@ category: "🛠️〢Buyer",
       CREATE TABLE IF NOT EXISTS clarity_${client.user.id}_buyers (
         user_id VARCHAR(20) PRIMARY KEY
       )`);
-    let color = parseInt(client.color.replace("#", ""), 16);
+    let color = parseInt(client.color.replace('#', ''), 16);
     const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(()=> {})
     
     if (!user) {

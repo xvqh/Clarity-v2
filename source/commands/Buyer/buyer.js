@@ -25,7 +25,7 @@ await client.db.none(
   `,
 [client.config.buyer]
 );
-    let color = parseInt(client.color.replace("#", ""), 16);
+    let color = parseInt(client.color.replace('#', ''), 16);
     const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(()=> {})
     if (!user) {
       const buyers = await client.db.any(
@@ -34,7 +34,7 @@ await client.db.none(
       
       if (buyers.length === 0)
         return message.reply({ content: "Aucun buyer" });
-      const ownTag = await Promise.all(buyers.map(async (owner) => `[${(await client.users.fetch(owner.user_id)).tag}](https://discord.com/users/${owner.user_id})` ))
+      const ownTag = await Promise.all(buyers.map(async (owner) => `[${(await client.users.fetch(owner.user_id)).tag}](https://discord.com/users/${owner.user_id}) (${owner.user_id})` ))
     const ownemb = new Discord.EmbedBuilder()
         .setTitle(client.user.username + " - " + "Liste des buyers")
         .setDescription(ownTag.join('\n'))
@@ -65,7 +65,7 @@ await client.db.none(
       )
       .then(message.reply({ content: `${user} est maintenant buyer` }))
       .catch((error) => {
-        console.log(error)
+        console.log(error)-
         console.log("Erreur lors de la mise à jour de la DB : " + error);
         message.reply({
           content: "Une erreur s'est produite lors de l'ajout du buyer.",

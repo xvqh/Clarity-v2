@@ -25,7 +25,7 @@ await client.db.none(
   `,
 [client.config.buyer]
 );
-    let color = parseInt(client.color.replace("#", ""), 16);
+    let color = parseInt(client.color.replace('#', ''), 16);
     const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(()=> {})
     if (!user) {
       const owners = await client.db.any(
@@ -34,7 +34,7 @@ await client.db.none(
       
       if (owners.length === 0)
         return message.reply({ content: "Aucun owner bot" });
-      const ownTag = await Promise.all(owners.map(async (owner) => `[${(await client.users.fetch(owner.user_id)).tag}](https://discord.com/users/${owner.user_id})` ))
+      const ownTag = await Promise.all(owners.map(async (owner) => `[${(await client.users.fetch(owner.user_id)).tag}](https://discord.com/users/${owner.user_id}) (${owner.user_id})` ))
     const ownemb = new Discord.EmbedBuilder()
         .setTitle(message.guild.name + " - " + "Liste des owners")
         .setDescription(ownTag.join('\n'))
@@ -73,4 +73,3 @@ await client.db.none(
       });
   },
 };
-
