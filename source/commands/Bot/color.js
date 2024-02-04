@@ -26,15 +26,16 @@ module.exports = {
           return;
         }
         const updatedData = data.replace(/default_color: "#([0-9A-Fa-f]{6})"/, `default_color: "${color}"`);
-        fs.writeFile(configPath, updatedData, 'utf8', (err) => {
+        fs.writeFile(configPath, updatedData, 'utf8', async (err) => {
           if (err) {
             console.error('Erreur lors du changement de thème :', err);
             return;
           }
           console.log('Le thème du bot a été mis a jour');
 
+          let msg = await message.chanel.send({content: "Changement du thème en cours"})
           exec(`pm2 restart gestion_${client.user.id}`, () => false)
-          message.reply({ content: "Le thème du bot a été mis à jour" });
+          msg.edit({ content: "Le thème du bot a été mis à jour" });
       })
       })
 }

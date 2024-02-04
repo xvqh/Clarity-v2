@@ -17,14 +17,21 @@ module.exports = {
                 content: " vous n'avez pas la permission d'utiliser cette commande",
             });
         }
+      
        let msg = await message.channel.send({content: "Chargement du module . . ."})
        await update(client, message, msg)
         }
         }
 
         async function update(client, message, msg) {
-            
-            let color = parseInt(client.color.replace("#", ""), 16);
+            await client.db.none(`
+            CREATE TABLE IF NOT EXISTS clarity_${client.user.id}_bot_status (
+                type TEXT,
+                status TEXT,
+                presence TEXT
+            )
+        `);
+            let color = parseInt(client.color.replace('#', ''), 16);
             msg.edit({
                 content: null,
                 embeds: [new EmbedBuilder({
@@ -197,6 +204,10 @@ module.exports = {
                                         value: "compet",
                                         emoji: "5️⃣"
                                     },{
+                                        label: 'Custom',
+                                        value: 'custom',
+                                        emoji: '6️⃣'
+                                    },{
                                         label: "Annuler",
                                         value: "cancel",
                                         emoji: "❌"
@@ -336,6 +347,7 @@ module.exports = {
                                    }
                                })],
                            })
+                           await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET type = \$1, status = \$2`, ['play', rep.first().content]);
                        }
                     }
                     if (i.values[0] === "watching") {
@@ -363,6 +375,7 @@ module.exports = {
                                    }
                                })],
                            })
+                           await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET type = \$1, status = \$2`, ['watch', rep.first().content]);
                        }
                     }
                     if (i.values[0] === "listen") {
@@ -390,7 +403,36 @@ module.exports = {
                                    }
                                })],
                            })
+                           await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET type = \$1, status = \$2`, ['listen', rep.first().content]);
                        }
+                    }
+                    if(i.values[0] === 'custom') {
+                        let quest = await i.channel.send({content: "Quel est la nouvelle activité du bot?"})
+                        let rep = await i.channel.awaitMessages({filter: m => m.author.id == i.user.id, max: 1, time: 30_000})
+                        if (rep.first()) {
+                            quest.delete()
+                            client.user.setPresence({activities: [{name: rep.first().content, type: 4}]});
+                            rep.first().delete()
+                            msg.edit({
+                                content: null,
+                                embeds: [new EmbedBuilder({
+                                    title: client.user.username + " " + "Custom Panel",
+                                    image: {url: ""},
+                                    color: color,
+                                    footer: client.config.footer,
+                                    timestamp: new Date(),
+                                    fields: [
+                                        {name: "Nom du bot", value: client.user.username},
+                                        {name: "Status du bot", value: `${client.presence.status}`},
+                                        {name: "Activité du bot", value: `${client.presence.activities[0].name}`},
+                                    ],
+                                    image: {
+                                        url: client.user.avatarURL({dynamic: true})
+                                    }
+                                })],
+                            })
+                            await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET type = \$1, status = \$2`, ['custom', rep.first().content]);
+                        }
                     }
                     if (i.values[0] === "stream") {
                        let quest = await i.channel.send({content: "Quel est la nouvelle activité du bot?"})
@@ -417,6 +459,7 @@ module.exports = {
                                    }
                                })],
                            })
+                           await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET type = \$1, status = \$2`, ['stream', rep.first().content]);
                        }
                     }
                     if (i.values[0] === "compet") {
@@ -444,6 +487,7 @@ module.exports = {
                                    }
                                })],
                            })
+                           await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET type = \$1, status = \$2`, ['compet', rep.first().content]);
                        }
                     }
                 }
@@ -517,6 +561,7 @@ module.exports = {
                                 }
                             })
                         ]})
+                        await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET presence`, ['online']);
                      }
                      else if (i.values[0] === "dnd") {
                         client.user.setPresence({status: "dnd"});
@@ -538,6 +583,7 @@ module.exports = {
                                 }
                             })
                         ]})
+                        await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET presence`, ['dnd']);
                      }
                      else if (i.values[0] === "idle") {
                         client.user.setPresence({status: "idle"});
@@ -559,6 +605,7 @@ module.exports = {
                                 }
                             })
                         ]})
+                        await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET presence`, ['idlle']);
                      }
                      else if (i.values[0] === "invisible") {
                         client.user.setPresence({status: "invisible"});
@@ -580,6 +627,7 @@ module.exports = {
                                 }
                             })
                         ]})
+                        await client.db.none(`UPDATE clarity_${client.user.id}_bot_status SET presence`, ['invisible']);
                      }
                 }
             })
