@@ -39,12 +39,12 @@ module.exports = {
   [client.config.buyer]
   );
   console.log("[DB]" + " " + g.name + " " + "update")
-  console.log(client.users.cache.get(client.config.buyer).username + " " + " Ajouté a la table owner de: " + g.name) 
-  })
+  console.log(client.users.cache.get(client.config.buyer).username + " " + " Ajouté a la table owner de: " + g.name)
+    })
   // client.users.cache.forEach(async (u) => {
   //   if (!u.bot) {
   //       try {
-            // delUserPrevnameTable(client, u.id)
+  //           delUserPrevnameTable(client, u.id)
   //           createUserPrevnameTable(client, u.id)
   //           .then(async () => {
   //             const existingPrevname = await client.db.oneOrNone(`
@@ -70,44 +70,38 @@ module.exports = {
     console.log(`[GUILDS]: ${client.guilds.cache.size}`);
     console.log(`[CHANNELS]: ${client.channels.cache.size}`);
     console.log(`[USERS] ${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString()}`);
+    console.log("-------------------------------");
+    console.log("[DB]" + ' ' + client.user.username + ' ' + "DB READY");
     console.log(`[SCRIPT]: Clarity est connecté au bot (${client.user.username})`)
     console.log("-------------------------------");
+    createBotStatusTable(client)
 
-     client.db.one(`SELECT * FROM clarity_${client.user.id}`).then(req => {
+     client.db.one(`SELECT * FROM clarity_${client.user.id}_bot_status`).then(req => {
       if(req === null) {
-        client.user.setPresence({activities: [{name: `Clarity V2`, type: 0}], status: "dnd"});
+        setBotStatus(client);
       }
-    if(req.type == 'Streaming') {
-      client.user.setPresence({activities: [{name: `${req.statut}`, type: 1 , url: "https://twitch.tv/tsubasa_dsc"}]});
+    if(req.type == 'stream') {
+      client.user.setPresence({activities: [{name: `${req.status}`, type: 1 , url: "https://twitch.tv/tsubasa_poulpy"}], status: req.presence ? req.presence : 'dnd'});
     }
-    if (req.type == 'Playing') {
-      client.user.setPresence({activities: [{name: `${req.statut}`, type: 0}]});
+    if (req.type == 'play') {
+      client.user.setPresence({activities: [{name: `${req.status}`, type: 0}], status: req.presence ? req.presence : 'dnd'});
     }
-    if (req.type == 'Listening'){
-      client.user.setPresence({activities: [{name: `${req.statut}`, type: 2}]});
+    if (req.type == 'listen'){
+      client.user.setPresence({activities: [{name: `${req.status}`, type: 2}], status: req.presence ? req.presence : 'dnd'});
     }
-    if (req.type == 'Watching'){
-      client.user.setPresence({activities: [{name: `${req.statut}`, type: 3}]});
+    if (req.type == 'watch'){
+      client.user.setPresence({activities: [{name: `${req.status}`, type: 3}], status: req.presence ? req.presence : 'dnd'});
     }
-    if (req.type == 'Competing'){
-      client.user.setPresence({activities: [{name: `${req.statut}`, type: 5}]});
+    if (req.type == 'custom'){
+      client.user.setPresence({activities: [{name: `${req.status}`, type: 4}], status: req.presence ? req.presence : 'dnd'});
     }
-    if (req.status === "dnd") {
-      client.user.setPresence({status: "dnd"});
-    }
-    if (req.status === "online") {
-      client.user.setPresence({status: "online"});
-    }
-    if (req.status === "idle") {
-      client.user.setPresence({status: "idle"});
-    }
-    if (req.status === "invisible") {
-      client.user.setPresence({status: "invisible"});
+    if (req.type == 'compet'){
+      client.user.setPresence({activities: [{name: `${req.status}`, type: 5}], status: req.presence ? req.presence : 'dnd'});
     }
      })
      .catch(error => {
       if(error.message === "No data returned from the query."){
-        client.user.setPresence({activities: [{name: `Clarity V2`, type: 0}], status: "dnd"});
+        setBotStatus(client);
         return;
       }
       console.error(error);
@@ -149,6 +143,27 @@ async function createguildtable(client) {
   })
 }
 
+// fonction pour cree la table bot_status et mettre un status de base
+async function createBotStatusTable(client) {
+  const tableName = `clarity_${client.user.id}_bot_status`;
+  const exist = await client.db.oneOrNone(`SELECT to_regclass('${tableName}')`, [], a => a && a.to_regclass);
+  if (!exist) {
+    await client.db.none(`CREATE TABLE ${tableName} (
+      type TEXT,
+      status TEXT,
+      presence TEXT
+    )`);
+    console.log(`Table ${tableName} créée`);
+  } else {
+    console.log(`Table ${tableName} charger !`);
+  }
+}
+// fonction pour injecter dans la table bot_status le status du bot de base si aucun status n'est mis
+async function setBotStatus(client) {
+  const tableName = `clarity_${client.user.id}_bot_status`;
+  await client.db.none(`INSERT INTO ${tableName} (type, status, presence) VALUES ($1, $2, $3)`, ['custom', `Clarity ${client.version.version}`, 'dnd']);
+  console.log(`Bot status updated successfully for ${tableName} and the bot ${client.user.username}`);
+}
 // fonction pour mettre un prefix dans la table de chaque guild
 async function setPrefix(client, guildId) {
   const tableName = `clarity_${client.user.id}_${guildId}`;

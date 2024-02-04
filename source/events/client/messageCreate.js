@@ -22,14 +22,6 @@ module.exports = {
     }
     client.prefix = prefix;
 
-    const color = await client.db.oneOrNone(`SELECT color FROM clarity_${client.user.id}_${message.guild.id}`);
-
-    if (color) {
-        client.color = parseInt(color.color.replace("#", ""), 16);
-    } else {
-        client.color = parseInt(client.config.default_color.replace("#", ""), 16);
-    }
-
     if (
       message.content === `<@${client.user.id}>` ||
       message.content === `<@!${client.user.id}>`
@@ -55,14 +47,27 @@ module.exports = {
     if (!commandName) return;
 
     try {
-      const isBlCmd = await client.db.oneOrNone(
-        `SELECT 1 FROM clarity_${client.user.id}_blacklistcmd WHERE user_id = \$1`,
-        [message.author.id]
-      );
-      if (isBlCmd) {
+      const isBlCmd = await client.data.get(`blcmd_${message.guild.id}`) || {
+        users: []
+      }
+      if (!isBlCmd) return;
+      if (isBlCmd.users.includes(message.author.id)) {
         return message.reply({
-          content:
-            "Vous êtes bloqué de l'utilisation des commandes, elles ne vous sont plus accessibles.",
+          embeds: [{
+            color: parseInt(client.color.replace('#', ''), 16),
+            description: "Vous êtes bloqué de l'utilisation des commandes, elles ne vous sont plus accessibles.",
+            footer: {
+              text: client.config.footer
+            },
+            timestamp: new Date(),
+            thumbnail: {
+              url: message.author.displayAvatarURL({ dynamic: true })
+            },
+            author: {
+              name: message.author.username,
+              iconURL: message.author.displayAvatarURL({ dynamic: true })
+            }
+          }]
         });
       }
     } catch (error) {
@@ -70,28 +75,61 @@ module.exports = {
     }
 
     try {
-      const commanddbd = await client.db.oneOrNone(`
-        SELECT commandlog
-        FROM clarity_${client.user.id}_${message.guild.id}_logs
-      `);
-
-      if (commanddbd && commanddbd.commandlog) {
-        const commandlogChannel = message.guild.channels.cache.get(
-          commanddbd.commandlog
-        );
-        if (commandlogChannel) {
-          commandlogChannel.send({
-            content: `${message.author.username} vient de faire la commande ${commandName} !`,
+      const commanddbd = await client.data.get(`commandlogs_${message.guild.id}`)
+      let logC = message.guild.channels.cache.get(commanddbd);
+      if (logC) {
+        const cmd = client.commands.get(commandName) || client.aliases.get(commandName);
+        if (cmd && message.content.startsWith(prefix)) {
+          logC.send({
+            embeds: [{
+              color: parseInt(client.color.replace('#', ''), 16),
+              timestamp: new Date(),
+              thumbnail: {
+                url: message.author.displayAvatarURL({ dynamic: true })
+              },
+              author: {
+                name: message.author.username,
+                iconURL: message.author.displayAvatarURL({ dynamic: true })
+              },
+              description: `${message.author.username} vient d'executer une commande `,
+              fields: [{
+                name: "Commande",
+                value: commandName
+              }, {
+                name: "Executer dans le channel",
+                value: `${message.channel.name}`
+              }]
+            }]
           });
         }
       }
     } catch (error) {
-    
+      console.error(error);
     }
+    try {
+      const data = client.data2.get(`nocmd_${message.guild.id}`) || {
+        channels: []
+    }
+    if (!data) return;
 
+    if (data.channels.includes(message.channel.id)) {
+        if (!client.config.devs.includes(message.author.id)) {
+          return message.reply({
+            content: "Les commandes ont été désactivées dans ce salon.",
+          });
+        }
+        if (message.author.id != client.config.buyer) {
+          return message.reply({
+            content: "Les commandes ont été désactivées dans ce salon.",
+          });
+        }
+    }
+    } catch (error) {
+      console.error(error);
+    }
     const cmd = client.commands.get(commandName) || client.aliases.get(commandName);
     if (!cmd) return;
+      cmd.run(client, message, args);
 
-    cmd.run(client, message, args);
   },
 };
