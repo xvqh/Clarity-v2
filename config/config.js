@@ -14,5 +14,9 @@ module.exports = {
     },
     devs: ["1072553881134972970", '378594821721554947'],
     bumpserv: "1160135417383891025",
-    bumpcl: "1160357865610018848"
+    bumpcl: "1160357865610018848",
+
+    database: {
+        PostgreSQL: "postgres://postgres:juju0910*@localhost:5432/clarity"
+    }
 }

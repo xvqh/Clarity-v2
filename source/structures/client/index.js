@@ -1,15 +1,16 @@
-const {Client, GatewayIntentBits, Collection} = require('discord.js')
+const { Client, GatewayIntentBits, Collection } = require('discord.js')
 const fs = require('fs')
 const translate = require("@plainheart/google-translate-api")
 const pgp = require('pg-promise')();
-const connectionString = 'postgres://postgres:juju0910*@localhost:5432/clarity';
 const { Player } = require('discord-player');
+const config = require('../../../config/config');
+
 module.exports = class Clarity extends Client {
     constructor(options = {
         intents: [3276799],
         partials: [
-          1, 2, 5, 3,
-          4, 6, 0
+            1, 2, 5, 3,
+            4, 6, 0
         ],
     }) {
         super(options)
@@ -27,7 +28,7 @@ module.exports = class Clarity extends Client {
         this.functions = require('../utils/index')
         this.ms = require('../utils/ms')
         this.emoji = require("../../../config/emoji")
-        this.db = pgp(connectionString)
+        this.db = pgp(config.database.PostgreSQL)
         this.pretty = require('pretty-ms')
         this.logsType = require('./logsType')
         this.channelType = require('./channelType')
@@ -40,8 +41,8 @@ module.exports = class Clarity extends Client {
         this.connectToToken()
     }
 
-    async connectToToken(){
-        this.login(this.config.token).then(()=>{
+    async connectToToken() {
+        this.login(this.config.token).then(() => {
             var x = setInterval(() => {
                 if (this.ws.reconnecting || this.ws.destroyed) {
                     this.login(this.config.token).catch(e => {
@@ -51,10 +52,10 @@ module.exports = class Clarity extends Client {
                     })
                 }
             }, 30000)
-        }).catch(e=>{
+        }).catch(e => {
             console.error(e)
-            if(e?.code?.toLowerCase()?.includes("token")) return;
-            setTimeout(()=>{
+            if (e?.code?.toLowerCase()?.includes("token")) return;
+            setTimeout(() => {
                 this.connectToToken()
             }, 10000)
         })
@@ -102,7 +103,7 @@ module.exports = class Clarity extends Client {
             }
         }
     }
-      
+
 
     initSlashCommands() {
         const subFolders = fs.readdirSync(`./source/slashCmds`)

@@ -31,28 +31,6 @@ module.exports = {
         return value
     },
 
-    async getImageAnime(action, axios) {
-        const userAgents = require('./user-agents.json')
-        if (!action) throw "action is not given in getAnimeImgURL()"
-
-        let array = ["pat", "hug", "waifu", "cry", "kiss", "slap", "smug", "punch"];
-
-        if (!array.find(x => x === action.toLowerCase())) {
-            throw "Unknown Action name, options of action are - " + array.join(", ")
-        }
-
-        let json = await axios("https://neko-love.xyz/api/v1/" + action.toLowerCase(), {
-            headers: {
-                "User-Agent": userAgents[Math.floor(Math.random() * userAgents.length)]
-            }
-        });
-
-        json = json.data;
-        if (json.code !== 200) throw "Error 01: Unable to access the json content of API"
-
-        return json.url
-    },
-
     isDiscordLink(string) {
         const discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;
         return discordInvite.test(string)
