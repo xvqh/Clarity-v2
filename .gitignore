@@ -10,3 +10,4 @@ bun.lockb
 # Storage files
 
 json.sqlite
+Clarity.json
