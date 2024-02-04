@@ -11,7 +11,7 @@ module.exports = {
               content: "Vous n'avez pas la permission d'utiliser cette commande",
             });
           }
-          let color = parseInt(client.color.replace("#", ""), 16);
+          let color = parseInt(client.color.replace('#', ''), 16);
         if (args[0] === "add") {
             let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[1]);
             if (!role) return message.reply({ content: "Veuillez mentionner un role." });
