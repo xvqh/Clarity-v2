@@ -3,7 +3,7 @@ module.exports = {
     name: 'lock',
   category: "📝〢Moderation",
     run: async (client, message, args) => {
-        let color =  parseInt(client.color.replace("#", ""), 16);
+        let color =  parseInt(client.color, 16);
         const channel = message.mentions.channels.first() || message.channel;
     channel.permissionOverwrites
       .edit(message.guild.roles.everyone, { SendMessages: false })

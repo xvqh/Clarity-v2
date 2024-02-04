@@ -24,7 +24,7 @@ module.exports = {
     }
 }
 async function bump(client, message) {
-    let color = parseInt(client.color.replace("#", ""), 16);
+    let color = parseInt(client.color.replace('#', ''), 16);
     // recupere l'id du serveur dans la db
     const serverId = await client.db.oneOrNone('SELECT * FROM clarity_bump WHERE guild_id = $1', [message.guild.id]);
     if (!serverId) {

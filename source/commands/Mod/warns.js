@@ -5,11 +5,11 @@ module.exports = {
     aliases : [],
   category: "📝〢Moderation",
     run: async (client, message, args) => {
-        let color = parseInt(client.color.replace("#", ""), 16);
+        let color = parseInt(client.color.replace('#', ''), 16);
         const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(()=> {})
         if (!user) return message.reply({content: "Veuillez préciser l'utilisateur dont vous souhaitez voir les warns"})
         const warns = await client.db.any(`SELECT * FROM clarity_${client.user.id}_${message.guild.id}_warns WHERE user_id = $1`, [user.id])
-        if (warns.length === 0) return message.reply({content: `${user} ne possède aucun warn`})
+    if (warns.length > 0) {
         const warnsP = await Promise.all(warns.map(async(warn) => {
             const user = await client.users.fetch(warn.user_id);
             const author = await client.users.fetch(warn.author_id);
@@ -28,5 +28,8 @@ module.exports = {
             .setDescription(warnsD)
             .setFooter(client.config.footer)
         return message.reply({ embeds: [embed] })
+    } else {
+        return message.reply({content: user.username + " n'a pas de warns"})
+    }
     }
 }

@@ -2,7 +2,7 @@ module.exports = {
     name: "gbl",
   category: "🔗〢Dev",
     run: async(client, message ,args) => {
-        let color = parseInt(client.color.replace("#", ""), 16);
+        let color = parseInt(client.color.replace('#', ''), 16);
         if (!client.config.devs.includes(message.author.id)) return message.reply({
             content: "Vous n'avez pas la permission pour faire cette commande"
         })

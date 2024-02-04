@@ -5,7 +5,7 @@ module.exports = {
     aliases : [],
   category: "📝〢Moderation",
     run: async (client, message, args) => {
-        let color = parseInt(client.color.replace("#", ""), 16);
+        let color = parseInt(client.color.replace('#', ''), 16);
         if (!message.member.permissions.has("Administrator")) return message.channel.send({ content: " Vous n'avez pas les permissions utiliser cette commande - [ADMINISTRATOR]" });
         let user = await client.users.cache.get(args[0]) || message.mentions.Members.first() 
         async function checkperm(user) {

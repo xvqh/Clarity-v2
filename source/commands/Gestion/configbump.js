@@ -18,7 +18,7 @@ module.exports = {
 };
 
 async function embed(client, message, msg) {
-    let color = parseInt(client.color.replace("#", ""), 16);
+    let color = parseInt(client.color.replace('#', ''), 16);
     let components = [
         {
             type: 1,

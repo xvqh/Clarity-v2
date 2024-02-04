@@ -19,7 +19,7 @@ module.exports = {
             return message.reply({content: "Il n'y a pas de prevname enregistrer"})
         }
 
-        let color = parseInt(client.color.replace("#", ""), 16);
+        let color = parseInt(client.color.replace('#', ''), 16);
         message.channel.send({
             embeds: [new EmbedBuilder({
                 title: user.username + " - " + "Liste des prevnames",

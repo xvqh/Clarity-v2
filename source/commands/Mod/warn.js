@@ -2,7 +2,7 @@ module.exports = {
     name: 'warn',
   category: "📝〢Moderation",
     run: async (client, message, args) => {
-        let color =  parseInt(client.color.replace("#", ""), 16);
+        let color =  parseInt(client.color, 16);
         await client.db.none(`CREATE TABLE IF NOT EXISTS clarity_${client.user.id}_${message.guild.id}_warns (
             warn_id VARCHAR(20) PRIMARY KEY,
             user_id VARCHAR(20) UNIQUE,

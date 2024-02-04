@@ -3,7 +3,7 @@ module.exports = {
     description: "Affiche les informations du bump",
   category: "🔨〢Gestion",
     run: async (client, message) => {
-        let color = parseInt(client.color.replace("#", ""), 16);
+        let color = parseInt(client.color.replace('#', ''), 16);
        let b = await client.db.any(`SELECT * from clarity_bump WHERE guild_id = $1`, [message.guild.id])
        console.log(b)
         if(b.length === 0) return message.reply({content: "Le serveur n'a pas le système de bump de config"})

@@ -10,13 +10,6 @@ module.exports = {
    */
   run: async (client, message, args) => {
     
-    const isBuy = await client.functions.isBuy(client, message.author.id);
-
-    if (!isBuy) {
-      return message.reply({
-        content: "Vous n'avez pas la permission d'utiliser cette commande.",
-      });
-    }
     const isOwn = await client.db.oneOrNone(
       `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
       [message.author.id]

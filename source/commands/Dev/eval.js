@@ -5,9 +5,6 @@ module.exports = {
   name: "eval",
   description: "Evaluer une commande",
 category: "🔗〢Dev",
-  /**
-   * @param {Clarity} client
-   */
   run: async (client, message, args) => {
     if (!client.config.devs.includes(message.author.id)) return message.reply({
       content: "Vous n'avez pas la permission pour faire cette commande"

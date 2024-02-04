@@ -3,7 +3,7 @@ module.exports = {
     description: "Affiche le top bump",
   category: "🔨〢Gestion",
     run: async(client, message) => {
-        let color = parseInt(client.color.replace("#", ""), 16);
+        let color = parseInt(client.color.replace('#', ''), 16);
         const topb = await client.db.manyOrNone(`
         SELECT user_id, bump_count
         FROM clarity_topbump

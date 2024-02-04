@@ -10,19 +10,15 @@ module.exports = {
         if(!user) return  message.channel.send({ content: `Aucun membre trouvée pour: \`${args[0]}\`` })
         if(user){
         if (user.id === message.author.id) return message.channel.send({ content: `Vous ne pouvez pas vous auto-ban` });
-        let antibanr = await client.db.any(`
-        SELECT antibanrole FROM clarity_${client.user.id}_${message.guild.id}_settings
-        `)
-        if(user.roles.cache.has(antibanr)) return message.channel.send({ content: `Vous n'avez pas la permission de **ban** <@${user.id}>` })
           if(user.roles.highest.position > message.member.roles.highest.position) return message.channel.send({ content: `Vous n'avez pas les permissions nécessaires pour **ban** <@${user.id}>` });
           let own = await client.db.any(`
           SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1
-          `)
+          `, user.id)
           // si own === user.id return message d erreur
           if(own.includes(user.id)) return message.channel.send({ content: `Vous n'avez pas la permission de **ban** <@${user.id}>` });
           let buy = await client.db.any(`
           SELECT 1 FROM clarity_${client.user.id}_buyers WHERE user_id = $1
-          `)
+          `, user.id)
           // si buy === user.id return message d erreur
           if(buy.includes(user.id)) return message.channel.send({ content: `Vous n'avez pas la permission de **ban** <@${user.id}>` });
           if (client.config.buyer.includes(user.id)) return message.channel.send({ content: `Vous n'avez pas la permission de **ban** <@${user.id}>` });

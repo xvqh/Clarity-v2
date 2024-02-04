@@ -1,5 +1,5 @@
 module.exports = {
-    name: "say",
+    name: "afk-clear",
     run: async(client, message, args) => {
         const isOwn = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
@@ -10,7 +10,15 @@ module.exports = {
               content: "Vous n'avez pas la permission d'utiliser cette commande",
             });
           }
-          await message.delete()
-        message.channel.send(args.join(" "))
-    }
+          const afkUsers = await client.db.any(`
+          SELECT * FROM clarity_afk
+        `);
+        if (!afkUsers.length) {
+          return message.channel.send("Aucun utilisateur AFK.");
+        }
+        await client.db.none(
+          `DELETE FROM clarity_afk`
+        )
+        message.channel.send("Les utilisateurs AFK ont bien été supprimés.");
+        }
 }
