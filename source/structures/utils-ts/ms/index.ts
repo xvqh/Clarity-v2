@@ -23,12 +23,16 @@ var y = d * 365.25;
  * @api public
  */
 
-export default function (val, options) {
+interface options {
+    long: boolean
+};
+
+export default function (val: string | number, options: options): string | number {
     options = options || {};
-    var type = typeof val;
-    if (type === 'string' && val.length > 0) {
-        return parse(val);
-    } else if (type === 'number' && isFinite(val)) {
+
+    if (typeof val === 'string' && val.length > 0) {
+        return parse(val) as number;
+    } else if (typeof val === 'number' && isFinite(val)) {
         return options.long ? fmtLong(val) : fmtShort(val);
     }
     throw new Error(
@@ -45,7 +49,7 @@ export default function (val, options) {
  * @api private
  */
 
-function parse(str) {
+function parse(str: string): number | undefined {
     str = String(str);
     if (str.length > 100) {
         return;
@@ -117,15 +121,7 @@ function parse(str) {
     }
 }
 
-/**
- * Short format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtShort(ms) {
+function fmtShort(ms: number): string {
     var msAbs = Math.abs(ms);
     if (msAbs >= d) {
         return Math.round(ms / d) + 'd';
@@ -142,15 +138,7 @@ function fmtShort(ms) {
     return ms + 'ms';
 }
 
-/**
- * Long format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtLong(ms) {
+function fmtLong(ms: number): string {
     var msAbs = Math.abs(ms);
     if (msAbs >= d) {
         return plural(ms, msAbs, d, 'day');
@@ -171,7 +159,7 @@ function fmtLong(ms) {
  * Pluralization helper.
  */
 
-function plural(ms, msAbs, n, name) {
+function plural(ms: number, msAbs: number, n: number, name: string) {
     var isPlural = msAbs >= n * 1.5;
     return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
 }

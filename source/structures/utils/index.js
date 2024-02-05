@@ -75,17 +75,6 @@ export default {
         }
     },
 
-    async getUser(client, userid) {
-        let userInfos
-        userInfos = await client.axios.get('https://discord.com/api/users/' + userid, {
-            headers: {
-                Authorization: `Bot ${client.config.token}`,
-            }
-        }).catch(e => userInfos = null)
-        if (userInfos) userInfos = userInfos.data
-        return userInfos
-    },
-
     async isBuy(client, userId) {
         return await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_buyers WHERE user_id = $1`,

@@ -39,11 +39,12 @@ declare module 'discord.js' {
         colorListed: colorListed
         allInvites: Collection;
         vanityCount: Collection;
-        translate: translate
-        initCommands: Promise<void>
-        initEvents: Function
-        connectToToken: Function
-        initMongo: Function
-        initSlashCommands: Function
+        translate: translate;
+        initCommands: Client<boolean>;
+        initEvents: Function;
+        connectToToken: Promise<void>;
+        initMongo: Function;
+        initSlashCommands: Promise<void>;
+        mongo: mongoose
     }
 }

@@ -1,6 +1,5 @@
 import moment from 'moment';
-import Client from '../client/index.js';
-import fs from 'fs';
+import Client from '../client-ts/index.js';
 import { Guild, GuildMember, User } from 'discord.js';
 
 export default {
@@ -76,20 +75,9 @@ export default {
         }
     },
 
-    async getUser(client: Client, userid: string) {
-        let userInfos
-        userInfos = await client.axios.get('https://discord.com/api/users/' + userid, {
-            headers: {
-                Authorization: `Bot ${client.config.token}`,
-            }
-        }).catch((e: any) => userInfos = null)
-        if (userInfos) userInfos = userInfos.data
-        return userInfos
-    },
-
     async isBuy(client: Client, userId: string) {
         return await client.db.oneOrNone(
-            `SELECT 1 FROM clarity_${client.user.id}_buyers WHERE user_id = $1`,
+            `SELECT 1 FROM clarity_${client.user?.id}_buyers WHERE user_id = $1`,
             [userId]
         );
     },
