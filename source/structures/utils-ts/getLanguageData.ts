@@ -1,15 +1,15 @@
 import yaml from 'js-yaml';
-import Clarity from '../client/index.js';
+import Clarity from '../client-ts/index.js';
 import fs from 'fs';
 
 interface LangsData {
     [lang: string]: any
 };
 
-let LangsData = {};
+let LangsData: LangsData = {};
 
 async function getLanguageData(client: Clarity, guildId: string) {
-    let lang = client.data2.has(`${guildId}_guildlang`) || 'fr-FR';
+    let lang: string = await client.data2.get(`${guildId}_guildlang`) || 'fr-FR';
 
     let dat = LangsData[lang];
 
