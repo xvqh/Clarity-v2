@@ -125,7 +125,25 @@ export default class Clarity extends Client {
             this.commands.filter(v => v.name.startsWith(cmd.name) || v.name.endsWith(cmd.name)).map(cm => finale.set(cm.name, cm));
         })
         this.commands = finale;
-    }
+    };
+
+    async initMongo() {
+        this.mongo = await mongoose
+            .connect(
+                "mongodb+srv://tsubasa:Bouh091002@cluster0.uz7gfpy.mongodb.net/?retryWrites=true&w=majority",
+                {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                }
+            )
+            .then(() => {
+                console.log("[MongoDB] Connected");
+            })
+            .catch((e) => {
+                console.error("[MongoDB] Error");
+                console.error(e);
+            });
+    };
 
     async initEvents() {
         const subFolders = fs.readdirSync(`./source/events`)
