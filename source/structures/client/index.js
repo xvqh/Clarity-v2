@@ -18,7 +18,7 @@ import componentType from './componentType.js';
 import buttonType from './buttonType.js';
 import colorListed from './colorListed.js';
 import ClarityDB from "clarity-db";
-import quickdb from 'quick.db';
+import { QuickDB } from 'quick.db';
 import mongoose from 'mongoose';
 
 export default class Clarity extends Client {
@@ -52,7 +52,7 @@ export default class Clarity extends Client {
                 hello: "world",
             },
         });
-        this.data2 = quickdb;
+        this.data2 = new QuickDB();
         this.emoji = emojis
         this.db = pgp()(config.database.PostgreSQL)
         this.pretty = pretty
