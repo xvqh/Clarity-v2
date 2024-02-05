@@ -18,8 +18,8 @@ export default {
         }
         const channels = message.guild.channels.cache.filter(ch => ch.type !== 4);
         if(args[0] === 'on'){
-            let link = client.data2.get(`defqonlink_${message.guild.id}`);
-            client.data2.set(`defqon_${message.guild.id}`, true);
+            let link = await client.data2.get(`defqonlink_${message.guild.id}`);
+            await client.data2.set(`defqon_${message.guild.id}`, true);
             channels.forEach(channel => {
                 channel.permissionOverwrites.edit(message.guild.roles.everyone, {
                     SendMessages: true,
@@ -45,7 +45,7 @@ export default {
             })
         }
         if(args[0] === 'off'){
-            client.data2.set(`defqon_${message.guild.id}`, false);
+            await client.data2.set(`defqon_${message.guild.id}`, false);
             channels.forEach(channel => {
                 channel.permissionOverwrites.edit(message.guild.roles.everyone, {
                     SendMessages: null,
