@@ -19,6 +19,7 @@ import buttonType from './buttonType.js';
 import colorListed from './colorListed.js';
 import ClarityDB from "clarity-db";
 import quickdb from 'quick.db';
+import mongoose from 'mongoose';
 
 export default class Clarity extends Client {
     constructor(options = {

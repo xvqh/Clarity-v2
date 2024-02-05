@@ -3,7 +3,7 @@ export default {
     run: async (client, oldPresence, newPresence) => {
         const guildID = newPresence.guild?.id;
         if (!guildID) return;
-        const db = client.data2.get(`soutien_${guildID}`) || {
+        const db = await client.data2.get(`soutien_${guildID}`) || {
             name: [],
             role: [],
             blacklist: [],
