@@ -1,7 +1,4 @@
-
-import { EmbedBuilder } from "discord.js";
 import Clarity from "../../structures/client/index.js";
-
 import { exec } from 'child_process';
 
 export default {

@@ -82,10 +82,15 @@ export default class Clarity extends Client {
         for (const category of subFolders) {
             const commandsFiles = fs.readdirSync(`./source/commands/${category}`).filter(file => file.endsWith('.js'));
             for (const commandFile of commandsFiles) {
-                console.log(commandFile)
-                const command = await import(`../../commands/${category}/${commandFile}`);
 
-                let cmd = command.default;
+                var cmd;
+                try {
+                    const command = await import(`../../commands/${category}/${commandFile}`);
+                    cmd = command.default;
+
+                } catch {
+                    console.log(commandFile)
+                }
 
                 cmd.category = category
                 cmd.commandFile = commandFile
@@ -113,7 +118,9 @@ export default class Clarity extends Client {
         for (const category of subFolders) {
             const eventsFiles = fs.readdirSync(`./source/events/${category}`).filter(file => file.endsWith(".js"))
             for (const eventFile of eventsFiles) {
-                const event = await import(`../../events/${category}/${eventFile}`);
+                var event = await import(`../../events/${category}/${eventFile}`);
+                event = event.default;
+
                 this.on(event.name, (...args) => event.run(this, ...args))
                 if (category === 'anticrash') process.on(event.name, (...args) => event.run(this, ...args))
             }
