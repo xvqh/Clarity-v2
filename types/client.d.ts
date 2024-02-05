@@ -26,7 +26,7 @@ declare module 'discord.js' {
         creators: creators;
         version: version;
         player: singleton;
-        functions: func;
+        functions: functions;
         ms: ms;
         data: ClarityDB;
         data2: QuickDB;
@@ -41,10 +41,6 @@ declare module 'discord.js' {
         allInvites: Collection;
         vanityCount: Collection;
         translate: translate;
-        initCommands: Client<boolean>;
-        initEvents: Function;
-        initMongo: Function;
-        initSlashCommands: Promise<void>;
-        mongo: mongoose
+        mongo: mongoose;
     }
 }

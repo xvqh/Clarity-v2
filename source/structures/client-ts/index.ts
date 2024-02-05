@@ -66,7 +66,7 @@ export default class Clarity extends Client {
         this.allInvites = new Collection();
         this.vanityCount = new Collection();
         this.translate = translate
-        this.initCommands()
+        this.initCommands();
         this.initEvents()
         this.initMongo();
         this.initSlashCommands();
