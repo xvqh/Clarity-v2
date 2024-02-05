@@ -40,7 +40,7 @@ declare module 'discord.js' {
         allInvites: Collection;
         vanityCount: Collection;
         translate: translate
-        initCommands: Function
+        initCommands: Promise<void>
         initEvents: Function
         connectToToken: Function
         initMongo: Function
