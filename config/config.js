@@ -17,6 +17,7 @@ export default {
     bumpcl: "1160357865610018848",
 
     database: {
-        PostgreSQL: "postgres://postgres:juju0910*@localhost:5432/clarity"
+        PostgreSQL: "postgres://postgres:juju0910*@localhost:5432/clarity",
+        MongoDB: "mongodb+srv://tsubasa:Bouh091002@cluster0.uz7gfpy.mongodb.net/?retryWrites=true&w=majority"
     }
 }

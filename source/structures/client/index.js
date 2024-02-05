@@ -68,7 +68,7 @@ export default class Clarity extends Client {
         this.initEvents()
         this.connectToToken()
         this.initMongo();
-        this.initSlashCommands();
+        // this.initSlashCommands();
     }
 
     async connectToToken() {
@@ -131,7 +131,7 @@ export default class Clarity extends Client {
     async initMongo() {
         this.mongo = await mongoose
             .connect(
-                "mongodb+srv://tsubasa:Bouh091002@cluster0.uz7gfpy.mongodb.net/?retryWrites=true&w=majority",
+                config.database.MongoDB,
                 {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
