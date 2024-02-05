@@ -32,6 +32,7 @@ declare module 'discord.js' {
         data2: QuickDB;
         emoji: emoji;
         db: pgp;
+        color: string;
         pretty: pretty;
         logsType: logsType
         channelType: channelType

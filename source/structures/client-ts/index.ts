@@ -61,15 +61,16 @@ export default class Clarity extends Client {
         this.logsType = logsType
         this.channelType = channelType
         this.componentType = componentType
-        this.buttonType = buttonType
-        this.colorListed = colorListed
+        this.buttonType = buttonType;
+        this.colorListed = colorListed;
+        this.color = config.default_color;
         this.allInvites = new Collection();
         this.vanityCount = new Collection();
         this.translate = translate
         this.initCommands();
         this.initEvents()
         this.initMongo();
-        this.initSlashCommands();
+        // this?.initSlashCommands();
     }
 
     async refreshConfig() {
@@ -80,12 +81,12 @@ export default class Clarity extends Client {
     };
 
     async initCommands(): Promise<void> {
-        const subFolders = fs.readdirSync('./source/commands');
+        const subFolders = fs.readdirSync('./source/commands-ts');
         for (const category of subFolders) {
-            const commandsFiles = fs.readdirSync(`./source/commands/${category}`).filter(file => file.endsWith('.js'));
+            const commandsFiles = fs.readdirSync(`./source/commands-ts/${category}`).filter(file => file.endsWith('.js'));
             for (const commandFile of commandsFiles) {
 
-                const command = await import(`../../commands/${category}/${commandFile}`);
+                const command = await import(`../../commands-ts/${category}/${commandFile}`);
                 var cmd = command.default;
 
                 cmd.category = category
@@ -124,11 +125,11 @@ export default class Clarity extends Client {
     };
 
     async initEvents() {
-        const subFolders = fs.readdirSync(`./source/events`)
+        const subFolders = fs.readdirSync(`./source/events-ts`)
         for (const category of subFolders) {
-            const eventsFiles = fs.readdirSync(`./source/events/${category}`).filter(file => file.endsWith(".js"))
+            const eventsFiles = fs.readdirSync(`./source/events-ts/${category}`).filter(file => file.endsWith(".js"))
             for (const eventFile of eventsFiles) {
-                await import(`../../events/${category}/${eventFile}`).then((data) => {
+                await import(`../../events-ts/${category}/${eventFile}`).then((data) => {
                     if (data.default) {
                         this.on(data.default.name, (...args) => data.default.run(this, ...args))
                         if (category === 'anticrash') process.on(data.default.name, (...args) => data.default.run(this, ...args));
@@ -139,17 +140,17 @@ export default class Clarity extends Client {
     }
 
 
-    async initSlashCommands(): Promise<void> {
-        const subFolders = fs.readdirSync(`./source/slashCmds`)
-        for (const category of subFolders) {
-            const commandsFiles = fs.readdirSync(`./source/slashCmds/${category}`).filter(file => file.endsWith('.js'))
-            for (const commandFile of commandsFiles) {
-                const command = await import(`../../slashCmds/${category}/${commandFile}`);
+    // async initSlashCommands(): Promise<void> {
+    //     const subFolders = fs.readdirSync(`./source/slashCmds`)
+    //     for (const category of subFolders) {
+    //         const commandsFiles = fs.readdirSync(`./source/slashCmds/${category}`).filter(file => file.endsWith('.js'))
+    //         for (const commandFile of commandsFiles) {
+    //             const command = await import(`../../slashCmds/${category}/${commandFile}`);
 
-                command.category = category
-                command.commandFile = commandFile
-                this.slashCommands.set(command.name, command)
-            }
-        }
-    }
+    //             command.category = category
+    //             command.commandFile = commandFile
+    //             this.slashCommands.set(command.name, command)
+    //         }
+    //     }
+    // }
 }

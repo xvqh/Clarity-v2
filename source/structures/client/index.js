@@ -61,6 +61,7 @@ export default class Clarity extends Client {
         this.componentType = componentType
         this.buttonType = buttonType
         this.colorListed = colorListed
+        this.color = this.config.default_color;
         this.allInvites = new Collection();
         this.vanityCount = new Collection();
         this.translate = translate
