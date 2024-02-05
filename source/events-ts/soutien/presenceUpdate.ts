@@ -1,6 +1,8 @@
+import { Client, Presence } from "discord.js";
+
 export default {
     name: "presenceUpdate",
-    run: async (client, oldPresence, newPresence) => {
+    run: async (client: Client, oldPresence: Presence, newPresence: Presence) => {
         const guildID = newPresence.guild?.id;
         if (!guildID) return;
         const db = await client.data2.get(`soutien_${guildID}`) || {
@@ -19,19 +21,19 @@ export default {
         const member = newPresence.member;
 
         if (blRoles.length > 0) {
-            if (member.roles.cache.some(role => blRoles.includes(role.id))) {
+            if (member?.roles.cache.some(role => blRoles.includes(role.id))) {
                 return;
             }
         }
         if (db.allowed === true) {
-            const invites = await member.guild.invites.fetch();
-            const inviteCode = invites.find(i => i.inviter.id === member.id);
+            const invites = await member?.guild.invites.fetch();
+            const inviteCode = invites?.find(i => i.inviter?.id === member?.id)?.toString();
             if (db.status === true && customStatus) {
                 if (inviteCode) {
                     if (customStatus.includes(inviteCode)) {
                         if (rolesToAdd.length > 0) {
                             try {
-                                await member.roles.add(rolesToAdd);
+                                await member?.roles.add(rolesToAdd);
                             } catch (error) {
                             }
                         }
@@ -39,7 +41,7 @@ export default {
                         const rolesToRemove = db.role;
                         if (rolesToRemove.length > 0) {
                             try {
-                                await member.roles.remove(rolesToRemove);
+                                await member?.roles.remove(rolesToRemove);
                             } catch (error) {
                             }
                         }
@@ -62,7 +64,7 @@ export default {
             if (customStatus.includes(db.name.join(' '))) {
                 if (rolesToAdd.length > 0) {
                     try {
-                        await member.roles.add(rolesToAdd);
+                        await member?.roles.add(rolesToAdd);
                     } catch (error) {
                     }
                 }
@@ -70,7 +72,7 @@ export default {
                 const rolesToRemove = db.role;
                 if (rolesToRemove.length > 0) {
                     try {
-                        await member.roles.remove(rolesToRemove);
+                        await member?.roles.remove(rolesToRemove);
                     } catch (error) {
                     }
                 }

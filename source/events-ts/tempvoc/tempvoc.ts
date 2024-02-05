@@ -1,11 +1,13 @@
-import Discord from 'discord.js';
+import Discord, { Client, VoiceState } from 'discord.js';
 
 export default {
     name: 'voiceStateUpdate',
-    run: async (client, oldState, newState) => {
+    run: async (client: Client, oldState: VoiceState, newState: VoiceState) => {
         const { member, guild } = oldState;
-        if (member.user.bot) return;
-        const data = client.data2.get(`tempvocsettings_${guild.id}`) || {
+
+        if (member?.user.bot) return;
+
+        const data = await client.data2.get(`tempvocsettings_${guild.id}`) || {
             status: false,
             category: null,
             channel: null,
@@ -14,13 +16,13 @@ export default {
 
         const categoid = data.category;
         const channelid = data.channel;
-        const category = client.channels.cache.get(categoid);
+        const category = client.channels.cache.get(categoid) as Discord.CategoryChannel;
         const channel = client.channels.cache.get(channelid);
 
         if (data.status === true) {
             if (oldState.channel === null || oldState.channel) {
-                if (newState.channelId === channel.id) {
-                    let tempsetting = client.data2.get(`tempsetting_${member.id}`) || {
+                if (newState.channelId === channel?.id) {
+                    let tempsetting = await client.data2.get(`tempsetting_${member?.id}`) || {
                         name: null,
                         limit: 0,
                         lock: false,
@@ -31,15 +33,17 @@ export default {
                         allowuser: [],
                         allowrole: []
                     };
+
                     if (!category) return;
+
                     oldState.guild.channels.create({
-                        name: tempsetting.name || `⏱️・${member.user.username}`,
+                        name: tempsetting.name || `⏱️・${member?.user.username}`,
                         type: Discord.ChannelType.GuildVoice,
                         parent: category,
                         reason: 'Clarity | TempVoc',
                         permissionOverwrites: [
                             {
-                                id: member.id,
+                                id: member?.id as string,
                                 allow: ["Connect", "ManageChannels"],
                             },
                             {
@@ -48,8 +52,8 @@ export default {
                             },
                         ]
                     }).then(async clari => {
-                        newState.member.voice.setChannel(clari);
-                        let tempsetting = client.data2.get(`tempsetting_${member.id}`) || {
+                        newState.member?.voice.setChannel(clari);
+                        let tempsetting = await client.data2.get(`tempsetting_${member?.id}`) || {
                             name: null,
                             limit: 0,
                             lock: false,
@@ -61,26 +65,26 @@ export default {
                             allowrole: []
                         }
                         // set the data
-                        client.data2.set(`tempvoc_${newState.guild.id}_${newState.member.id}`, clari.id)
+                        await client.data2.set(`tempvoc_${newState.guild.id}_${newState.member?.id}`, clari.id)
                         // set owner data of tempsettings to member
-                        tempsetting.owner = member.id
-                        client.data2.set(`tempsetting_${member.id}`, tempsetting)
+                        tempsetting.owner = member?.id
+                        await client.data2.set(`tempsetting_${member?.id}`, tempsetting)
                         // send a message
                         let mess = await clari.send({
                             embeds: [{
                                 title: `Clarity | TempVoc`,
                                 author: {
-                                    name: member.user.username,
-                                    icon_url: member.user.displayAvatarURL({ dynamic: true }),
+                                    name: member?.user.username as string,
+                                    icon_url: member?.user.displayAvatarURL({ forceStatic: false }),
                                 },
-                                description: `**${member.user.username}** Bienvenue dans votre vocal temporaire.\nTu peux configurer ton channel a ta guise avec ce panel`,
+                                description: `**${member?.user.username}** Bienvenue dans votre vocal temporaire.\nTu peux configurer ton channel a ta guise avec ce panel`,
                                 thumbnail: {
-                                    url: client.user.displayAvatarURL({ dynamic: true }),
+                                    url: client.user?.displayAvatarURL({ forceStatic: false }) as string,
                                 },
                                 fields: [
                                     {
                                         name: "Channel",
-                                        value: `\`\`\`${guild.channels.cache.get(clari) ? guild.channels.cache.get(clari).name : 'Non Trouver'}\`\`\``,
+                                        value: `\`\`\`${guild.channels.cache.get(clari.id) ? guild.channels.cache.get(clari.id)?.name : 'Non Trouver'}\`\`\``,
                                         inline: true
                                     }, {
                                         name: "Limit",
@@ -96,7 +100,7 @@ export default {
                                         inline: true
                                     }, {
                                         name: "Owner",
-                                        value: `\`\`\`${client.users.cache.get(tempsetting?.owner) ? client.users.cache.get(tempsetting?.owner).username : 'Proprietaire du channel non trouver'}\`\`\``,
+                                        value: `\`\`\`${client.users.cache.get(tempsetting?.owner) ? client.users.cache.get(tempsetting?.owner)?.username : 'Proprietaire du channel non trouver'}\`\`\``,
                                         inline: true
                                     }, {
                                         name: "Block User",
@@ -116,7 +120,7 @@ export default {
                                         inline: true
                                     }
                                 ],
-                                timestamp: new Date(),
+                                timestamp: new Date().getTime().toString(),
                                 footer: client.config.footer
                             }],
                             components: [{
@@ -174,17 +178,20 @@ export default {
                             ]
                         })
                         // create collector
-                        const filter = i => i.user.id === member.id
-                        const collector = mess.createMessageComponentCollector({ filter, time: 1200000 })
+                        const collector = mess.createMessageComponentCollector({
+                            filter: (i) => i.user.id === member?.id,
+                            time: 1200000
+                        });
+
                         // on collect
                         collector.on('collect', async i => {
                             if (i.customId === 'tempvocsettings') {
-                                if (i.values[0] === 'name') {
+                                // if (i.values[0] === 'name') {
 
-                                }
-                                if (i.values[0] === 'limit') {
+                                // }
+                                // if (i.values[0] === 'limit') {
 
-                                }
+                                // }
                             }
                         })
 
@@ -192,11 +199,11 @@ export default {
                 }
             }
             if (!oldState.channel) return;
-            if (oldState.channel.id === client.data2.get(`tempvoc_${newState.guild.id}_${newState.member.id}`)) {
-                if (oldState.channel.id === channel.id) return;
+            if (oldState.channel.id === await client.data2.get(`tempvoc_${newState.guild.id}_${newState.member?.id}`)) {
+                if (oldState.channel.id === channel?.id) return;
                 if (oldState.channel.members.size === 0) {
-                    oldState.channel.delete({ reason: `Salon temporaire - Plus personne dans le salon` })
-                    client.data2.delete(`tempvoc_${newState.guild.id}_${newState.member.id}`)
+                    oldState.channel.delete(`Salon temporaire - Plus personne dans le salon`)
+                    client.data2.delete(`tempvoc_${newState.guild.id}_${newState.member?.id}`)
                 }
             }
         }

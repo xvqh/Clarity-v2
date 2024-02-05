@@ -1,6 +1,8 @@
+import { Client, User } from "discord.js";
+
 export default {
     name: "userUpdate",
-    run: async (client, oldUser, newUser) => {
+    run: async (client: Client, oldUser: User, newUser: User) => {
         // if (oldUser.username !== newUser.username) {
         //     const tableN = `clarity_${oldUser.id}_prevname`
         //     const tableE = await client.db.oneOrNone(`SELECT to_regclass($1::text)`, [tableN])

@@ -1,6 +1,8 @@
+import { Client, VoiceState } from "discord.js";
+
 export default {
     name: "voiceStateUpdate",
-    run: async (client, oldState, newState) => {
+    run: async (client: Client, oldState: VoiceState, newState: VoiceState) => {
         if (!newState.channelId) return;
 
         // Get the voice limit data
@@ -10,8 +12,10 @@ export default {
         if (!voiceLimitData) return;
 
         // Count the number of users in the channel
-        const memberCount = newState.channel.members.size;
+        const memberCount = newState.channel?.members.size;
 
+        if (!memberCount) return;
+        
         // If the limit is exceeded, disconnect the user
         if (memberCount > voiceLimitData.limit) {
             try {
