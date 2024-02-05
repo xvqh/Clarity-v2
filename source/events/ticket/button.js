@@ -1,7 +1,7 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const Discord = require('discord.js');
+import { ActionRowBuilder, StringSelectMenuBuilder } from 'discord.js';
+import Discord from 'discord.js';
 
-module.exports = {
+export default {
     name: "interactionCreate",
     run: async (client, interaction) => {
         try {
@@ -19,7 +19,7 @@ module.exports = {
 
                 const tickeruser = await client.data2.get(`ticket_user_${interaction.guild.id}`) || [];
                 const resul = tickeruser.find(ticket => ticket.author === interaction.user.id);
-                
+
                 if (resul && tickeruser.length >= db?.maxticket) {
                     return await interaction.editReply({ content: `Vous avez déjà atteint le nombre maximal de tickets ouverts !`, ephemeral: true });
                 }

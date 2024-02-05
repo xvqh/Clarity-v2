@@ -1,6 +1,6 @@
-const { useQueue } = require("discord-player");
-const Discord = require("discord.js");
-module.exports = {
+import { useQueue } from 'discord-player';
+
+export default {
     name: "queue",
     run: async (client, message, args) => {
         const queue = useQueue(message.guild.id);

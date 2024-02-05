@@ -1,7 +1,7 @@
-const Genius = require('genius-lyrics');
-const { useQueue } = require("discord-player");
-const Client = new Genius.Client("tRyLJnZ3tURA-PSPveoe-4K_MRzfFarg60E8lWXaj9Y9jETeKAIAfMdhk9KjOj4s");
-module.exports = {
+import Genius from 'genius-lyrics';
+import { useQueue } from 'discord-player'; const Client = new Genius.Client("tRyLJnZ3tURA-PSPveoe-4K_MRzfFarg60E8lWXaj9Y9jETeKAIAfMdhk9KjOj4s");
+
+export default {
     name: 'lyrics',
     category: 'Musique',
     aliases: ['lyric', 'ly'],
@@ -31,11 +31,12 @@ module.exports = {
 
             let page = 0;
 
-            let msg = await message.channel.send({embeds: [{
+            let msg = await message.channel.send({
+                embeds: [{
                     color: parseInt(client.color.replace("#", ""), 16),
                     description: lyrics2[page],
                     footer: client.config.footer,
-                    author: {name: message.author.tag, icon_url: message.author.displayAvatarURL({dynamic: true})},
+                    author: { name: message.author.tag, icon_url: message.author.displayAvatarURL({ dynamic: true }) },
                     title: `Lyrics de ${firstSong.title}`
                 }], components: [{
                     type: 1,
@@ -55,11 +56,12 @@ module.exports = {
                             disabled: lyrics2.length <= 1,
                         },
                     ],
-                }]})
-            const collector = msg.createMessageComponentCollector({time: 60000 })
+                }]
+            })
+            const collector = msg.createMessageComponentCollector({ time: 60000 })
             collector.on("collect", async (i) => {
                 i.deferUpdate();
-                if(i.user.id !== message.author.id) return i.reply({content: "Tu n'as pas la permission d'intéragir avec cette interaction", ephemeral: true});
+                if (i.user.id !== message.author.id) return i.reply({ content: "Tu n'as pas la permission d'intéragir avec cette interaction", ephemeral: true });
                 if (i.customId === 'previous') {
                     page--;
                 } else if (i.customId === 'next') {
@@ -76,7 +78,7 @@ module.exports = {
                         color: parseInt(client.color.replace("#", ""), 16),
                         description: lyrics2[page],
                         footer: client.config.footer,
-                        author: {name: message.author.tag, icon_url: message.author.displayAvatarURL({dynamic: true})},
+                        author: { name: message.author.tag, icon_url: message.author.displayAvatarURL({ dynamic: true }) },
                         title: `Lyrics de ${firstSong.title}`
                     }],
                     components: [{

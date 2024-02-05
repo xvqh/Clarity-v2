@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "afk-list",
     description: "Affiche la liste des utilisateurs AFK.",
    category: "🤖〢Bot",

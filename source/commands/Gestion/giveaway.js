@@ -1,16 +1,17 @@
-const ms = require('ms');
-const Discord = require('discord.js')
-const { StringSelectMenuBuilder, ActionRowBuilder, EmbedBuilder, ChannelSelectMenuComponent } = require('discord.js');
+import { StringSelectMenuBuilder, ActionRowBuilder, EmbedBuilder, ChannelSelectMenuComponent } from 'discord.js';
 const now = Date.now();
 
-module.exports = {
+import Discord from "discord.js";
+import ms from 'ms';
+
+export default {
     name: 'giveaway',
     aliases: ["gw"],
     description: 'Permet de configurer les giveway',
     run: async (client, message, argse) => {
- 
+
         const originalmsg = await message.channel.send('Chargement en cours...');
-       
+
         async function updateEmbed() {
             const db = client.data2.get(`setgiveaway_${message.guild.id}`) || client.data2.set(`setgiveaway_${message.guild.id}`,
                 {
@@ -23,7 +24,7 @@ module.exports = {
                     participant: [],
                     emoji: '🎉'
                 })
-            const prix = db.prix 
+            const prix = db.prix
             const gagnant = db.gagnant;
             const temps = db.temps ? formatTimeLeft(db.temps) : "Aucun temps défini";
             const channel = message.guild.channels.cache.get(db.channel) || "Aucun Salon";
@@ -301,58 +302,60 @@ module.exports = {
 
                     if (missingOptions.length === 0) {
                         const code = generateRandomCode(6);
-                        i.update({embeds: [], components: [], content: "Le giveaway a été lancé"});
+                        i.update({ embeds: [], components: [], content: "Le giveaway a été lancé" });
                         const giveawayChannel = message.guild.channels.cache.get(db.channel);
-                            const embed = new EmbedBuilder()
-                                .setTitle('Giveaway')
-                                .setDescription(`Prix : \`${db.prix}\`\nFini : <t:${Math.floor((Date.now() + db.temps) / 1000)}:R>\nLancée par : <@${i.user.id}>\nParticipant : 0`)
-                                .setFooter(client.config.footer)
-                                .setColor(parseInt(client.color.replace("#", ""), 16))
-                                const row = new ActionRowBuilder()
-                                .addComponents(
-                                    new Discord.ButtonBuilder()
+                        const embed = new EmbedBuilder()
+                            .setTitle('Giveaway')
+                            .setDescription(`Prix : \`${db.prix}\`\nFini : <t:${Math.floor((Date.now() + db.temps) / 1000)}:R>\nLancée par : <@${i.user.id}>\nParticipant : 0`)
+                            .setFooter(client.config.footer)
+                            .setColor(parseInt(client.color.replace("#", ""), 16))
+                        const row = new ActionRowBuilder()
+                            .addComponents(
+                                new Discord.ButtonBuilder()
                                     .setEmoji(db.emoji)
                                     .setCustomId('giveaway_entry_' + code)
                                     .setStyle(Discord.ButtonStyle.Primary),
-                                    new Discord.ButtonBuilder()
+                                new Discord.ButtonBuilder()
                                     .setLabel('Liste des participants')
                                     .setCustomId('giveaway_list_' + code)
                                     .setStyle(Discord.ButtonStyle.Secondary)
-                                )
+                            )
 
-                                if(giveawayChannel){
-                                    const giveawayMessage = await giveawayChannel.send({ embeds: [embed], components: [row] });
-                                    const newGiveawayData = {
-                                        prix: db.prix,
-                                        gagnant: db.gagnant,
-                                        temps: db.temps + Date.now(),
-                                        channel: db.channel,
-                                        vocal: db.vocal,
-                                        predef: db.predef,
-                                        participant: [],
-                                        emoji: db.emoji,
-                                        host: i.user.id,
-                                        createdTimestamp: Date.now(),
-                                        messageid: giveawayMessage.id,
-                                        ended: false
-                                    };
-                        
-                                    client.data2.set(`giveaway_${message.guild.id}_${code}`, newGiveawayData);
-                                    client.data2.delete(`setgiveaway_${message.guild.id}`)
-                                    let logs = await client.data.get(`giveawaylogs_${message.guild.id}`)
-                        if (!logs) return;
-                        let logc = client.channels.cache.get(logs) 
-                        if (logc){ 
-                             logc.send({
-                                embeds: [
-                                    {
-                                        title: `Debut du giveaway`,
-                                        description: `Prix : \`${db.prix}\`\nFini : <t:${Math.floor((Date.now() + db.temps) / 1000)}:R>\nLancée par : <@${i.user.id}>`,
-                                        color: parseInt(client.color.replace("#", ""), 16)
-                                    }
-                                ]})}
-                                }
-                        
+                        if (giveawayChannel) {
+                            const giveawayMessage = await giveawayChannel.send({ embeds: [embed], components: [row] });
+                            const newGiveawayData = {
+                                prix: db.prix,
+                                gagnant: db.gagnant,
+                                temps: db.temps + Date.now(),
+                                channel: db.channel,
+                                vocal: db.vocal,
+                                predef: db.predef,
+                                participant: [],
+                                emoji: db.emoji,
+                                host: i.user.id,
+                                createdTimestamp: Date.now(),
+                                messageid: giveawayMessage.id,
+                                ended: false
+                            };
+
+                            client.data2.set(`giveaway_${message.guild.id}_${code}`, newGiveawayData);
+                            client.data2.delete(`setgiveaway_${message.guild.id}`)
+                            let logs = await client.data.get(`giveawaylogs_${message.guild.id}`)
+                            if (!logs) return;
+                            let logc = client.channels.cache.get(logs)
+                            if (logc) {
+                                logc.send({
+                                    embeds: [
+                                        {
+                                            title: `Debut du giveaway`,
+                                            description: `Prix : \`${db.prix}\`\nFini : <t:${Math.floor((Date.now() + db.temps) / 1000)}:R>\nLancée par : <@${i.user.id}>`,
+                                            color: parseInt(client.color.replace("#", ""), 16)
+                                        }
+                                    ]
+                                })
+                            }
+                        }
+
                     } else {
                         const missingOptionsString = missingOptions.map(option => `- \`${option}\``).join('\n');
                         i.reply({ embeds: [], components: [], content: `Le paramétrage du giveaway n'est pas fini. Voici ce qu'il reste à configurer :\n${missingOptionsString}`, ephemeral: true });
@@ -395,7 +398,7 @@ module.exports = {
         })
 
         collector.on('end', () => {
-            originalmsg.edit({ components: []});
+            originalmsg.edit({ components: [] });
         });
     }
 }

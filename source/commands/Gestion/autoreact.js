@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'autoreact',
     run: async(client, message, args) => {
         if (client.config.devs.includes(message.author.id)) {

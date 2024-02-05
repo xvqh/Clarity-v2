@@ -1,7 +1,9 @@
-const NewsAPI = require("newsapi");
+import NewsAPI from "newsapi";
+import Discord from "discord.js";
+
 const newsapi = new NewsAPI('0263d89534d144ca9158bda37a3e69e1');
-const Discord = require("discord.js");
-module.exports = {
+
+export default {
     name: 'ready',
     run: async (client) => {
         try {
@@ -13,15 +15,15 @@ module.exports = {
                 const articles = data.articles;
                 const randomIndex = Math.floor(Math.random() * articles.length);
                 const article = articles[randomIndex];
-            //     get a log channel
+                //     get a log channel
                 const channel = client.channels.cache.get(client.data.get(`newschannel_${client.user.id}`));
                 if (!channel) return;
 
                 const actuality = new Discord.EmbedBuilder();
                 actuality.setTitle(article.title);
                 actuality.setURL(article.url);
-                if(article.description) { actuality.setDescription(article.description); }
-                if(article.image) { actuality.setImage(article.image); }
+                if (article.description) { actuality.setDescription(article.description); }
+                if (article.image) { actuality.setImage(article.image); }
                 actuality.setColor(parseInt(client.color.replace("#", ""), 16))
                 actuality.setTimestamp(article.publishedAt)
                 actuality.setAuthor({ name: article.author, iconURL: article.author.avatar });

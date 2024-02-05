@@ -1,6 +1,6 @@
-module.exports = {
+export default {
     name: 'prison',
-    run: async(client , message, args) => {
+    run: async (client, message, args) => {
         const isOwn = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
             [message.author.id]
@@ -18,16 +18,17 @@ module.exports = {
           CREATE TABLE IF NOT EXISTS clarity_${client.user.id}_prison (
               user_id VARCHAR(20) PRIMARY KEY
           )`);
-        let msg = await message.channel.send({content: 'Chargement du module en cours.'})
-        await update(client , message, msg, args)
+        let msg = await message.channel.send({ content: 'Chargement du module en cours.' })
+        await update(client, message, msg, args)
     }
 }
-async function update(client , message, msg, args){
+async function update(client, message, msg, args) {
     let prison = await client.db.any(`
                 SELECT * FROM clarity_${client.user.id}_${message.guild.id}_prison
             `);
-    let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})` ));
-    msg.edit({content: null, embeds: [{
+    let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})`));
+    msg.edit({
+        content: null, embeds: [{
             color: parseInt(client.color.replace("#", ""), 16),
             title: message.guild.name + " prison",
             description: prisonTag.join('\n'),
@@ -44,26 +45,28 @@ async function update(client , message, msg, args){
                 emoji: '➖',
                 style: 2,
                 custom_id: 'removemember' + message.id
-            },{
+            }, {
                 type: 2,
                 emoji: '❌',
                 style: 2,
                 custom_id: 'close' + message.id
             }]
-        }]})
+        }]
+    })
     const collector = msg.createMessageComponentCollector({
         filter: (i) => i.user.id === message.author.id,
-        time: 60000*10*3
+        time: 60000 * 10 * 3
     })
-    collector.on("collect", async(i) => {
+    collector.on("collect", async (i) => {
         const color = parseInt(client.color.replace("#", ""), 16)
         i.deferUpdate();
-        if(i.customId === 'back' + message.id){
+        if (i.customId === 'back' + message.id) {
             let prison = await client.db.any(`
                 SELECT * FROM clarity_${client.user.id}_${message.guild.id}_prison
             `);
-            let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})` ));
-            msg.edit({content: null, embeds: [{
+            let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})`));
+            msg.edit({
+                content: null, embeds: [{
                     color: parseInt(client.color.replace("#", ""), 16),
                     title: message.guild.name + " prison",
                     description: prisonTag.join('\n'),
@@ -80,15 +83,16 @@ async function update(client , message, msg, args){
                         emoji: '➖',
                         style: 2,
                         custom_id: 'removemember' + message.id
-                    },{
+                    }, {
                         type: 2,
                         emoji: '❌',
                         style: 2,
                         custom_id: 'close' + message.id
                     }]
-                }]})
+                }]
+            })
         }
-        else if(i.customId === `close${message.id}`){
+        else if (i.customId === `close${message.id}`) {
             collector.stop()
             msg.delete()
         }
@@ -166,7 +170,7 @@ async function update(client , message, msg, args){
             `);
 
             let color = parseInt(client.color.replace('#', ''), 16);
-             let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})` ));
+            let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})`));
 
             msg.edit({
                 embeds: [{
@@ -257,7 +261,7 @@ async function update(client , message, msg, args){
             `);
 
             let color = parseInt(client.color.replace('#', ''), 16);
-             let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})` ));
+            let prisonTag = await Promise.all(prison.map(async (prison) => `[${(await client.users.fetch(prison.user_id)).tag}](https://discord.com/users/${prison.user_id}) (${prison.user_id})`));
 
             msg.edit({
                 embeds: [{
@@ -278,7 +282,7 @@ async function update(client , message, msg, args){
                         emoji: '➖',
                         style: 2,
                         custom_id: 'removemember' + message.id
-                    },{
+                    }, {
                         type: 2,
                         emoji: '❌',
                         style: 2,
@@ -291,7 +295,7 @@ async function update(client , message, msg, args){
 
 
     })
-    collector.on("end", async() => {
+    collector.on("end", async () => {
         msg.edit({
             content: null,
             embeds: null,

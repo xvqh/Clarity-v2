@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "raidmode",
     category: "Anti-raid",
     run: async (client, message, args) => {

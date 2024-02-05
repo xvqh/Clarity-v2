@@ -1,10 +1,9 @@
-const Discord = require("discord.js");
-const { Clarity } = require("../../structures/client/index");
+import Clarity from "../../structures/client/index.js";
 
-module.exports = {
+export default {
   name: "unbl",
   aliases: ["unblacklist"],
-category: "⚙️〢Owner",
+  category: "⚙️〢Owner",
   /**
    * @param {Clarity} client
    */
@@ -23,8 +22,8 @@ category: "⚙️〢Owner",
         user_id VARCHAR(20) PRIMARY KEY
       )`);
     let color = parseInt(client.color.replace("#", ""), 16);
-    const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(()=> {})
-    
+    const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(() => { })
+
     if (!user) {
       return message.reply({ content: "Veuillez mentionner un utilisateur à retirer de la liste noire." });
     }
@@ -52,6 +51,6 @@ category: "⚙️〢Owner",
           content: "Une erreur s'est produite lors de la suppression de l'utilisateur de la liste noire.",
         });
       });
-      message.guild.members.unban(user.id,  `unblacklisted by ${message.author.username}`) 
+    message.guild.members.unban(user.id, `unblacklisted by ${message.author.username}`)
   },
 };

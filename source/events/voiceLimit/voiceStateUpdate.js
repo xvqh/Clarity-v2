@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "voiceStateUpdate",
     run: async (client, oldState, newState) => {
         if (!newState.channelId) return;
@@ -20,5 +20,5 @@ module.exports = {
                 console.error(`Failed to disconnect user: ${error}`);
             }
         }
-}
+    }
 }

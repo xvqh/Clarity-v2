@@ -1,15 +1,18 @@
-const { useQueue } = require("discord-player");
-module.exports = {
+import { useQueue } from 'discord-player';
+
+export default {
     name: 'mstrr',
     run: async (client, message, args) => {
         const queue = useQueue(message.guild.id);
         await queue.filters.ffmpeg.toggle(['mstrr']);
-        message.channel.send({embeds: [{
-            color: parseInt(client.color.replace("#", ""), 16),
-            author: {name: message.author.tag, icon_url: message.author.displayAvatarURL({dynamic: true})},
-            footer: client.config.footer,
-            title: client.user.username + ' Filtre audio',
-            description: "Mstrr active !"
-        }]});
+        message.channel.send({
+            embeds: [{
+                color: parseInt(client.color.replace("#", ""), 16),
+                author: { name: message.author.tag, icon_url: message.author.displayAvatarURL({ dynamic: true }) },
+                footer: client.config.footer,
+                title: client.user.username + ' Filtre audio',
+                description: "Mstrr active !"
+            }]
+        });
     }
 }

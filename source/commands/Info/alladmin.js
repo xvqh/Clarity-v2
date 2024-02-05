@@ -1,8 +1,9 @@
-const Discord = require('discord.js');
-const Clarity = require('../../structures/client/index');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, PermissionsBitField, PermissionOverwrites, PermissionFlagsBits } = require('discord.js');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 
-module.exports = {
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
+
+export default {
     name: 'alladmin', 
    category: "💻〢Informations",
     /**

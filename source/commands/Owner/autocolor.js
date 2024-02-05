@@ -1,9 +1,9 @@
-const Discord = require("discord.js");
-const { Clarity } = require('../../structures/client/index');
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
 
-module.exports = {
+export default {
   name: "autocolor",
-category: "⚙️〢Owner",
+  category: "⚙️〢Owner",
   /**
    * @param {Clarity} client
    */
@@ -23,7 +23,7 @@ category: "⚙️〢Owner",
         color TEXT
       )
     `)
-    let auto = parseInt(client.config.default_color.replace("#",""), 16)
+    let auto = parseInt(client.config.default_color.replace("#", ""), 16)
     await client.db.none(
       `UPDATE clarity_${client.user.id}_${message.guild.id} SET color = $1`,
       [auto]
@@ -34,8 +34,8 @@ category: "⚙️〢Owner",
       console.log("Erreur lors de la mise à jour de la DB : " + error);
       message.reply({ content: 'Une erreur s\'est produite lors de la mise à jour de la couleur.' });
     });
-        
-    
-}
+
+
   }
+}
 

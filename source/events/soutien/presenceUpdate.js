@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "presenceUpdate",
     run: async (client, oldPresence, newPresence) => {
         const guildID = newPresence.guild?.id;
@@ -17,7 +17,7 @@ module.exports = {
         const rolesToAdd = db.role;
         const blRoles = db.blacklist;
         const member = newPresence.member;
-   
+
         if (blRoles.length > 0) {
             if (member.roles.cache.some(role => blRoles.includes(role.id))) {
                 return;
@@ -28,22 +28,22 @@ module.exports = {
             const inviteCode = invites.find(i => i.inviter.id === member.id);
             if (db.status === true && customStatus) {
                 if (inviteCode) {
-                   if(customStatus.includes(inviteCode)) {
-                       if (rolesToAdd.length > 0) {
-                           try {
-                               await member.roles.add(rolesToAdd);
-                           } catch (error) {
-                           }
-                       }
-                   } else {
-                       const rolesToRemove = db.role;
-                       if (rolesToRemove.length > 0) {
-                           try {
-                               await member.roles.remove(rolesToRemove);
-                           } catch (error) {
-                           }
-                       }
-                   }
+                    if (customStatus.includes(inviteCode)) {
+                        if (rolesToAdd.length > 0) {
+                            try {
+                                await member.roles.add(rolesToAdd);
+                            } catch (error) {
+                            }
+                        }
+                    } else {
+                        const rolesToRemove = db.role;
+                        if (rolesToRemove.length > 0) {
+                            try {
+                                await member.roles.remove(rolesToRemove);
+                            } catch (error) {
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -53,28 +53,28 @@ module.exports = {
                 const words = customStatus.split(' ');
                 const isInvalidStatus = words.some(word => !db.name.includes(word));
                 if (isInvalidStatus) {
-                  return;
+                    return;
                 }
             }
-         }
+        }
         if (db.status === true && customStatus) {
-       
+
             if (customStatus.includes(db.name.join(' '))) {
                 if (rolesToAdd.length > 0) {
-                   try {
-                       await member.roles.add(rolesToAdd);
-                   } catch (error) {
-                   }
+                    try {
+                        await member.roles.add(rolesToAdd);
+                    } catch (error) {
+                    }
                 }
             } else {
                 const rolesToRemove = db.role;
                 if (rolesToRemove.length > 0) {
-                   try {
-                       await member.roles.remove(rolesToRemove);
-                   } catch (error) {
-                   }
+                    try {
+                        await member.roles.remove(rolesToRemove);
+                    } catch (error) {
+                    }
                 }
             }
         }
     }
- }; 
+}; 

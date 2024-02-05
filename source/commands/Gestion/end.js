@@ -1,8 +1,8 @@
-module.exports = {
+export default {
     name: "end",
     aliases: ["gwend", "giveawayend"],
     run: async (client, message, args) => {
-      
+
         const uniqueIdentifier = args[0];
         if (!uniqueIdentifier) {
             return message.reply(`Utilisation incorrecte.`);

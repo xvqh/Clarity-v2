@@ -1,12 +1,13 @@
-const { EmbedBuilder , ActionRowBuilder, ButtonBuilder } = require('discord.js');
-module.exports = {
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js';
+
+export default {
   name: 'blvoc',
   aliases: ['blacklistvoc'],
   category: "⚙️〢Owner",
-  run: async(client , message, args) => {
+  run: async (client, message, args) => {
     const isOwn = await client.db.oneOrNone(
-        `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
-        [message.author.id]
+      `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
+      [message.author.id]
     );
     if (!isOwn) {
       return message.reply({
@@ -21,9 +22,9 @@ module.exports = {
     if (!user) {
       // return an embed with all members blvoc with pagination system
       const embed = new EmbedBuilder()
-          .setTitle('Liste des utilisateurs blvoc')
-          .setColor(parseInt(client.color.replace("#", ""), 16))
-          .setFooter({ text: `Page 1/${db.users.length ? Math.ceil(db.users.length / 10) : 0}` })
+        .setTitle('Liste des utilisateurs blvoc')
+        .setColor(parseInt(client.color.replace("#", ""), 16))
+        .setFooter({ text: `Page 1/${db.users.length ? Math.ceil(db.users.length / 10) : 0}` })
 
       let currentPage = 1
       let maxPage = db.users.length ? Math.ceil(db.users.length / 10) : 0
@@ -39,18 +40,18 @@ module.exports = {
       }
 
       const row = new ActionRowBuilder()
-          .addComponents(
-              new ButtonBuilder()
-                  .setCustomId('previousPage')
-                  .setLabel('<<')
-                  .setStyle(2)
-                  .setDisabled(currentPage === 1),
-              new ButtonBuilder()
-                  .setCustomId('nextPage')
-                  .setLabel('>>')
-                  .setStyle(2)
-                  .setDisabled(currentPage === maxPage)
-          )
+        .addComponents(
+          new ButtonBuilder()
+            .setCustomId('previousPage')
+            .setLabel('<<')
+            .setStyle(2)
+            .setDisabled(currentPage === 1),
+          new ButtonBuilder()
+            .setCustomId('nextPage')
+            .setLabel('>>')
+            .setStyle(2)
+            .setDisabled(currentPage === maxPage)
+        )
 
       await message.reply({ embeds: [embed], components: [row] })
 
@@ -63,9 +64,9 @@ module.exports = {
           if (currentPage === maxPage) return
           currentPage++
           const embed = await new EmbedBuilder()
-              .setTitle('Liste des utilisateurs blvoc')
-              .setColor(parseInt(client.color.replace("#", ""), 16))
-              .setFooter({ text: `Page ${currentPage}/${maxPage}` })
+            .setTitle('Liste des utilisateurs blvoc')
+            .setColor(parseInt(client.color.replace("#", ""), 16))
+            .setFooter({ text: `Page ${currentPage}/${maxPage}` })
 
           for (let i = (currentPage - 1) * 10; i < currentPage * 10; i++) {
             if (!db.users[i]) break
@@ -78,9 +79,9 @@ module.exports = {
           if (currentPage === 1) return
           currentPage--
           const embed = await new EmbedBuilder()
-              .setTitle('Liste des utilisateurs blvoc')
-              .setColor(parseInt(client.color.replace("#", ""), 16))
-              .setFooter({ text: `Page ${currentPage}/${maxPage}` })
+            .setTitle('Liste des utilisateurs blvoc')
+            .setColor(parseInt(client.color.replace("#", ""), 16))
+            .setFooter({ text: `Page ${currentPage}/${maxPage}` })
 
           for (let i = (currentPage - 1) * 10; i < currentPage * 10; i++) {
             if (!db.users[i]) break

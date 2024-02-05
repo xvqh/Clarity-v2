@@ -1,11 +1,8 @@
-
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const Valory = require('../../structures/client');
-module.exports = {
+export default {
     name: "guildMemberRemove",
     run: async (client, member) => {
         const dbserveur = await client?.data2.get(`ticket_${member.guild.id}`)
-        if(!dbserveur)return;
+        if (!dbserveur) return;
         try {
             const tickeruser = await client.data2.get(`ticket_user_${member.guild.id}`) || [];
 
@@ -17,7 +14,7 @@ module.exports = {
                     await channel.delete();
                 }
             }
-            
+
             const updatedTickets = tickeruser.filter(ticket => ticket.author !== member.id);
             await client.data2.set(`ticket_user_${member.guild.id}`, updatedTickets);
         } catch (error) {

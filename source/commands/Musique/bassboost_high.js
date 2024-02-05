@@ -1,5 +1,6 @@
-const { useQueue } = require("discord-player");
-module.exports = {
+import { useQueue } from 'discord-player';
+
+export default {
     name: 'bassboost_high',
     run: async (client, message, args) => {
         const queue = useQueue(message.guild.id);

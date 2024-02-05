@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'guildMemberUpdate',
     run: async (client, oldMember, newMember) => {
         const { guild } = newMember;
@@ -11,8 +11,8 @@ module.exports = {
         if (!channel) return;
 
         // member boosted the server
-        if(!oldStatus && newStatus) {
-            if (channel)  channel.send({
+        if (!oldStatus && newStatus) {
+            if (channel) channel.send({
                 embeds: [{
                     color: parseInt(client.color.replace("#", ""), 16),
                     author: {
@@ -31,7 +31,7 @@ module.exports = {
         }
         // member unboosted the server
         if (oldStatus && !newStatus) {
-            if (channel)   channel.send({
+            if (channel) channel.send({
                 embeds: [{
                     color: parseInt(client.color.replace("#", ""), 16),
                     author: {

@@ -1,6 +1,7 @@
-const fs = require('fs').promises;
-const { exec } = require('child_process');
-module.exports = {
+import fs from 'fs/promises';
+import { exec } from 'child_process';
+
+export default {
     name: "transfer",
     category: "buy",
     run: async (client, message, args) => {

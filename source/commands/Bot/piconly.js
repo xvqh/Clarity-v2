@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "piconly",
     description: "Ajoute/Retire un salon des PicOnly",
    category: "🤖〢Bot",

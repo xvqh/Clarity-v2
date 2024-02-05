@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   name: "marry",
   description: "Marriez-vous avec quelqu'un!",
   run: async (client, message, args) => {

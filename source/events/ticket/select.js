@@ -1,7 +1,7 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const Discord = require('discord.js');
+import { ActionRowBuilder, StringSelectMenuBuilder } from 'discord.js';
+import Discord from 'discord.js';
 
-module.exports = {
+export default {
     name: "interactionCreate",
     run: async (client, interaction) => {
         try {

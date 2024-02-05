@@ -1,6 +1,7 @@
-const Discord = require("discord.js");
-const { Clarity } = require("../../structures/client/index");
-module.exports = {
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
+
+export default {
     name: "dj",
     description: "Permet d'afficher la liste des dj du serveur ou de mettre dj un membre",
     category: "🛠️〢Buyer",

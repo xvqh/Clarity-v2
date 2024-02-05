@@ -1,7 +1,6 @@
-const ms = require('ms');
-const Discord = require('discord.js');
+import Discord from "discord.js";
 
-module.exports = {
+export default {
     name: 'ready',
     run: async (client) => {
         setInterval(async () => {
@@ -19,7 +18,7 @@ module.exports = {
                             const giveawayChannel = guild.channels.cache.get(giveawayData.channel);
                             const participants = giveawayData.participant;
                             const message = await giveawayChannel.messages.fetch(giveawayData.messageid);
-                            if(!message)return;
+                            if (!message) return;
                             if (participants.length === 0) {
                                 if (guild) {
                                     if (giveawayChannel) {

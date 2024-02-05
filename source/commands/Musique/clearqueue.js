@@ -1,5 +1,6 @@
-const { useMainPlayer, useQueue } = require("discord-player");
-module.exports = {
+import { useMainPlayer, useQueue } from "discord-player";
+
+export default {
     name: "clearqueue",
     description: "clear la file d'attente",
     run: async (client, message, args) => {

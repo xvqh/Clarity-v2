@@ -1,6 +1,6 @@
-const malScraper = require('mal-scraper');
+import malScraper from 'mal-scraper';
 
-module.exports = {
+export default {
     name: "anime",
     category: "fun",
     description: "Anime command",
@@ -11,10 +11,11 @@ module.exports = {
             return message.reply(':x: | Veuillez ajouter une requête de recherche.');
         malScraper.getInfoFromName(search, 'anime')
             .then((data) => {
-             console.log(data);
-                message.channel.send({ embeds: [{
+                console.log(data);
+                message.channel.send({
+                    embeds: [{
                         color: parseInt(client.color.replace("#", ""), 16),
-                        author : { name: `Résultat de recherce pour ${args}`.split(',').join(' ')},
+                        author: { name: `Résultat de recherce pour ${args}`.split(',').join(' ') },
                         thumbnail: { url: data.picture },
                         footer: client.config.footer,
                         fields: [
@@ -26,7 +27,7 @@ module.exports = {
                             { name: 'Genre', value: data.genres ? data.genres.join(', ') : 'Inconnu' },
                             { name: 'Episodes', value: data.episodes ? data.episodes : 'Inconnu' },
                             { name: 'Score', value: data.score ? data.score : 'Inconnu' },
-                            { name: 'Synopsis', value: data.synopsis ? data.synopsis : 'Inconnu'},
+                            { name: 'Synopsis', value: data.synopsis ? data.synopsis : 'Inconnu' },
                             { name: 'Diffusion', value: data.aired ? data.aired : 'Inconnu' },
                             { name: 'Score', value: data.score ? data.score : 'Inconnu' },
                             { name: 'Note', value: data.scoreStats ? data.scoreStats : 'Inconnu' },
@@ -37,13 +38,14 @@ module.exports = {
                             { name: 'Trailer', value: data.trailer ? data.trailer : 'Inconnu' },
                             { name: 'Source', value: data.source ? data.source : 'Inconnu' },
                             { name: 'Rating', value: data.rating ? data.rating : 'Inconnu' },
-                            { name: 'Membres' , value: data.members ? data.members : 'Inconnu'},
-                            { name: 'Personnage', value: data.characters ? data.characters.map((c) => c.name).join(' ')  : 'Inconnu' },
-                            { name: 'Staff', value: data.staff ? data.staff.map((c) => c.name ).join(' ') : 'Inconnu' },
+                            { name: 'Membres', value: data.members ? data.members : 'Inconnu' },
+                            { name: 'Personnage', value: data.characters ? data.characters.map((c) => c.name).join(' ') : 'Inconnu' },
+                            { name: 'Staff', value: data.staff ? data.staff.map((c) => c.name).join(' ') : 'Inconnu' },
                         ],
                         timestamp: new Date(),
-                        image: {url :
-                            data.picture
+                        image: {
+                            url:
+                                data.picture
                         }
                     }],
                     components: [{
@@ -53,7 +55,7 @@ module.exports = {
                             label: 'Lien',
                             url: data.url,
                             style: 5
-                        },{
+                        }, {
                             type: 2,
                             label: 'Liste des personnages ',
                             style: 2,
@@ -87,7 +89,7 @@ module.exports = {
                                     style: 2,
                                     customId: `prev` + message.id,
                                     disabled: page <= 0 ? true : false
-                                },{
+                                }, {
                                     type: 2,
                                     label: '>>',
                                     style: 2,
@@ -96,7 +98,7 @@ module.exports = {
                                 }]
                             }],
                             ephemeral: true
-                    })
+                        })
                         // return un mess d erreur si on a atteint la dernière page
                         if (page >= data.characters.length) {
                             page = data.characters.length - 1;
@@ -113,7 +115,7 @@ module.exports = {
                                         label: '<<',
                                         style: 2,
                                         customId: `prev` + message.id
-                                    },{
+                                    }, {
                                         type: 2,
                                         label: '>>',
                                         style: 2,
@@ -140,7 +142,7 @@ module.exports = {
                                     style: 2,
                                     customId: `prev` + message.id,
                                     disabled: page <= 0 ? true : false
-                                },{
+                                }, {
                                     type: 2,
                                     label: '>>',
                                     style: 2,
@@ -168,7 +170,7 @@ module.exports = {
                                         style: 2,
                                         customId: `prev` + message.id,
                                         disabled: page <= 0 ? true : false
-                                    },{
+                                    }, {
                                         type: 2,
                                         label: '>>',
                                         style: 2,
@@ -195,7 +197,7 @@ module.exports = {
                                     style: 2,
                                     customId: `prev` + message.id,
                                     disabled: page <= 0 ? true : false
-                                },{
+                                }, {
                                     type: 2,
                                     label: '>>',
                                     style: 2,
@@ -222,7 +224,7 @@ module.exports = {
                                     style: 2,
                                     customId: `prevs` + message.id,
                                     disabled: page <= 0 ? true : false
-                                },{
+                                }, {
                                     type: 2,
                                     label: '>>',
                                     style: 2,
@@ -249,7 +251,7 @@ module.exports = {
                                     style: 2,
                                     customId: `prevs` + message.id,
                                     disabled: page <= 0 ? true : false
-                                },{
+                                }, {
                                     type: 2,
                                     label: '>>',
                                     style: 2,
@@ -276,7 +278,7 @@ module.exports = {
                                     style: 2,
                                     customId: `prevs` + message.id,
                                     disabled: page <= 0 ? true : false
-                                },{
+                                }, {
                                     type: 2,
                                     label: '>>',
                                     style: 2,

@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const getNow = () => {
   return {
     time: new Date().toLocaleString("fr-FR", {
@@ -10,16 +9,17 @@ const getNow = () => {
     })
   };
 };
-const Clarity = require('../../structures/client/index');
-module.exports = {
-    name: 'ready',
-    /**
-    *
-    * @param {Clarity} client
-    * @return 
-    * 
-    */
-   run: async(client) => {
+import Clarity from "../../structures/client/index.js";
+
+export default {
+  name: 'ready',
+  /**
+  *
+  * @param {Clarity} client
+  * @return 
+  * 
+  */
+  run: async (client) => {
     console.clear();
     checkTable(client)
     createguildtable(client)
@@ -32,40 +32,40 @@ module.exports = {
       CREATE TABLE IF NOT EXISTS clarity_${client.user.id}_${g.id}_owners (
           user_id VARCHAR(20) PRIMARY KEY
       )`);
-  await client.db.none(
-  `
+      await client.db.none(
+        `
     INSERT INTO clarity_${client.user.id}_${g.id}_owners (user_id) VALUES ($1) ON CONFLICT (user_id) DO NOTHING
     `,
-  [client.config.buyer]
-  );
-  console.log("[DB]" + " " + g.name + " " + "update")
-  console.log(client.users.cache.get(client.config.buyer).username + " " + " Ajouté a la table owner de: " + g.name)
+        [client.config.buyer]
+      );
+      console.log("[DB]" + " " + g.name + " " + "update")
+      console.log(client.users.cache.get(client.config.buyer).username + " " + " Ajouté a la table owner de: " + g.name)
     })
-  // client.users.cache.forEach(async (u) => {
-  //   if (!u.bot) {
-  //       try {
-  //           delUserPrevnameTable(client, u.id)
-  //           createUserPrevnameTable(client, u.id)
-  //           .then(async () => {
-  //             const existingPrevname = await client.db.oneOrNone(`
-  //             SELECT prevname FROM clarity_${u.id}_prevname
-  //             WHERE prevname = \$1
-  //           `, u.username);
-            
-  //           if (!existingPrevname) {
-  //             await newUserPrevname(client, u.id, u.username);
-  //           }
-  //           })
-  //           .catch(console.error);
-  //         } catch (error) {
-  //           console.error(error);
-  //     }
-  //   }
-  // })
+    // client.users.cache.forEach(async (u) => {
+    //   if (!u.bot) {
+    //       try {
+    //           delUserPrevnameTable(client, u.id)
+    //           createUserPrevnameTable(client, u.id)
+    //           .then(async () => {
+    //             const existingPrevname = await client.db.oneOrNone(`
+    //             SELECT prevname FROM clarity_${u.id}_prevname
+    //             WHERE prevname = \$1
+    //           `, u.username);
+
+    //           if (!existingPrevname) {
+    //             await newUserPrevname(client, u.id, u.username);
+    //           }
+    //           })
+    //           .catch(console.error);
+    //         } catch (error) {
+    //           console.error(error);
+    //     }
+    //   }
+    // })
 
 
-    
-   
+
+
     console.log(`[BOT]: ${client.user.username} est connecté à ${getNow().time}`);
     console.log(`[GUILDS]: ${client.guilds.cache.size}`);
     console.log(`[CHANNELS]: ${client.channels.cache.size}`);
@@ -76,40 +76,40 @@ module.exports = {
     console.log("-------------------------------");
     createBotStatusTable(client)
 
-     client.db.one(`SELECT * FROM clarity_${client.user.id}_bot_status`).then(req => {
-      if(req === null) {
+    client.db.one(`SELECT * FROM clarity_${client.user.id}_bot_status`).then(req => {
+      if (req === null) {
         setBotStatus(client);
       }
-    if(req.type == 'stream') {
-      client.user.setPresence({activities: [{name: `${req.status}`, type: 1 , url: "https://twitch.tv/tsubasa_poulpy"}], status: req.presence ? req.presence : 'dnd'});
-    }
-    if (req.type == 'play') {
-      client.user.setPresence({activities: [{name: `${req.status}`, type: 0}], status: req.presence ? req.presence : 'dnd'});
-    }
-    if (req.type == 'listen'){
-      client.user.setPresence({activities: [{name: `${req.status}`, type: 2}], status: req.presence ? req.presence : 'dnd'});
-    }
-    if (req.type == 'watch'){
-      client.user.setPresence({activities: [{name: `${req.status}`, type: 3}], status: req.presence ? req.presence : 'dnd'});
-    }
-    if (req.type == 'custom'){
-      client.user.setPresence({activities: [{name: `${req.status}`, type: 4}], status: req.presence ? req.presence : 'dnd'});
-    }
-    if (req.type == 'compet'){
-      client.user.setPresence({activities: [{name: `${req.status}`, type: 5}], status: req.presence ? req.presence : 'dnd'});
-    }
-     })
-     .catch(error => {
-      if(error.message === "No data returned from the query."){
-        setBotStatus(client);
-        return;
+      if (req.type == 'stream') {
+        client.user.setPresence({ activities: [{ name: `${req.status}`, type: 1, url: "https://twitch.tv/tsubasa_poulpy" }], status: req.presence ? req.presence : 'dnd' });
       }
-      console.error(error);
-    });
+      if (req.type == 'play') {
+        client.user.setPresence({ activities: [{ name: `${req.status}`, type: 0 }], status: req.presence ? req.presence : 'dnd' });
+      }
+      if (req.type == 'listen') {
+        client.user.setPresence({ activities: [{ name: `${req.status}`, type: 2 }], status: req.presence ? req.presence : 'dnd' });
+      }
+      if (req.type == 'watch') {
+        client.user.setPresence({ activities: [{ name: `${req.status}`, type: 3 }], status: req.presence ? req.presence : 'dnd' });
+      }
+      if (req.type == 'custom') {
+        client.user.setPresence({ activities: [{ name: `${req.status}`, type: 4 }], status: req.presence ? req.presence : 'dnd' });
+      }
+      if (req.type == 'compet') {
+        client.user.setPresence({ activities: [{ name: `${req.status}`, type: 5 }], status: req.presence ? req.presence : 'dnd' });
+      }
+    })
+      .catch(error => {
+        if (error.message === "No data returned from the query.") {
+          setBotStatus(client);
+          return;
+        }
+        console.error(error);
+      });
 
-   }
+  }
 
-   
+
 }
 
 
@@ -189,20 +189,20 @@ async function newUserPrevname(client, userId, prevname) {
     SELECT prevname FROM clarity_${userId}_prevname
     WHERE prevname = \$1
   `, prevname);
-  
+
   if (globalExist) {
     console.log(`Prevname ${prevname} already exists in a user prevname table`);
     return;
   }
-  
+
   const tableName = `clarity_${userId}_prevname`;
-  
+
   // Insérer le prevname dans la table
   await client.db.none(`
     INSERT INTO ${tableName} (prevname, date) 
     VALUES (\$1, \$2)
   `, [prevname, new Date()]);
-  
+
   console.log(`Prevname ${prevname} added to table ${tableName}`);
 }
 

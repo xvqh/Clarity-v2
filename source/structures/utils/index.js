@@ -1,7 +1,8 @@
-const moment = require('moment')
-const Clarity = require('../client')
-const fs = require('fs')
-module.exports = {
+import moment from 'moment';
+import Client from '../client/index.js';
+import fs from 'fs';
+
+export default {
     sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
 
 
@@ -40,7 +41,7 @@ module.exports = {
         const reg = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
         return reg.test(string)
     },
-    
+
     emoji(client, name, option) {
         let emojis = client.emojis.cache.find(x => x.name === name);
         if (!emojis) return `:${name}:`;
@@ -85,11 +86,11 @@ module.exports = {
         return userInfos
     },
 
-    async isBuy(client, userId){
+    async isBuy(client, userId) {
         return await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_buyers WHERE user_id = $1`,
             [userId]
-          );
+        );
     },
 
     async formatTimestamp(timestamp) {
@@ -99,14 +100,14 @@ module.exports = {
     },
 
     json2array(json) {
-        try{
-        var obj = json ? JSON.parse(json) : {}
-        return obj
-        } catch(err){return json}
+        try {
+            var obj = json ? JSON.parse(json) : {}
+            return obj
+        } catch (err) { return json }
     },
 
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    
+
 }

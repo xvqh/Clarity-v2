@@ -1,4 +1,4 @@
-// module.exports = {
+// export default {
 //     name: 'botInvited',
 //     run: async(client, guild, member) => {
 //         try {

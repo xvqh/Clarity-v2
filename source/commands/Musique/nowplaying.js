@@ -1,5 +1,6 @@
-const { useMainPlayer, useQueue } = require("discord-player");
-module.exports = {
+import { useMainPlayer, useQueue } from "discord-player";
+
+export default {
     name: "nowplaying",
     description: "affiche la musique qui est actuellement en cours d'écoute",
     run: async (client, message, args) => {

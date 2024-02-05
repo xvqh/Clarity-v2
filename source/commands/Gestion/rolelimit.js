@@ -1,6 +1,6 @@
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, StringSelectMenuBuilder } from 'discord.js';
 
-module.exports = {
+export default {
     name: "rolelimit",
     category: "Gestion",
     description: "Permet de configurer le rolelimit",

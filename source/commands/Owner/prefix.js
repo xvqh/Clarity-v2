@@ -1,8 +1,8 @@
+import Clarity from "../../structures/client/index.js";
 
-const { Clarity } = require('../../structures/client/index')
-module.exports = {
+export default {
   name: "prefix",
-category: "⚙️〢Owner",
+  category: "⚙️〢Owner",
   /**
    * @param {Clarity} client
    */
@@ -24,35 +24,35 @@ category: "⚙️〢Owner",
       )
     `);
     if (prefix) {
-        const result = await client.db.oneOrNone(
-            `SELECT prefix FROM clarity_${client.user.id}_${message.guild.id}`
-          );
-        
-          if (result) {
-            await client.db.none(
-              `UPDATE clarity_${client.user.id}_${message.guild.id} SET prefix = $1`,
-              [prefix]
-            ).then(() => {
-              console.log("[DB] Update");
-              message.reply({ content: `Le préfix a été mis à jour : \`${prefix}\`` });
-            }).catch(error => {
-              console.log("Erreur lors de la mise à jour de la DB : " + error);
-              message.reply({ content: 'Une erreur s\'est produite lors de la mise à jour du préfix.' });
-            });
-          } else {
-            await client.db.none(
-              `INSERT INTO clarity_${client.user.id}_${message.guild.id} (prefix) VALUES ($1)`,
-              [prefix]
-            ).then(() => {
-              console.log("[DB] Update");
-              message.reply({ content: `Le préfix a été mis à jour: \`${prefix}\`` });
-            }).catch(error => {
-              console.log("Erreur lors de l'insertion dans la DB : " + error);
-              message.reply({ content: 'Une erreur s\'est produite lors de la mise à jour du préfix.' });
-            });
-    
-}
-  }
+      const result = await client.db.oneOrNone(
+        `SELECT prefix FROM clarity_${client.user.id}_${message.guild.id}`
+      );
+
+      if (result) {
+        await client.db.none(
+          `UPDATE clarity_${client.user.id}_${message.guild.id} SET prefix = $1`,
+          [prefix]
+        ).then(() => {
+          console.log("[DB] Update");
+          message.reply({ content: `Le préfix a été mis à jour : \`${prefix}\`` });
+        }).catch(error => {
+          console.log("Erreur lors de la mise à jour de la DB : " + error);
+          message.reply({ content: 'Une erreur s\'est produite lors de la mise à jour du préfix.' });
+        });
+      } else {
+        await client.db.none(
+          `INSERT INTO clarity_${client.user.id}_${message.guild.id} (prefix) VALUES ($1)`,
+          [prefix]
+        ).then(() => {
+          console.log("[DB] Update");
+          message.reply({ content: `Le préfix a été mis à jour: \`${prefix}\`` });
+        }).catch(error => {
+          console.log("Erreur lors de l'insertion dans la DB : " + error);
+          message.reply({ content: 'Une erreur s\'est produite lors de la mise à jour du préfix.' });
+        });
+
+      }
+    }
   }
 }
 

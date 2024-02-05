@@ -1,6 +1,7 @@
-const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } = require('discord.js');
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
+
 let confNum = 0;
-module.exports = {
+export default {
     name: 'interactionCreate',
     run: async (client, interaction) => {
         if (!interaction.isButton() && !interaction.isModalSubmit()) return;
@@ -27,14 +28,16 @@ module.exports = {
             confNum++
             let num = confNum
             let channel = client.channels.cache.get(client.data.get(`confession_${interaction.guild.id}`))
-            channel.send({ embeds: [{
-                title: 'Nouvelle Confession',
-                description: confess,
+            channel.send({
+                embeds: [{
+                    title: 'Nouvelle Confession',
+                    description: confess,
                     color: parseInt(client.color.replace("#", ""), 16),
-                footer: {
-                    text: `Confession n°${num}` + ' | ' + client.user.username
-                }
-                }] })
+                    footer: {
+                        text: `Confession n°${num}` + ' | ' + client.user.username
+                    }
+                }]
+            })
         }
     }
 }

@@ -1,5 +1,6 @@
-const { EmbedBuilder , ButtonBuilder, ActionRowBuilder, time} = require('discord.js')
-module.exports = {
+import { EmbedBuilder , ButtonBuilder, ActionRowBuilder, time} from 'discord.js';
+
+export default {
     name: 'whitelistinfo',
     aliases: ['wlinfo'],
     run: async(client , message, args) => {

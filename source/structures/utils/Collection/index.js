@@ -1,5 +1,5 @@
-const { Collection } = require("discord.js")
+import { Collection } from "discord.js";
 
-const afk = new Collection()
+const afk = new Collection();
 
-module.exports = { afk }
+export default { afk }

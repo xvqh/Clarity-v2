@@ -1,7 +1,9 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const Discord = require('discord.js');
-const discordTranscripts = require('discord-html-transcripts');
-module.exports = {
+import { ActionRowBuilder, StringSelectMenuBuilder } from 'discord.js';
+import Discord from 'discord.js';
+
+import discordTranscripts from 'discord-html-transcripts';
+
+export default {
     name: "interactionCreate",
     run: async (client, interaction) => {
         if (!interaction.isButton()) return;
@@ -50,7 +52,7 @@ module.exports = {
             console.log(resul)
             const user = client.users.fetch(resul.author);
             const usercache = client.users.cache.get(resul.author);
-            if(!dbserveur)return;
+            if (!dbserveur) return;
             const dboption = dbserveur.option.find(option => option.value === resul.option);
 
             const channel = interaction.guild.channels.cache.get(dboption.logs);

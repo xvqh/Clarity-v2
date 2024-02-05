@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     GUILD_UPDATE: 1,
     CHANNEL_CREATE: 10,
     CHANNEL_UPDATE: 11,

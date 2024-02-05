@@ -1,11 +1,11 @@
-const Discord = require('discord.js')
-const ms = require('ms')
-module.exports = {
+import Discord from "discord.js";
+
+export default {
     name: "prisonconfig",
     category: "Gestion",
     aliases: ['prisonconf', 'prisonc'],
     description: "Configurer la vérification du serveur",
-    run: async(client, message) => {
+    run: async (client, message) => {
         const isOwn = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
             [message.author.id]
@@ -15,11 +15,11 @@ module.exports = {
                 content: "Vous n'avez pas la permission d'utiliser cette commande",
             });
         }
-        let msg = await message.channel.send({content: 'Chargement du module en cours . . .'});
+        let msg = await message.channel.send({ content: 'Chargement du module en cours . . .' });
         await embed(client, message, msg);
     }
 }
-async function embed(client, message, msg){
+async function embed(client, message, msg) {
     const db = await client.data.get(`prisondata_${message.guild.id}`) || {
         channel: null,
         role: [],
@@ -52,7 +52,7 @@ async function embed(client, message, msg){
             }]
         }, {
             type: 1,
-            components: [ {
+            components: [{
                 type: 2,
                 label: "Dero-Serv",
                 style: 2,
@@ -68,7 +68,7 @@ async function embed(client, message, msg){
     // collector
     const filter = (i) => i.user.id === message.author.id
 
-    const collector = message.channel.createMessageComponentCollector({ filter, time: 60000*10*3 })
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 * 10 * 3 })
     collector.on('collect', async i => {
         if (i.customId === 'verifconfig' + message.id) {
             i.deferUpdate();
@@ -84,7 +84,8 @@ async function embed(client, message, msg){
                         .setCustomId('verif_setup_role_' + message.id)
                         .setMaxValues(25)
                 )
-                msg.edit({embeds: [{
+                msg.edit({
+                    embeds: [{
                         title: 'Quels sont les roles a donner aux prisonniers',
                         color: color,
                         footer: client.config.footer,
@@ -97,7 +98,8 @@ async function embed(client, message, msg){
                                 inline: true
                             }
                         ]
-                    }], components: [salonrow]})
+                    }], components: [salonrow]
+                })
             }
         }
 
@@ -125,18 +127,18 @@ async function embed(client, message, msg){
 
                     channels.forEach(async (channel) => {
                         let category = message.guild.channels.cache.find((c) => c.name === `${message.guild.name}・PRISON`);
-                        if (channel.parentId !== category.id){
+                        if (channel.parentId !== category.id) {
                             // edit channel
-                          channel.permissionOverwrites.create(role, {
-                              SendMessages: false,
-                              AddReactions: false,
-                              ViewChannel: false,
-                              SendMessagesInThreads: false,
-                              ReadMessageHistory: false,
-                              Connect: false
-                          })
-                        } 
-                         if (channel.parentId === category.id) {
+                            channel.permissionOverwrites.create(role, {
+                                SendMessages: false,
+                                AddReactions: false,
+                                ViewChannel: false,
+                                SendMessagesInThreads: false,
+                                ReadMessageHistory: false,
+                                Connect: false
+                            })
+                        }
+                        if (channel.parentId === category.id) {
 
                             channel.permissionOverwrites.create(role, {
                                 SendMessages: true,
@@ -177,11 +179,11 @@ async function embed(client, message, msg){
                         type: 4,
                         permissionOverwrites: [{
                             id: message.guild.roles.everyone.id,
-                            allow: [Discord.PermissionFlagsBits.SendMessages,Discord.PermissionFlagsBits.ReadMessageHistory],
+                            allow: [Discord.PermissionFlagsBits.SendMessages, Discord.PermissionFlagsBits.ReadMessageHistory],
                             deny: [Discord.PermissionFlagsBits.ViewChannel],
                         }, {
                             id: role.id,
-                            allow: [Discord.PermissionFlagsBits.SendMessages,Discord.PermissionFlagsBits.ReadMessageHistory, Discord.PermissionFlagsBits.ViewChannel],
+                            allow: [Discord.PermissionFlagsBits.SendMessages, Discord.PermissionFlagsBits.ReadMessageHistory, Discord.PermissionFlagsBits.ViewChannel],
                             deny: [],
                         }]
                     })
@@ -195,11 +197,11 @@ async function embed(client, message, msg){
                             parent: category.id,
                             permissionOverwrites: [{
                                 id: message.guild.roles.everyone.id,
-                                allow: [Discord.PermissionFlagsBits.SendMessages,Discord.PermissionFlagsBits.ReadMessageHistory],
+                                allow: [Discord.PermissionFlagsBits.SendMessages, Discord.PermissionFlagsBits.ReadMessageHistory],
                                 deny: [Discord.PermissionFlagsBits.ViewChannel],
-                            },  {
+                            }, {
                                 id: role.id,
-                                allow: [Discord.PermissionFlagsBits.SendMessages,Discord.PermissionFlagsBits.ReadMessageHistory, Discord.PermissionFlagsBits.ViewChannel],
+                                allow: [Discord.PermissionFlagsBits.SendMessages, Discord.PermissionFlagsBits.ReadMessageHistory, Discord.PermissionFlagsBits.ViewChannel],
                                 deny: [],
                             }]
                         })
@@ -212,7 +214,7 @@ async function embed(client, message, msg){
 
         }
     })
-    client.on('interactionCreate', async(i) => {
+    client.on('interactionCreate', async (i) => {
         if (message.author.id === i.user.id) {
             if (i.customId === 'verif_setup_role_' + message.id) {
                 i.deferUpdate();
@@ -255,7 +257,7 @@ async function embed(client, message, msg){
                         }]
                     }, {
                         type: 1,
-                        components: [ {
+                        components: [{
                             type: 2,
                             label: "Dero-Serv",
                             style: 2,
@@ -303,7 +305,7 @@ async function embed(client, message, msg){
                         }]
                     }, {
                         type: 1,
-                        components: [ {
+                        components: [{
                             type: 2,
                             label: "Dero-Serv",
                             style: 2,
@@ -318,5 +320,6 @@ async function embed(client, message, msg){
                 })
             }
 
-        }});
+        }
+    });
 }

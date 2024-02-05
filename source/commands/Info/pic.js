@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
-const Clarity = require('../../structures/client/index');
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
 
-module.exports = {
+export default {
     name: 'pic', 
     aliases: ['avatar', 'pp'],
    category: "💻〢Informations",

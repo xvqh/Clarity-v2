@@ -1,7 +1,4 @@
-const Discord = require("discord.js");
-const { Clarity } = require("../../structures/client/index");
-
-module.exports = {
+export default {
     name: "devrole",
     description: "cree un role pour les devs de clarity",
     category: "🔗〢Dev",

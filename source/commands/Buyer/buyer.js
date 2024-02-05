@@ -1,10 +1,11 @@
-const Discord = require("discord.js");
-const { Clarity } = require("../../structures/client/index");
-module.exports = {
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
+
+export default {
   name: "buyer",
   aliases: ["buyers"],
   description: "Affiche la liste des buyers ou permet d add une personne aux buyers",
-category: "🛠️〢Buyer",
+  category: "🛠️〢Buyer",
   /**
    * @param {Clarity} client
    */
@@ -19,28 +20,28 @@ category: "🛠️〢Buyer",
     CREATE TABLE IF NOT EXISTS clarity_${client.user.id}_buyers (
         user_id VARCHAR(20) PRIMARY KEY
     )`);
-await client.db.none(
-`
+    await client.db.none(
+      `
   INSERT INTO clarity_${client.user.id}_buyers (user_id) VALUES ($1) ON CONFLICT (user_id) DO NOTHING
   `,
-[client.config.buyer]
-);
+      [client.config.buyer]
+    );
     let color = parseInt(client.color.replace('#', ''), 16);
-    const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(()=> {})
+    const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(() => { })
     if (!user) {
       const buyers = await client.db.any(
         `SELECT user_id FROM clarity_${client.user.id}_buyers`
       );
-      
+
       if (buyers.length === 0)
         return message.reply({ content: "Aucun buyer" });
-      const ownTag = await Promise.all(buyers.map(async (owner) => `[${(await client.users.fetch(owner.user_id)).tag}](https://discord.com/users/${owner.user_id}) (${owner.user_id})` ))
-    const ownemb = new Discord.EmbedBuilder()
+      const ownTag = await Promise.all(buyers.map(async (owner) => `[${(await client.users.fetch(owner.user_id)).tag}](https://discord.com/users/${owner.user_id}) (${owner.user_id})`))
+      const ownemb = new Discord.EmbedBuilder()
         .setTitle(client.user.username + " - " + "Liste des buyers")
         .setDescription(ownTag.join('\n'))
         .setColor(color)
         .setFooter(client.config.footer);
-     return message.reply({ embeds: [ownemb] });
+      return message.reply({ embeds: [ownemb] });
     }
 
     const isAlreadyOwn = await client.db.oneOrNone(
@@ -53,9 +54,9 @@ await client.db.none(
       return message.reply({ content: `${user} est déja buyer` });
     }
     if (user.bot) return message.reply({
-        content: "Vous ne pouvez pas mettre un bot buyer.",
-        });
-      
+      content: "Vous ne pouvez pas mettre un bot buyer.",
+    });
+
     await client.db
       .none(
         `
@@ -65,13 +66,13 @@ await client.db.none(
       )
       .then(message.reply({ content: `${user} est maintenant buyer` }))
       .catch((error) => {
-        console.log(error)-
-        console.log("Erreur lors de la mise à jour de la DB : " + error);
+        console.log(error) -
+          console.log("Erreur lors de la mise à jour de la DB : " + error);
         message.reply({
           content: "Une erreur s'est produite lors de l'ajout du buyer.",
         });
       });
-      
+
   },
 };
 

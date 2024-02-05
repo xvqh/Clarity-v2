@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'divorce',
     run: async(client, message, args) => {
         const user =

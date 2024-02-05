@@ -1,11 +1,24 @@
-const { Client, GatewayIntentBits, Collection } = require('discord.js')
-const fs = require('fs')
-const translate = require("@plainheart/google-translate-api")
-const pgp = require('pg-promise')();
-const { Player } = require('discord-player');
-const config = require('../../../config/config');
+import { Client, Collection } from 'discord.js';
+import fs from 'fs';
 
-module.exports = class Clarity extends Client {
+import translate from '@plainheart/google-translate-api';
+import pgp from 'pg-promise';
+import { Player } from 'discord-player';
+
+import config from '../../../config/config.js';
+import creators from '../../../config/creators.js';
+import version from '../../../version.js';
+import functions from '../utils/index.js';
+import ms from '../utils/ms/index.js';
+import emojis from '../../../config/emoji.js';
+import pretty from 'pretty-ms';
+import logsType from './logsType.js';
+import channelType from './channelType.js';
+import componentType from './componentType.js';
+import buttonType from './buttonType.js';
+import colorListed from './colorListed.js';
+
+export default class Clarity extends Client {
     constructor(options = {
         intents: [3276799],
         partials: [
@@ -19,22 +32,21 @@ module.exports = class Clarity extends Client {
         this.aliases = new Collection()
         this.slashCommands = new Collection()
         this.snipes = new Collection()
-        this.config = require('../../../config/config')
-        this.creator = require("../../../config/creators")
-        this.creators = require('../../../config/creators')
-        this.version = require('../../../version')
+        this.config = config
+        this.creators = creators
+        this.version = version
         this.player = Player.singleton(this);
         this.player.extractors.loadDefault();
-        this.functions = require('../utils/index')
-        this.ms = require('../utils/ms')
-        this.emoji = require("../../../config/emoji")
-        this.db = pgp(config.database.PostgreSQL)
-        this.pretty = require('pretty-ms')
-        this.logsType = require('./logsType')
-        this.channelType = require('./channelType')
-        this.componentType = require('./componentType')
-        this.buttonType = require('./buttonType')
-        this.colorListed = require('./colorListed')
+        this.functions = functions
+        this.ms = ms
+        this.emoji = emojis
+        this.db = pgp()(config.database.PostgreSQL)
+        this.pretty = pretty
+        this.logsType = logsType
+        this.channelType = channelType
+        this.componentType = componentType
+        this.buttonType = buttonType
+        this.colorListed = colorListed
         this.translate = translate
         this.initCommands()
         this.initEvents()
@@ -65,21 +77,25 @@ module.exports = class Clarity extends Client {
         delete require.cache[require.resolve('../../../config/config')];
         this.config = require('../../../config/config');
     }
-    initCommands() {
+    async initCommands() {
         const subFolders = fs.readdirSync('./source/commands');
         for (const category of subFolders) {
             const commandsFiles = fs.readdirSync(`./source/commands/${category}`).filter(file => file.endsWith('.js'));
             for (const commandFile of commandsFiles) {
-                const command = require(`../../commands/${category}/${commandFile}`);
-                command.category = category
-                command.commandFile = commandFile
-                if (command.name === "bl" && this.config.isPublic) continue;
-                if (command.name === "unbl" && this.config.isPublic) continue;
-                if (command.name === "leavesettings") continue;
-                if (command.category === 'gestion' && this.config.isPublic) continue;
-                this.commands.set(command.name, command);
-                if (command.aliases && command.aliases.length > 0) {
-                    command.aliases.forEach(alias => this.aliases.set(alias, command));
+                console.log(commandFile)
+                const command = await import(`../../commands/${category}/${commandFile}`);
+
+                let cmd = command.default;
+
+                cmd.category = category
+                cmd.commandFile = commandFile
+                if (cmd.name === "bl" && this.config.isPublic) continue;
+                if (cmd.name === "unbl" && this.config.isPublic) continue;
+                if (cmd.name === "leavesettings") continue;
+                if (cmd.category === 'gestion' && this.config.isPublic) continue;
+                this.commands.set(cmd.name, cmd);
+                if (cmd.aliases && cmd.aliases.length > 0) {
+                    cmd.aliases.forEach(alias => this.aliases.set(alias, cmd));
                 }
             }
         }
@@ -92,12 +108,12 @@ module.exports = class Clarity extends Client {
         this.commands = finale;
     }
 
-    initEvents() {
+    async initEvents() {
         const subFolders = fs.readdirSync(`./source/events`)
         for (const category of subFolders) {
             const eventsFiles = fs.readdirSync(`./source/events/${category}`).filter(file => file.endsWith(".js"))
             for (const eventFile of eventsFiles) {
-                const event = require(`../../events/${category}/${eventFile}`)
+                const event = await import(`../../events/${category}/${eventFile}`);
                 this.on(event.name, (...args) => event.run(this, ...args))
                 if (category === 'anticrash') process.on(event.name, (...args) => event.run(this, ...args))
             }
@@ -105,12 +121,12 @@ module.exports = class Clarity extends Client {
     }
 
 
-    initSlashCommands() {
+    async initSlashCommands() {
         const subFolders = fs.readdirSync(`./source/slashCmds`)
         for (const category of subFolders) {
             const commandsFiles = fs.readdirSync(`./source/slashCmds/${category}`).filter(file => file.endsWith('.js'))
             for (const commandFile of commandsFiles) {
-                const command = require(`../../slashCmds/${category}/${commandFile}`)
+                const command = await import(`../../slashCmds/${category}/${commandFile}`).default;
                 command.category = category
                 command.commandFile = commandFile
                 this.slashCommands.set(command.name, command)

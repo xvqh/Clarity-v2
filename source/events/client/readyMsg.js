@@ -1,13 +1,15 @@
-const Discord = require('discord.js');
-const {ActionRowBuilder , ButtonBuilder, EmbedBuilder} = require("discord.js")
-const Clarity = require('../../structures/client/index');
-module.exports = {
-    name: "ready",
-      /**
-   * 
-   * @param {Clarity} client 
-   */
-    run: async(client) => {
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
+import { exec } from 'child_process';
+
+export default {
+  name: "ready",
+  /**
+* 
+* @param {Clarity} client 
+*/
+  run: async (client) => {
     /*    const now = new Date();
         const timestamp = Math.floor(now.getTime() / 1000);
 
@@ -32,5 +34,5 @@ buyerUsers.forEach(u => {
   }]}).catch(e => {});
 });*/
 
-    }
+  }
 }

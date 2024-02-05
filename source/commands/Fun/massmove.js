@@ -1,6 +1,6 @@
-const Discord = require('discord.js');
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, AttachmentBuilder } = require('discord.js');
-module.exports = {
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, AttachmentBuilder } from 'discord.js';
+
+export default {
     name: "massmove",
     aliases: ["massmove"],
     category: "👀〢Fun",

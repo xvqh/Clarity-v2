@@ -1,8 +1,9 @@
-const { EmbedBuilder , ButtonBuilder, ActionRowBuilder, time} = require('discord.js')
-module.exports = {
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder } from 'discord.js';
+
+export default {
     name: 'blacklistinfo',
     aliases: ['blinfo'],
-    run: async(client , message, args) => {
+    run: async (client, message, args) => {
         const isOwn = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
             [message.author.id]
@@ -54,7 +55,7 @@ module.exports = {
                 )
 
 
-            message.reply({embeds: [embed], components: [row]})
+            message.reply({ embeds: [embed], components: [row] })
         }
     }
 }

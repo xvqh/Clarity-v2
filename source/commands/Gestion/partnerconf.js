@@ -1,7 +1,6 @@
-const Discord = require('discord.js')
-const ms = require('ms')
+import Discord from "discord.js";
 
-module.exports = {
+export default {
     name: "partnerconf",
     category: "Gestion",
     description: "Configurer la vérification des partenariats",
@@ -16,7 +15,7 @@ module.exports = {
             });
         }
 
-        let msg = await message.channel.send({content: 'Chargement du module en cours . . .'});
+        let msg = await message.channel.send({ content: 'Chargement du module en cours . . .' });
         await embed(client, message, msg);
     }
 }
@@ -53,21 +52,22 @@ async function embed(client, message, msg) {
                     value: 'configpartrole'
                 }, {
                     label: 'Role Notification',
-                    value: 'confignotifrole'},{
+                    value: 'confignotifrole'
+                }, {
                     label: 'Recharger',
                     value: 'refresh'
                 }]
             }]
         }]
-        })
+    })
 
     const collector = msg.createMessageComponentCollector({
         filter: (i) => i.user.id === message.author.id,
-        time: 60000*10*3
+        time: 60000 * 10 * 3
     })
-    collector.on("collect", async(i) => {
+    collector.on("collect", async (i) => {
         const color = parseInt(client.color.replace("#", ""), 16)
-        if(i.customId === 'back' + message.id){
+        if (i.customId === 'back' + message.id) {
             i.deferUpdate();
             msg.edit({
                 content: null,
@@ -95,17 +95,18 @@ async function embed(client, message, msg) {
                             value: 'configpartrole'
                         }, {
                             label: 'Role Notification',
-                            value: 'confignotifrole'},{
+                            value: 'confignotifrole'
+                        }, {
                             label: 'Recharger',
                             value: 'refresh'
                         }
-                    ]
+                        ]
                     }]
                 }]
             })
         }
 
-        if(i.customId === 'partnerconfig' + message.id) {
+        if (i.customId === 'partnerconfig' + message.id) {
             i.deferUpdate();
             if (i.values[0] === 'configpartrole') {
                 let db = await client.data.get(`partnerdata_${message.guild.id}`) || {
@@ -118,7 +119,8 @@ async function embed(client, message, msg) {
                         .setMaxValues(1)
                 )
                 let color = parseInt(client.color.replace('#', ''), 16);
-                msg.edit({embeds: [{
+                msg.edit({
+                    embeds: [{
                         title: 'Quels est le role a donner aux partenaires ?',
                         color: color,
                         footer: client.config.footer,
@@ -131,10 +133,11 @@ async function embed(client, message, msg) {
                                 inline: true
                             }
                         ]
-                    }], components: [salonrow]})
+                    }], components: [salonrow]
+                })
             }
 
-            if(i.values[0] === 'refresh') {
+            if (i.values[0] === 'refresh') {
                 msg.edit({
                     content: null,
                     embeds: [{
@@ -161,7 +164,8 @@ async function embed(client, message, msg) {
                                 value: 'configpartrole'
                             }, {
                                 label: 'Role Notification',
-                                value: 'confignotifrole'},{
+                                value: 'confignotifrole'
+                            }, {
                                 label: 'Recharger',
                                 value: 'refresh'
                             }
@@ -182,7 +186,8 @@ async function embed(client, message, msg) {
                         .setMaxValues(5)
                 )
                 let color = parseInt(client.color.replace('#', ''), 16);
-                msg.edit({embeds: [{
+                msg.edit({
+                    embeds: [{
                         title: 'Quels sont les roles a notifier pour les partenariats ?',
                         color: color,
                         footer: client.config.footer,
@@ -195,7 +200,8 @@ async function embed(client, message, msg) {
                                 inline: true
                             }
                         ]
-                    }], components: [salonrow]})
+                    }], components: [salonrow]
+                })
             }
         }
     })
@@ -243,7 +249,8 @@ async function embed(client, message, msg) {
                                 value: 'configpartrole'
                             }, {
                                 label: 'Role Notification',
-                                value: 'confignotifrole'},{
+                                value: 'confignotifrole'
+                            }, {
                                 label: 'Recharger',
                                 value: 'refresh'
                             }
@@ -294,7 +301,8 @@ async function embed(client, message, msg) {
                                 value: 'configpartrole'
                             }, {
                                 label: 'Role Notification',
-                                value: 'confignotifrole'},{
+                                value: 'confignotifrole'
+                            }, {
                                 label: 'Recharger',
                                 value: 'refresh'
                             }

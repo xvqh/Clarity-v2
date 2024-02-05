@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "addbot",
     aliases: [],
    category: "🤖〢Bot",

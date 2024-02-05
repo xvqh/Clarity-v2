@@ -1,10 +1,11 @@
-const { uniqueNamesGenerator, adjectives, animals } = require('unique-names-generator');
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, AttachmentBuilder } = require('discord.js');
-module.exports = {
+import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, AttachmentBuilder } from 'discord.js';
+
+export default {
     name: "massrename",
     aliases: ["massrename"],
     category: "👀〢Fun",
-    run: async(client, message, args) => {
+    run: async (client, message, args) => {
         // Check if the user has the necessary permissions to use the command
         const isOwn = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
@@ -77,6 +78,6 @@ module.exports = {
             .setTimestamp()
 
         // Send the embed message
-        message.reply({ embeds: [embed]});
+        message.reply({ embeds: [embed] });
     }
 }

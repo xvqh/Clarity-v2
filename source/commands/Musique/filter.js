@@ -1,8 +1,8 @@
-module.exports = {
+export default {
     name: "filter",
     description: "Change le filtre de la chanson",
     category: "Musique",
-    run: async(client, message, args) => {
+    run: async (client, message, args) => {
         const isDJ = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_dj WHERE user_id = $1`,
             [message.author.id]
@@ -12,7 +12,7 @@ module.exports = {
                 content: "Vous n'avez pas la permission d'utiliser cette commande",
             });
         }
-        let msg = await message.channel.send({content: 'Chargement du module en cours . . .'});
+        let msg = await message.channel.send({ content: 'Chargement du module en cours . . .' });
         await embed(client, message, msg);
     }
 }
@@ -60,10 +60,10 @@ async function embed(client, message, msg) {
                         { label: 'mstrr', value: 'mstrr' },
                         { label: 'silenceremove', value: 'silenceremove' }
                     ]
-            }]
+                }]
         }, {
             type: 1,
-            components: [       {
+            components: [{
                 type: 3,
                 custom_id: 'filter3' + message.id,
                 options: [
@@ -88,5 +88,5 @@ async function embed(client, message, msg) {
     });
 
     const filter = (i) => i.user.id === message.author.id;
-    const collector = msg.createMessageComponentCollector({filter, time: 60000});
+    const collector = msg.createMessageComponentCollector({ filter, time: 60000 });
 }

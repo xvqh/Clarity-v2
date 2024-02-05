@@ -1,6 +1,6 @@
 
 
-module.exports = {
+export default {
     name: 'custom',
     run: async (client, message, args) => {
         const isOwn = await client.db.oneOrNone(
@@ -78,7 +78,7 @@ async function create(client, message, args) {
             });
 
             const filter = i => i.user.id === message.author.id
-            const collector = message.channel.createMessageComponentCollector({filter, time: 15000})
+            const collector = message.channel.createMessageComponentCollector({ filter, time: 15000 })
 
             collector.on('collect', async i => {
                 if (i.customId === 'custom' + message.id) {
@@ -86,8 +86,8 @@ async function create(client, message, args) {
                     let action, response;
 
                     if (i.values[0] === "command-embed" || i.values[0] === "command-normal" || i.values[0] === "command-dm") {
-                        let question = await i.channel.send({content: 'Quel est la nouvelle reponse ?'});
-                        let rep = await i.channel.awaitMessages({filter: m => m.author.id == i.user.id, max: 1, time: 30_000});
+                        let question = await i.channel.send({ content: 'Quel est la nouvelle reponse ?' });
+                        let rep = await i.channel.awaitMessages({ filter: m => m.author.id == i.user.id, max: 1, time: 30_000 });
                         await rep.first().delete();
                         await question.delete();
                         response = rep.first().content;
@@ -113,7 +113,7 @@ async function create(client, message, args) {
                 }
             })
         }
-    } catch(e) {
+    } catch (e) {
         console.error(e)
     }
 }

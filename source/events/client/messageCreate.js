@@ -1,12 +1,11 @@
-const { Client, Message } = require("discord.js");
-const Clarity = require("../../structures/client/index");
-const { EmbedBuilder } = require("discord.js");
+import Clarity from "../../structures/client/index.js";
+import { EmbedBuilder, Client, Message } from "discord.js";
 
 /**
  * @param {Client} client
  * @param {Message} message
  */
-module.exports = {
+export default {
   name: "messageCreate",
   run: async (client, message) => {
     if (message.author.bot) return;
@@ -30,7 +29,7 @@ module.exports = {
         .setDescription(`Mon prefix est: \`${prefix}\``)
         .setColor(client.config.default_color)
         .setFooter(client.config.footer);
-      return message.reply({ embeds: [prefE] }).catch(() => {});
+      return message.reply({ embeds: [prefE] }).catch(() => { });
     }
 
     if (!message.content.startsWith(prefix) || message.content === prefix || message.content.startsWith(prefix + ' ')) {
@@ -109,10 +108,10 @@ module.exports = {
     try {
       const data = client.data2.get(`nocmd_${message.guild.id}`) || {
         channels: []
-    }
-    if (!data) return;
+      }
+      if (!data) return;
 
-    if (data.channels.includes(message.channel.id)) {
+      if (data.channels.includes(message.channel.id)) {
         if (!client.config.devs.includes(message.author.id)) {
           return message.reply({
             content: "Les commandes ont été désactivées dans ce salon.",
@@ -123,13 +122,13 @@ module.exports = {
             content: "Les commandes ont été désactivées dans ce salon.",
           });
         }
-    }
+      }
     } catch (error) {
       console.error(error);
     }
     const cmd = client.commands.get(commandName) || client.aliases.get(commandName);
     if (!cmd) return;
-      cmd.run(client, message, args);
+    cmd.run(client, message, args);
 
   },
 };

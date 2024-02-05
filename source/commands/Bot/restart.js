@@ -1,8 +1,10 @@
 
-const { EmbedBuilder } = require("discord.js");
-const { Clarity } = require("../../structures/client")
-const { exec } = require("child_process")
-module.exports = {
+import { EmbedBuilder } from "discord.js";
+import Clarity from "../../structures/client/index.js";
+
+import { exec } from 'child_process';
+
+export default {
   name: "restart",
   aliases: [],
   description: "Permet de redémarrer le bot",

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "emoji",
     aliases: ["addemoji"],
     run: async (client, message, args, commandName) => {

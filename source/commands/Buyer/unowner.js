@@ -1,7 +1,6 @@
-const Discord = require("discord.js");
-const { Clarity } = require("../../structures/client/index");
+import Clarity from "../../structures/client/index.js";
 
-module.exports = {
+export default {
   name: "unowner",
   aliases: ["removeowner"],
 category: "🛠️〢Buyer",

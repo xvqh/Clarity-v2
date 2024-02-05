@@ -1,5 +1,6 @@
-const {EmbedBuilder} = require("discord.js")
-module.exports = {
+import { EmbedBuilder } from "discord.js";
+
+export default {
     name: "setbot",
     aliases: ["setprofil"],
     description: "Permet de modifier le profil du bot",

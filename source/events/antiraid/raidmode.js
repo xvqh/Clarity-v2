@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'guildMemberAdd',
     run: async(client, member) => {
         const {guild} = member

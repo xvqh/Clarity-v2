@@ -1,5 +1,6 @@
-const simpleGit = require('simple-git');
-module.exports = {
+import simpleGit from 'simple-git';
+
+export default {
     name: "addupdate",
   category: "🔗〢Dev",
     run : async(client, message, args) => {

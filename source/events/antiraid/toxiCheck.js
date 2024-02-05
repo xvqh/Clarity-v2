@@ -1,6 +1,6 @@
-const Perspective = require('perspective-api-client');
+import Perspective from 'perspective-api-client';
 const perspective = new Perspective({apiKey: "AIzaSyCrqBjlfdgKWeb5GGb2qbKisdhBLVb7wLc"});
-module.exports = {
+export default {
     name: 'messageCreate',
     run: async (client, message) => {
 

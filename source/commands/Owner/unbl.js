@@ -1,8 +1,9 @@
-const { EmbedBuilder , ActionRowBuilder, ButtonBuilder } = require('discord.js')
-module.exports = {
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js';
+
+export default {
     name: 'unbl',
     aliases: ['unblacklist'],
-    run: async(client , message, args) => {
+    run: async (client, message, args) => {
         const isBuy = await client.functions.isBuy(client, message.author.id);
         if (!isBuy) {
             return message.reply({
@@ -41,15 +42,15 @@ module.exports = {
             .setColor(parseInt(client.color.replace("#", ""), 16))
             .setDescription(`L'utilisateur ${user.username} a bien été supprimé de la liste noire.\nUnban de **${client.guilds.cache.size}** serveur(s).`)
             .setFooter(client.config.footer)
-            .setAuthor({name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
+            .setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
         // get all guilds
         const guilds = client.guilds.cache.map(guild => guild.name);
         // unban the members from all guilds
         for (const guildName of guilds) {
             const guild = client.guilds.cache.find(guild => guild.name === guildName);
-        //  unban the member
+            //  unban the member
             guild.members.unban(user.id);
         }
-        await message.reply({ embeds: [success] , flags: 64})
+        await message.reply({ embeds: [success], flags: 64 })
     }
 }

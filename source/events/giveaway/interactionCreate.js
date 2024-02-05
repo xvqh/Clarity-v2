@@ -1,6 +1,6 @@
-const { ButtonStyle, ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require("discord.js");
+import { ButtonStyle, ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
 
-module.exports = {
+export default {
     name: 'interactionCreate',
     run: async (client, interaction) => {
         if (!interaction.isButton()) return;

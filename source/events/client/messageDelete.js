@@ -1,7 +1,7 @@
-module.exports = {
+export default {
     name: "messageDelete",
-    run: async(client, message) => {
-        try  {
+    run: async (client, message) => {
+        try {
             if (!message.partial) {
                 client.snipes.set(message.channel.id, {
                     content: message.content,
@@ -10,11 +10,11 @@ module.exports = {
                     embeds: message.embeds || [],
                     timestamp: message.createdTimestamp,
                     date: new Date()
-                  })
+                })
             }
-        } catch(e) {
-            console.error("Erreur :",e)
+        } catch (e) {
+            console.error("Erreur :", e)
         }
-      
+
     }
 }

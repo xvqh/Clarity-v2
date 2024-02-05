@@ -1,6 +1,6 @@
 let loves = ['1076973884445818922', '1072553881134972970', '304688488924708864', '853259243662344212'];
 let msg;
-module.exports = {
+export default {
     name: "lc",
     run: async (client, message, args) => {
         let user1 = client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(() => null);

@@ -1,9 +1,9 @@
-const { QueryType, SearchResult } = require("discord-player");
-const { useMainPlayer, useQueue } = require("discord-player");
+import { useMainPlayer, useQueue, QueryType, SearchResult } from "discord-player";
+
 const regex = /(https?:\/\/(?:www\.)?(?:open\.spotify|deezer|soundcloud|music\.apple)\.[a-z\.]+\/[^\s]+)/g;
 const youtubeRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/;
 const playlistRegex = /(https?:\/\/(?:www\.)?(?:open\.spotify|deezer|soundcloud|music\.apple)\.[a-z\.]+\/playlist\/[^\s]+)/g;
-module.exports = {
+export default {
     name: "play",
     run: async (client, message, args) => {
         const player = useMainPlayer();

@@ -1,10 +1,11 @@
-const {EmbedBuilder} = require("discord.js")
-module.exports = {
+import { EmbedBuilder } from "discord.js";
+
+export default {
     name: "test",
-  category: "🔗〢Dev",
-    run : async(client, message, args) => {
+    category: "🔗〢Dev",
+    run: async (client, message, args) => {
         if (!client.config.devs.includes(message.author.id)) {
-            return message.reply({content: "Et bah non on respecte les T.O.S de discord nous !!!"})
+            return message.reply({ content: "Et bah non on respecte les T.O.S de discord nous !!!" })
         }
         let user = message.mentions.users.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(() => null);
         if (!user) {
@@ -16,7 +17,7 @@ module.exports = {
             ORDER BY date DESC
         `)
         if (prevname.length === 0) {
-            return message.reply({content: "Il n'y a pas de prevname enregistrer"})
+            return message.reply({ content: "Il n'y a pas de prevname enregistrer" })
         }
 
         let color = parseInt(client.color.replace('#', ''), 16);

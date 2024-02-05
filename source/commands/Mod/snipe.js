@@ -1,4 +1,5 @@
-const Discord = require("discord.js")
+import Discord from "discord.js";
+
 const links = [
     'discord.gg',
     'dsc.bio',
@@ -13,10 +14,10 @@ const links = [
     '://',
     '.gg'
 ]
-module.exports = {
+export default {
     name: "snipe",
-  category: "📝〢Moderation",
-    run: async(client, message) => {
+    category: "📝〢Moderation",
+    run: async (client, message) => {
         let isLinkall = false
         let color = parseInt(client.color.replace('#', ''), 16);
         const msg = client.snipes.get(message.channel.id)
@@ -36,25 +37,25 @@ module.exports = {
             return message.channel.send({ embeds: [embedl] })
         }
         const embed = new Discord.EmbedBuilder()
-        .setDescription(`**${msg.author.tag}** \`\`\`${msg.content}\`\`\``)
-        .setColor(color)
-        .setFooter(client.config.footer)
-    if (msg.image) embed.setImage(msg.image)
- 
-    if (snipeD.embeds.length > 0) {
-        const oldEmbed = snipeD.embeds[0];
-        if (oldEmbed.title) embed.addFields({name: 'Titre', value: oldEmbed.title});
-        if (oldEmbed.description) embed.addFields({name: 'Description', value: oldEmbed.description});
-        if (oldEmbed.fields.length > 0) {
-            oldEmbed.fields.forEach(field => {
-                embed.addFields({name: field.name, value: field.value, inline: field.inline});
-            });
-        }
-        if (oldEmbed.thumbnail) embed.setThumbnail(oldEmbed.thumbnail.url);
-        if (oldEmbed.image) embed.setImage(oldEmbed.image.url);
-    }
+            .setDescription(`**${msg.author.tag}** \`\`\`${msg.content}\`\`\``)
+            .setColor(color)
+            .setFooter(client.config.footer)
+        if (msg.image) embed.setImage(msg.image)
 
-    message.channel.send({ embeds: [embed] })
+        if (snipeD.embeds.length > 0) {
+            const oldEmbed = snipeD.embeds[0];
+            if (oldEmbed.title) embed.addFields({ name: 'Titre', value: oldEmbed.title });
+            if (oldEmbed.description) embed.addFields({ name: 'Description', value: oldEmbed.description });
+            if (oldEmbed.fields.length > 0) {
+                oldEmbed.fields.forEach(field => {
+                    embed.addFields({ name: field.name, value: field.value, inline: field.inline });
+                });
+            }
+            if (oldEmbed.thumbnail) embed.setThumbnail(oldEmbed.thumbnail.url);
+            if (oldEmbed.image) embed.setImage(oldEmbed.image.url);
+        }
+
+        message.channel.send({ embeds: [embed] })
 
     }
 }

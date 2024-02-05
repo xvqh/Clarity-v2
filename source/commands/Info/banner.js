@@ -1,9 +1,9 @@
-const Discord = require('discord.js');
-const Clarity = require('../../structures/client/index');
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
 
-module.exports = {
-    name: 'banner', 
-   category: "💻〢Informations",
+export default {
+    name: 'banner',
+    category: "💻〢Informations",
     aliases: [],
     /**
      * 
@@ -13,16 +13,16 @@ module.exports = {
     run: async (client, message, args) => {
         let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member
         const url = await member.user.fetch().then((user) => user.bannerURL({ format: "png", dynamic: true, size: 4096 }));
-     let color =  parseInt(client.color.replace("#", ""), 16);
-      message.channel.send({
-         embeds: [{
-             color: color,
-             title: `${member.user.username}`,
-             image: { url : `${url}`}
-         }
-         ]
-     })
-    
+        let color = parseInt(client.color.replace("#", ""), 16);
+        message.channel.send({
+            embeds: [{
+                color: color,
+                title: `${member.user.username}`,
+                image: { url: `${url}` }
+            }
+            ]
+        })
+
 
     }
 }

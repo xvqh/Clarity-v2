@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     rouge: "Red",
     bleu: "Blue",
     vert: 'Green',

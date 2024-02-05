@@ -1,7 +1,7 @@
-const fs = require('fs');
-const Discord = require('discord.js')
+import fs from 'fs';
+import Discord from "discord.js";
 
-module.exports = {
+export default {
     name: "bringall",
     run: async(client, message, args) => {
 

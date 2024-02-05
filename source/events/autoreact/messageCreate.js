@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'messageCreate',
     run: async (client, message) => {
         if (message.author.bot) return;

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     actionRow: 1,
     button: 2,
     string_select: 3,

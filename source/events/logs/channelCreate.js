@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'channelCreate',
     run: async (client, channel) => {
         // get audit log
@@ -13,7 +13,7 @@ module.exports = {
         // get executor
         const executor = await entry.executor.fetch()
 
-        let logs= client.data.get(`channellogs_${channel.guild.id}`);
+        let logs = client.data.get(`channellogs_${channel.guild.id}`);
         if (!logs) return;
         let chan = channel.guild.channels.cache.get(logs);
         if (!chan) return;

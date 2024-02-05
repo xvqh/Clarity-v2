@@ -1,6 +1,6 @@
-module.exports = {
+export default {
     name: 'messageDelete',
-    run: async(client, message) => {
+    run: async (client, message) => {
         if (!message || !message.author || !message.guild) {
             return;
         }
@@ -18,7 +18,8 @@ module.exports = {
 
 
         // send message to log channel
-        if (chan)  chan.send({embeds: [{
+        if (chan) chan.send({
+            embeds: [{
                 color: parseInt(client.color.replace("#", ""), 16),
                 author: {
                     name: message.author.username,
@@ -31,8 +32,9 @@ module.exports = {
                 thumbnail: {
                     url: message.author.displayAvatarURL({ dynamic: true })
                 }
-            }]})
+            }]
+        })
 
-      
+
     }
 }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "guildMemberUpdate",
     run: async (client, oldMember, newMember) => {
         // Check if the role was added
@@ -11,7 +11,7 @@ module.exports = {
                 limit: 0
             };
 
-let originalRoleName = client.data.get(`originalRoleName_${newMember.guild.id}_${addedRole.id}`);
+            let originalRoleName = client.data.get(`originalRoleName_${newMember.guild.id}_${addedRole.id}`);
             if (db.limit > 0) {
                 // Calculate the current member count
                 const memberCount = newMember.guild.members.cache.filter(member => member.roles.cache.has(addedRole.id)).size;
@@ -37,5 +37,5 @@ let originalRoleName = client.data.get(`originalRoleName_${newMember.guild.id}_$
                 }
             }
         }
-}
+    }
 }

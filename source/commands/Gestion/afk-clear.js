@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "afk-clear",
     run: async(client, message, args) => {
         const isOwn = await client.db.oneOrNone(

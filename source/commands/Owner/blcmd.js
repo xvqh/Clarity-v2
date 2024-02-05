@@ -1,5 +1,6 @@
-const { Clarity } = require("../../structures/client/index");
-module.exports = {
+import Clarity from "../../structures/client/index.js";
+
+export default {
     name: "blacklistcmd",
     aliases: ["blcmd"],
 
@@ -18,10 +19,10 @@ module.exports = {
             users: []
         }
 
-        const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(()=> {})
+        const user = message.mentions.members.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]).catch(() => { })
 
         if (!user) {
-            let blUsers = data.users.map(async (blacklist) => `[${(await client.users.fetch(blacklist.user_id)).tag}](https://discord.com/users/${blacklist.user_id})` );
+            let blUsers = data.users.map(async (blacklist) => `[${(await client.users.fetch(blacklist.user_id)).tag}](https://discord.com/users/${blacklist.user_id})`);
             if (blUsers.length === 0) {
                 return message.reply({
                     content: "Aucun utilisateur n'est blcmd",
@@ -32,12 +33,12 @@ module.exports = {
                     title: "Liste des utilisateurs bloqués",
                     description: blUsers.join("\n"),
                     color: parseInt(client.color.replace("#", ""), 16),
-                    footer: {text: client.config.footer.text},
+                    footer: { text: client.config.footer.text },
                     timestamp: new Date(),
-                    thumbnail: {url: client.user.displayAvatarURL({dynamic: true})},
+                    thumbnail: { url: client.user.displayAvatarURL({ dynamic: true }) },
                     author: {
                         name: message.author.tag,
-                        icon_url: message.author.displayAvatarURL({dynamic: true}),
+                        icon_url: message.author.displayAvatarURL({ dynamic: true }),
                     }
                 }]
             });

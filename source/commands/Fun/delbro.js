@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "delbrosis",
     run: async (client, message, args) => {
     let db = client.data.get(`family_${message.author.id}`) || {

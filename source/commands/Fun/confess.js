@@ -1,5 +1,6 @@
-const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
-module.exports = {
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+
+export default {
     name: "confess",
     description: "Confessez-vous en utilisant cette commande!",
     aliases: ["cf", 'conf'],

@@ -1,11 +1,13 @@
-const Discord = require("discord.js");
-const { Clarity } = require('../../structures/client/index');
-const fs = require('fs');
-const { exec } = require("child_process")
-module.exports = {
+import Clarity from "../../structures/client/index.js";
+import Discord from "discord.js";
+
+import { exec } from 'child_process';
+import fs from 'fs';
+
+export default {
   name: "theme",
   description: "Change the embed theme of the bot",
- category: "🤖〢Bot",
+  category: "🤖〢Bot",
   /**
    * @param {Clarity} client
    */
@@ -33,13 +35,13 @@ module.exports = {
           }
           console.log('Le thème du bot a été mis a jour');
 
-          let msg = await message.chanel.send({content: "Changement du thème en cours"})
+          let msg = await message.chanel.send({ content: "Changement du thème en cours" })
           exec(`pm2 restart gestion_${client.user.id}`, () => false)
           msg.edit({ content: "Le thème du bot a été mis à jour" });
+        })
       })
-      })
+    }
+  }
 }
-  }
-  }
 
 

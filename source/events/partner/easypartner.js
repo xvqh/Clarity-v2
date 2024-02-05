@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require('discord.js');
+import { EmbedBuilder } from 'discord.js';
 
-module.exports = {
+export default {
     name: "messageCreate",
     run: async (client, message) => {
         if (message.author.bot) return;
@@ -29,7 +29,7 @@ module.exports = {
         client.data.set(`userPartners_${message.guild.id}_${message.author.id}`, partnerNum);
 
         let embed = new EmbedBuilder()
-            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true })})
+            .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
             .setDescription(message.content)
             .setTimestamp()
             .setFooter(client.config.footer)

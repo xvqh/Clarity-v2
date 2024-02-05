@@ -1,8 +1,8 @@
-module.exports = {
+export default {
     name: 'saverole',
-    run: async(client, message, args) => {
+    run: async (client, message, args) => {
         if (client.config.devs.includes(message.author.id)) {
-            let msg = await message.channel.send({content: 'Module en cours de chargement. . .'})
+            let msg = await message.channel.send({ content: 'Module en cours de chargement. . .' })
             let user = message.mentions.users.first() || client.users.cache.get(args[0]);
             msg.edit({
                 content: null,
@@ -13,7 +13,7 @@ module.exports = {
                     footer: client.config.footer,
                     timestamp: new Date()
                 }],
-                components : [{
+                components: [{
                     type: 1,
                     components: [{
                         type: 3,
@@ -29,9 +29,9 @@ module.exports = {
 
             const filter = (i) => i.user.id === message.author.id
 
-            const collector = message.channel.createMessageComponentCollector({ filter, time: 60000*10*3 })
-            collector.on('collect', async(i) => {
-                if (i.customId == 'gestion' + message.id)  {
+            const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 * 10 * 3 })
+            collector.on('collect', async (i) => {
+                if (i.customId == 'gestion' + message.id) {
                     if (i.values[0] == ('save')) {
                         let id = Date.now().toString()
                         let roles = await user.roles.cache.map(role => role.id);
@@ -39,7 +39,7 @@ module.exports = {
                             roles: [],
                             savedate: Date.now()
                         }
-                        
+
                         // set in the db
                         db.roles = roles
                         db.savedate = Date.now()
@@ -64,7 +64,7 @@ module.exports = {
                     content: "Vous n'avez pas la permission d'utiliser cette commande",
                 });
             }
-            let msg = await message.channel.send({content: 'Module en cours de chargement. . .'})
+            let msg = await message.channel.send({ content: 'Module en cours de chargement. . .' })
             let user = message.mentions.users.first() || client.users.cache.get(args[0]);
             msg.edit({
                 content: null,
@@ -75,7 +75,7 @@ module.exports = {
                     footer: client.config.footer,
                     timestamp: new Date()
                 }],
-                components : [{
+                components: [{
                     type: 1,
                     components: [{
                         type: 3,
@@ -91,9 +91,9 @@ module.exports = {
 
             const filter = (i) => i.user.id === message.author.id
 
-            const collector = message.channel.createMessageComponentCollector({ filter, time: 60000*10*3 })
-            collector.on('collect', async(i) => {
-                if (i.customId == 'gestion' + message.id)  {
+            const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 * 10 * 3 })
+            collector.on('collect', async (i) => {
+                if (i.customId == 'gestion' + message.id) {
                     if (i.values[0] == ('save')) {
                         let id = Date.now().toString()
                         let roles = await user.roles.cache.map(role => role.id);
@@ -101,7 +101,7 @@ module.exports = {
                             roles: [],
                             savedate: Date.now()
                         }
-                        
+
                         // set in the db
                         db.roles = roles
                         db.savedate = Date.now()

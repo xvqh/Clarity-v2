@@ -1,96 +1,97 @@
-const Discord = require("discord.js")
-const ms = require('ms')
-module.exports = {
+import Discord from "discord.js";
+import ms from 'ms';
+
+export default {
     name: "embed",
-    run: async(client, message, args) => {
+    run: async (client, message, args) => {
         const isOwn = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
             [message.author.id]
-          );
-          if (!isOwn) {
+        );
+        if (!isOwn) {
             return message.reply({
-              content: "Vous n'avez pas la permission d'utiliser cette commande",
+                content: "Vous n'avez pas la permission d'utiliser cette commande",
             });
-          }
+        }
         let embed = new Discord.EmbedBuilder()
-        .setDescription("** **")
+            .setDescription("** **")
 
         const row = new Discord.ActionRowBuilder()
-        .addComponents(
-            new Discord.StringSelectMenuBuilder()
-            .setCustomId("embed_build" + message.id)
-            .setPlaceholder("Choisissez une option")
-            .addOptions([
-                {
-                    label: "Titre",
-                    value: "title_" + message.id,
-                    emoji: "✏️"
-                },
-                {
-                    label: "Description",
-                    value: "description_" + message.id,
-                    emoji: "💬"
-                },
-                {
-                    label: "Ajouter un Field", 
-                    value: "fields_"+ message.id, 
-                    emoji: "➕"
-                },
-                {
-                    label: "Retirer un Field", 
-                    value: "delfields_" + message.id,
-                    emoji: "➖"
-                },
-                {
-                    label: "Thumbnail",
-                    value: "thumbnail_" + message.id,
-                    emoji: "🏷️"
-                },{
-                    label: "Image",
-                    value: "image_" + message.id,
-                    emoji: "🖼️"
-                },{
-                    label: "Couleur",
-                    value: "couleur_" + message.id,
-                    emoji: "🔴"
-                },{
-                    label: "Footer",
-                    value: "footer_" + message.id,
-                    emoji: "🔻"
-                },{
-                    label: "Auteur",
-                    value: "auteur_" + message.id,
-                    emoji: "🔸"
-                },{
-                    label: "Timestamp",
-                    value: "timestamp_" + message.id,
-                    emoji: "🕐"
-                }, {
-                    label: "URL",
-                    value: "url_" + message.id,
-                    emoji: "🔗"
-                }
-            ])
-        )
+            .addComponents(
+                new Discord.StringSelectMenuBuilder()
+                    .setCustomId("embed_build" + message.id)
+                    .setPlaceholder("Choisissez une option")
+                    .addOptions([
+                        {
+                            label: "Titre",
+                            value: "title_" + message.id,
+                            emoji: "✏️"
+                        },
+                        {
+                            label: "Description",
+                            value: "description_" + message.id,
+                            emoji: "💬"
+                        },
+                        {
+                            label: "Ajouter un Field",
+                            value: "fields_" + message.id,
+                            emoji: "➕"
+                        },
+                        {
+                            label: "Retirer un Field",
+                            value: "delfields_" + message.id,
+                            emoji: "➖"
+                        },
+                        {
+                            label: "Thumbnail",
+                            value: "thumbnail_" + message.id,
+                            emoji: "🏷️"
+                        }, {
+                            label: "Image",
+                            value: "image_" + message.id,
+                            emoji: "🖼️"
+                        }, {
+                            label: "Couleur",
+                            value: "couleur_" + message.id,
+                            emoji: "🔴"
+                        }, {
+                            label: "Footer",
+                            value: "footer_" + message.id,
+                            emoji: "🔻"
+                        }, {
+                            label: "Auteur",
+                            value: "auteur_" + message.id,
+                            emoji: "🔸"
+                        }, {
+                            label: "Timestamp",
+                            value: "timestamp_" + message.id,
+                            emoji: "🕐"
+                        }, {
+                            label: "URL",
+                            value: "url_" + message.id,
+                            emoji: "🔗"
+                        }
+                    ])
+            )
         const row2 = new Discord.ActionRowBuilder()
-        .addComponents(
-            new Discord.ButtonBuilder()
-            .setCustomId("buttonenable_" + message.id)
-            .setEmoji("✅")
-            .setStyle(2),
-            new Discord.ButtonBuilder()
-            .setCustomId("buttoncopy_" + message.id)
-            .setEmoji("📑")
-            .setStyle(2),
-            new Discord.ButtonBuilder()
-            .setCustomId("buttoncancel_" + message.id)
-            .setEmoji("❌")
-            .setStyle(1)
-        )
+            .addComponents(
+                new Discord.ButtonBuilder()
+                    .setCustomId("buttonenable_" + message.id)
+                    .setEmoji("✅")
+                    .setStyle(2),
+                new Discord.ButtonBuilder()
+                    .setCustomId("buttoncopy_" + message.id)
+                    .setEmoji("📑")
+                    .setStyle(2),
+                new Discord.ButtonBuilder()
+                    .setCustomId("buttoncancel_" + message.id)
+                    .setEmoji("❌")
+                    .setStyle(1)
+            )
 
-        let msg = await message.channel.send({embeds: [embed], components: [row, row2]})
+        let msg = await message.channel.send({ embeds: [embed], components: [row, row2] })
         const collector = message.channel.createMessageComponentCollector({ filter: m => m.user.id == message.author.id, componentType: Discord.ComponentType.StringSelect, time: ms("2m") })
-        collector.on("collect", async(interaction) => {
+        collector.on("collect", async (interaction) => {
             if (interaction.values[0] === "title_" + message.id) {
                 interaction.reply("Quel est **le titre** que vous-voulez ajouter à votre embed ?")
                 message.channel.awaitMessages({ filter: m => m.author.id === message.author.id, max: 1, time: ms('2m'), errors: ["time"] }).then((collected) => {
@@ -109,9 +110,9 @@ module.exports = {
                     msg.edit({ embeds: [embed] });
                 }).catch(async err => message.channel.send("Vous avez pris trop de temps pour communiquer."))
             }
-            if (interaction.values[0] === "thumbnail_"+ message.id) {
+            if (interaction.values[0] === "thumbnail_" + message.id) {
                 interaction.reply("Quel est **le thumbnail** que vous-voulez ajouter à votre embed ?")
-                
+
                 message.channel.awaitMessages({ filter: m => m.author.id === message.author.id, max: 1, time: ms('2m'), errors: ["time"] }).then((collected) => {
                     let image = collected.first().attachments.first()?.url;
                     if (!image) {
@@ -143,7 +144,7 @@ module.exports = {
             if (interaction.values[0] === "couleur_" + message.id) {
                 interaction.reply("Quel est **la couleur** que vous-voulez ajouter à votre embed ?")
                 message.channel.awaitMessages({ filter: m => m.author.id === message.author.id, max: 1, time: ms('2m'), errors: ["time"] }).then((collected) => {
-                    const content = collected.first().content.toLowerCase(); 
+                    const content = collected.first().content.toLowerCase();
 
                     const colors = {
                         "noir": "#000000",
@@ -178,7 +179,7 @@ module.exports = {
                         embed.setColor(selectedColor);
                         msg.edit({ embeds: [embed] });
                     } else {
-                        collected.first().delete().catch(() => {});
+                        collected.first().delete().catch(() => { });
                         embed.setColor(content);
                         msg.edit({ embeds: [embed] });
                     }
@@ -230,38 +231,38 @@ module.exports = {
                     }
                 }).catch(async err => message.channel.send("Vous avez pris trop de temps pour communiquer."))
             }
-            if (interaction.values[0] === "fields_" + message.id){
+            if (interaction.values[0] === "fields_" + message.id) {
                 interaction.reply("Quel est **le titre** du field que vous voulez ajouter à l'embed.");
-                    message.channel
-                        .awaitMessages({
-                            filter: (m) => m.author.id === message.author.id,
-                            max: 1,
-                            time: ms('2m'),
-                            errors: ["time"],
-                        })
-                        .then(async (collected) => {
-                            if (collected.first().content.length > 28) return message.channel.send(await client.lang(`embed.long`));
-                            interaction.deleteReply();
-                            collected.first().delete();
-                            message.channel.send("Quel est **la description** du field que vous voulez ajouter à l'embed.");
-                            message.channel
-                                .awaitMessages({
-                                    filter: (m) => m.author.id === message.author.id,
-                                    max: 1,
-                                    time: ms('2m'),
-                                    errors: ["time"],
-                                })
-                                .then(async (collect2) => {
-                                    if (!message.deleted) message.delete();
-                                    collect2.first().delete();
-                                    embed.addFields({ name: `${collected.first().content}`, value: `${collect2.first().content}` });
-                                    msg.edit({ embeds: [embed] });
-                                })
-                                .catch(async (err) => message.channel.send("Vous avez pris trop de temps pour communiquer."));
-                        })
-                        .catch(async (err) => message.channel.send("Vous avez pris trop de temps pour communiquer."));
+                message.channel
+                    .awaitMessages({
+                        filter: (m) => m.author.id === message.author.id,
+                        max: 1,
+                        time: ms('2m'),
+                        errors: ["time"],
+                    })
+                    .then(async (collected) => {
+                        if (collected.first().content.length > 28) return message.channel.send(await client.lang(`embed.long`));
+                        interaction.deleteReply();
+                        collected.first().delete();
+                        message.channel.send("Quel est **la description** du field que vous voulez ajouter à l'embed.");
+                        message.channel
+                            .awaitMessages({
+                                filter: (m) => m.author.id === message.author.id,
+                                max: 1,
+                                time: ms('2m'),
+                                errors: ["time"],
+                            })
+                            .then(async (collect2) => {
+                                if (!message.deleted) message.delete();
+                                collect2.first().delete();
+                                embed.addFields({ name: `${collected.first().content}`, value: `${collect2.first().content}` });
+                                msg.edit({ embeds: [embed] });
+                            })
+                            .catch(async (err) => message.channel.send("Vous avez pris trop de temps pour communiquer."));
+                    })
+                    .catch(async (err) => message.channel.send("Vous avez pris trop de temps pour communiquer."));
             }
-            if (interaction.values[0] === "delfields_" + message.id){
+            if (interaction.values[0] === "delfields_" + message.id) {
                 if (embed.fields.length < 1) return message.channel.send("Il n'y a aucun field.");
                 interaction.reply("Quel est le numéro du field à retiré ?");
                 message.channel.awaitMessages({ filter: m => m.author.id === message.author.id, max: 1, time: ms('2m'), errors: ["time"] }).then(async (co) => {
@@ -330,7 +331,7 @@ module.exports = {
                     });
             }
 
-                    
+
             else if (value === "buttondisable_" + message.id) {
                 msg.delete();
 
@@ -349,4 +350,4 @@ module.exports = {
         }
         )
     }
-    }
+}

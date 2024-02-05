@@ -1,10 +1,11 @@
-const { EmbedBuilder ,ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } = require("discord.js");
-module.exports = {
+import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } from "discord.js";
+
+export default {
     name: "antitoxicity",
     category: "Anti-raid",
     run: async (client, message, args) => {
-        if(client.config.devs.includes(message.author.id)) {
-            let msg = await message.channel.send({content: "Chargement du module en cours . . . "})
+        if (client.config.devs.includes(message.author.id)) {
+            let msg = await message.channel.send({ content: "Chargement du module en cours . . . " })
             await update(client, msg, message)
         } else {
             const isOwn = await client.db.oneOrNone(
@@ -16,7 +17,7 @@ module.exports = {
                     content: "Vous n'avez pas la permission d'utiliser cette commande",
                 });
             }
-            let msg = await message.channel.send({content: "Chargement du module en cours . . . "})
+            let msg = await message.channel.send({ content: "Chargement du module en cours . . . " })
             await update(client, msg, message)
         }
     }
@@ -37,7 +38,7 @@ async function update(client, msg, message) {
         .setColor(parseInt(client.color.replace("#", ""), 16))
         .setTimestamp(new Date())
         .setFooter({ text: client.config.footer.text })
-        .setAuthor({name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
+        .setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
         .setTitle("Configuration du systeme antitoxicite " + message.guild.name)
         .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
         .addFields(
@@ -73,42 +74,42 @@ async function update(client, msg, message) {
                 })
         )
 
-    await msg.edit({embeds: [antitoxicityEmbed], components: [settings]})
+    await msg.edit({ embeds: [antitoxicityEmbed], components: [settings] })
 
     const filter = (i) => i.user.id === message.author.id
 
 
-    const collector = message.channel.createMessageComponentCollector({filter, time: 60000})
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 })
 
     collector.on("collect", async i => {
 
-        if(i.customId === "antitoxicity" + message.id) {
+        if (i.customId === "antitoxicity" + message.id) {
 
-            if(i.values[0] === "status") {
-                if(data.hasOwnProperty('status')) {
+            if (i.values[0] === "status") {
+                if (data.hasOwnProperty('status')) {
                     data.status = !data.status
                     const currentStatus = data.status;
                     const newStatus = !currentStatus;
                     data.status = newStatus
                     await client.data.set(`antiraid_${message.guild.id}`, data)
-                    await msg.edit({embeds: [antitoxicityEmbed], components: [settings]})
+                    await msg.edit({ embeds: [antitoxicityEmbed], components: [settings] })
                 }
-            } else if(i.values[0] === "logs") {
+            } else if (i.values[0] === "logs") {
 
-                if(data.hasOwnProperty('logs_enabled')) {
+                if (data.hasOwnProperty('logs_enabled')) {
                     data.logs_enabled = !data.logs_enabled
                     const currentStatus = data.logs_enabled;
                     const newStatus = !currentStatus;
                     data.logs_enabled = newStatus
                     await client.data.set(`antitoxicity_${message.guild.id}`, data)
-                    await msg.edit({embeds: [antitoxicityEmbed], components: [settings]})
+                    await msg.edit({ embeds: [antitoxicityEmbed], components: [settings] })
                 }
-            } else if(i.values[0] === "logschannel") {
+            } else if (i.values[0] === "logschannel") {
 
                 msg.edit({
                     components: [{
                         type: 1,
-                        components : [{
+                        components: [{
                             custom_id: 'logsc' + message.id,
                             type: 8,
                             label: 'Logs',
@@ -116,22 +117,22 @@ async function update(client, msg, message) {
                         }]
                     }]
                 })
-            } else if(i.values[0] === "whitelist") {
+            } else if (i.values[0] === "whitelist") {
 
-                if(data.hasOwnProperty('wl_status')) {
+                if (data.hasOwnProperty('wl_status')) {
                     data.wl_status = !data.wl_status
                     const currentStatus = data.wl_status;
                     const newStatus = !currentStatus;
                     data.wl_status = newStatus
                     await client.data.set(`antitoxicity_${message.guild.id}`, data)
-                    await msg.edit({embeds: [antitoxicityEmbed], components: [settings]})
+                    await msg.edit({ embeds: [antitoxicityEmbed], components: [settings] })
                 }
-            } else if(i.values[0] === "whitelistedusers") {
+            } else if (i.values[0] === "whitelistedusers") {
 
                 msg.edit({
                     components: [{
                         type: 1,
-                        components : [{
+                        components: [{
                             custom_id: 'wlusersc' + message.id,
                             type: 5,
                             label: 'Whitelisted Users',
@@ -139,12 +140,12 @@ async function update(client, msg, message) {
                         }]
                     }]
                 })
-            } else if(i.values[0] === "whitelistedroles") {
+            } else if (i.values[0] === "whitelistedroles") {
 
                 msg.edit({
                     components: [{
                         type: 1,
-                        components : [{
+                        components: [{
                             custom_id: 'wlrolesc' + message.id,
                             type: 5,
                             label: 'Whitelisted Roles',
@@ -158,25 +159,25 @@ async function update(client, msg, message) {
 
     client.on('interactionCreate', async (i) => {
 
-        if(i.customId === 'logsc' + message.id) {
-            if(i.values[0] === 'Logs') {
+        if (i.customId === 'logsc' + message.id) {
+            if (i.values[0] === 'Logs') {
                 let data = client.data.get(`antitoxicity_${message.guild.id}`) || {
                     status: false,
-                        logs: null,
-                        logs_enabled: false,
-                        wl_status: false,
-                        wl_users: [],
-                        wl_roles: []
+                    logs: null,
+                    logs_enabled: false,
+                    wl_status: false,
+                    wl_users: [],
+                    wl_roles: []
                 }
                 const channel = i.values[0];
-                if(data.hasOwnProperty('logs')){
+                if (data.hasOwnProperty('logs')) {
                     data.logs = channel
                     await client.data.set(`antitoxicity_${message.guild.id}`, data)
-                   await msg.edit({embeds: [antitoxicityEmbed], components: [settings]})
+                    await msg.edit({ embeds: [antitoxicityEmbed], components: [settings] })
                 }
             }
-        } else if(i.customId === 'wlusersc' + message.id) {
-            if(i.values[0] === 'Whitelisted Users') {
+        } else if (i.customId === 'wlusersc' + message.id) {
+            if (i.values[0] === 'Whitelisted Users') {
                 let data = client.data.get(`antitoxicity_${message.guild.id}`) || {
                     status: false,
                     logs: null,
@@ -186,14 +187,14 @@ async function update(client, msg, message) {
                     wl_roles: []
                 }
                 const user = i.values[0];
-                if(data.hasOwnProperty('wl_users')){
+                if (data.hasOwnProperty('wl_users')) {
                     data.wl_users = user
                     await client.data.set(`antitoxicity_${message.guild.id}`, data)
-                    await msg.edit({embeds: [antitoxicityEmbed], components: [settings]})
+                    await msg.edit({ embeds: [antitoxicityEmbed], components: [settings] })
                 }
             }
-        } else if(i.customId === 'wlrolesc' + message.id) {
-            if(i.values[0] === 'Whitelisted Roles') {
+        } else if (i.customId === 'wlrolesc' + message.id) {
+            if (i.values[0] === 'Whitelisted Roles') {
                 let data = client.data.get(`antitoxicity_${message.guild.id}`) || {
                     status: false,
                     logs: null,
@@ -203,10 +204,10 @@ async function update(client, msg, message) {
                     wl_roles: []
                 }
                 const role = i.values[0];
-                if(data.hasOwnProperty('wl_roles')){
+                if (data.hasOwnProperty('wl_roles')) {
                     data.wl_roles = role
                     await client.data.set(`antitoxicity_${message.guild.id}`, data)
-                    await msg.edit({embeds: [antitoxicityEmbed], components: [settings]})
+                    await msg.edit({ embeds: [antitoxicityEmbed], components: [settings] })
                 }
             }
         }

@@ -1,6 +1,6 @@
-module.exports = {
+export default {
     name: 'prisonclear',
-    run: async(client , message, args) => {
+    run: async (client, message, args) => {
         const isOwn = await client.db.oneOrNone(
             `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
             [message.author.id]

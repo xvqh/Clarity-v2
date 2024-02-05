@@ -1,11 +1,11 @@
-const { Client, Message } = require("discord.js");
+import { Client, Message } from "discord.js";
 
 /**
  * @param {Client} client
  * @param {Message} message
  * @param {string[]} args
  */
-module.exports = {
+export default {
   name: "afk",
   description: "AFK",
  category: "🤖〢Bot",

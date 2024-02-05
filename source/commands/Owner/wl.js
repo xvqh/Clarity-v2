@@ -1,11 +1,10 @@
-const Discord = require("discord.js");
-const { Clarity } = require("../../structures/client/index");
-const {EmbedBuilder, ActionRowBuilder, ButtonBuilder} = require("discord.js");
+import Clarity from "../../structures/client/index.js";
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from "discord.js";
 
-module.exports = {
+export default {
   name: "wl",
   aliases: ["whitelist"],
-category: "⚙️〢Owner",
+  category: "⚙️〢Owner",
   /**
    * @param {Clarity} client
    */
@@ -34,27 +33,27 @@ category: "⚙️〢Owner",
       const pageCount = Math.ceil(db.users.length / 10)
 
       const embed = new EmbedBuilder()
-          .setTitle('Liste des utilisateurs whitelist')
-          .setColor(parseInt(client.color.replace("#", ""), 16))
-          .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text})
-          .setTimestamp()
+        .setTitle('Liste des utilisateurs whitelist')
+        .setColor(parseInt(client.color.replace("#", ""), 16))
+        .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text })
+        .setTimestamp()
       for (let i = 0; i < db.users.length; i++) {
         if (i > 9) break
         embed.addFields({ name: `${i + 1}. ${client.users.cache.get(db.users[i])?.displayName}`, value: `ID: ${db.users[i]}` })
       }
       const row = new ActionRowBuilder()
-          .addComponents(
-              new ButtonBuilder()
-                  .setCustomId('previous')
-                  .setLabel('<<')
-                  .setStyle(2)
-                  .setDisabled(currentPage === 1),
-              new ButtonBuilder()
-                  .setCustomId('next')
-                  .setLabel('>>')
-                  .setStyle(2)
-                  .setDisabled(currentPage === pageCount ? currentPage === pageCount : currentPage === 1)
-          )
+        .addComponents(
+          new ButtonBuilder()
+            .setCustomId('previous')
+            .setLabel('<<')
+            .setStyle(2)
+            .setDisabled(currentPage === 1),
+          new ButtonBuilder()
+            .setCustomId('next')
+            .setLabel('>>')
+            .setStyle(2)
+            .setDisabled(currentPage === pageCount ? currentPage === pageCount : currentPage === 1)
+        )
       await message.reply({ embeds: [embed], components: [row] })
 
       //     collector
@@ -65,10 +64,10 @@ category: "⚙️〢Owner",
         if (i.customId === 'next') {
           currentPage++
           const embed = new EmbedBuilder()
-              .setTitle('Liste des utilisateurs whitelist')
-              .setColor(parseInt(client.color.replace("#", ""), 16))
-              .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text})
-              .setTimestamp()
+            .setTitle('Liste des utilisateurs whitelist')
+            .setColor(parseInt(client.color.replace("#", ""), 16))
+            .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text })
+            .setTimestamp()
           for (let i = 0; i < db.users.length; i++) {
             if (i > (currentPage - 1) * 10) break
             embed.addFields({ name: `${i + 1}. ${client.users.cache.get(db.users[i])?.displayName}`, value: `ID: ${db.users[i]}` })
@@ -78,10 +77,10 @@ category: "⚙️〢Owner",
         if (i.customId === 'previous') {
           currentPage--
           const embed = new EmbedBuilder()
-              .setTitle('Liste des utilisateurs whitelist')
-              .setColor(parseInt(client.color.replace("#", ""), 16))
-              .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text})
-              .setTimestamp()
+            .setTitle('Liste des utilisateurs whitelist')
+            .setColor(parseInt(client.color.replace("#", ""), 16))
+            .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text })
+            .setTimestamp()
           for (let i = 0; i < db.users.length; i++) {
             if (i > (currentPage - 1) * 10) break
             embed.addFields({ name: `${i + 1}. ${client.users.cache.get(db.users[i])?.displayName}`, value: `ID: ${db.users[i]}` })
@@ -97,15 +96,15 @@ category: "⚙️〢Owner",
       db.date = new Date
       client.data2.set(`whitelist_${message.guild.id}`, db)
       const success = new EmbedBuilder()
-          .setColor(parseInt(client.color.replace("#", ""), 16))
-          .setDescription(`L'utilisateur ${user.username} a bien été whitelist`)
-          .addFields( {
-            name: 'Autheur',
-            value: `${message.author.username}`
-          })
-          .setFooter(client.config.footer)
-          .setAuthor({name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
-      await message.reply({ embeds: [success] , flags: 64})
+        .setColor(parseInt(client.color.replace("#", ""), 16))
+        .setDescription(`L'utilisateur ${user.username} a bien été whitelist`)
+        .addFields({
+          name: 'Autheur',
+          value: `${message.author.username}`
+        })
+        .setFooter(client.config.footer)
+        .setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+      await message.reply({ embeds: [success], flags: 64 })
     }
 
   },

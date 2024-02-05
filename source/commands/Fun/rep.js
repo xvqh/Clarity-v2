@@ -1,5 +1,6 @@
-const ms = require("parse-ms")
-module.exports = {
+import ms from 'parse-ms';
+
+export default {
     name: "rep",
     description: "Repost un message",
     category: "Fun",

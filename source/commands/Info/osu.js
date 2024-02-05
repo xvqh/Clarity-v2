@@ -1,16 +1,17 @@
-const osu = require('node-osu');
+import osu from 'node-osu';
+
 const api = new osu.Api("575e4773ca90422384900f578163ed7d3ec12e97", {
     notFoundAsError: true,
     completeScores: false
 })
-module.exports={
-    name:'osu',
-    description:'Get osu stats.',
-   category: "💻〢Informations",
+export default {
+    name: 'osu',
+    description: 'Get osu stats.',
+    category: "💻〢Informations",
     run: async (client, message, args) => {
-        let color =  parseInt(client.color.replace("#", ""), 16);
+        let color = parseInt(client.color.replace("#", ""), 16);
         let username = args[0]
-        if (!args[0]) message.channel.send({content: "Veuillez fournir un pseudonyme d\'utilisateur valide !"})
+        if (!args[0]) message.channel.send({ content: "Veuillez fournir un pseudonyme d\'utilisateur valide !" })
         api.getUser({ u: username }).then(async (user) => {
             const osu = await message.channel.send({
                 embeds: [{
@@ -37,10 +38,10 @@ module.exports={
                         value: `${user.accuracyFormatted}`,
                         inline: true
                     }],
-                    thumbnail: {url: `http://s.ppy.sh/a/${user.id}}`},
-                    image: {url: `http://s.ppy.sh/a/${user.id}}`}
+                    thumbnail: { url: `http://s.ppy.sh/a/${user.id}}` },
+                    image: { url: `http://s.ppy.sh/a/${user.id}}` }
                 }]
             })
-    })
+        })
     }
 }

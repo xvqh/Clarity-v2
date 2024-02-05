@@ -1,7 +1,8 @@
-const Discord = require("discord.js")
-const {EmbedBuilder} = require("discord.js")
+import Discord from "discord.js";
+import { EmbedBuilder } from "discord.js";
+
 const devN = [];
-module.exports = {
+export default {
     name: "botinfo",
    category: "💻〢Informations",
     aliases: ["botinfo"],

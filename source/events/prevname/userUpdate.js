@@ -1,6 +1,6 @@
-module.exports = {
+export default {
     name: "userUpdate",
-    run: async(client, oldUser, newUser) => {
+    run: async (client, oldUser, newUser) => {
         // if (oldUser.username !== newUser.username) {
         //     const tableN = `clarity_${oldUser.id}_prevname`
         //     const tableE = await client.db.oneOrNone(`SELECT to_regclass($1::text)`, [tableN])
@@ -20,7 +20,7 @@ module.exports = {
         //         INSERT INTO clarity_${oldUser.id}_prevname (prevname, date) VALUES ($1, $2)
         //     `, [newUser.username, new Date()])
         //     }
-           
+
         // }
     }
 }

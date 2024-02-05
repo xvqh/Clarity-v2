@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     dev: '<:verifiedbotdeveloper:1175195754059550851>',
     earlydev: "<a:6587earlyverifiedbotdevelopera:1175050056185954344>",
     partner: "<a:8773partneredserverownera:1175050156861820938>",

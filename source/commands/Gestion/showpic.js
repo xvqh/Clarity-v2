@@ -1,9 +1,9 @@
-module.exports = {
+export default {
     name: 'showpic',
     category: 'Gestion',
-    run: async(client, message, args) => {
+    run: async (client, message, args) => {
         if (client.config.devs.includes(message.author.id)) {
-            let msg = await message.channel.send({content: 'Module en cours de chargement. . .'})
+            let msg = await message.channel.send({ content: 'Module en cours de chargement. . .' })
             await update(client, msg, message)
         } else {
             const isOwn = await client.db.oneOrNone(
@@ -15,14 +15,14 @@ module.exports = {
                     content: "Vous n'avez pas la permission d'utiliser cette commande",
                 });
             }
-        let msg = await message.channel.send({content: 'Chargement du module en cours. . .'})
-        await update(client, msg, message)
+            let msg = await message.channel.send({ content: 'Chargement du module en cours. . .' })
+            await update(client, msg, message)
         }
     }
 }
 
 async function update(client, msg, message) {
-    let data = await client.data.get(`showpic_${message.guild.id}`) || { 
+    let data = await client.data.get(`showpic_${message.guild.id}`) || {
         status: false,
         pfp: null,
         bfp: null,
@@ -31,12 +31,12 @@ async function update(client, msg, message) {
         content: null,
         embeds: [{
             title: message.guild.name + " " + "ShowPic",
-            footer:  {text: client.config.footer.text},
+            footer: { text: client.config.footer.text },
             color: parseInt(client.color.replace("#", ""), 16),
             timestamp: new Date().toISOString(),
             fields: [{
                 name: 'Statut',
-                value: data.status? '✅ Activer' : '❌ Désactiver',
+                value: data.status ? '✅ Activer' : '❌ Désactiver',
                 inline: true
             }, {
                 name: 'PFP',
@@ -47,7 +47,7 @@ async function update(client, msg, message) {
                 value: `${message.guild.channels.cache.get(data?.bfp) ? message.guild.channels.cache.get(data?.bfp) : 'Non Configurer'}`,
                 inline: true
             }]
-        }],components: [{
+        }], components: [{
             type: 1,
             components: [{
                 type: 3,
@@ -76,14 +76,14 @@ async function update(client, msg, message) {
         filter: (i) => i.user.id === message.author.id
     })
 
-    collector.on('collect', async(i) => {
+    collector.on('collect', async (i) => {
         i.deferUpdate();
-        if (i.customId ==='showpic' + message.id) {
+        if (i.customId === 'showpic' + message.id) {
             if (i.values[0] === 'configpfp') {
                 msg.edit({
                     components: [{
                         type: 1,
-                        components : [{
+                        components: [{
                             custom_id: 'pfpc' + message.id,
                             type: 8,
                             label: 'Channel drop pp',
@@ -96,7 +96,7 @@ async function update(client, msg, message) {
                 msg.edit({
                     components: [{
                         type: 1,
-                        components : [{
+                        components: [{
                             custom_id: 'bfpc' + message.id,
                             type: 8,
                             label: 'Channel drop bfp',
@@ -108,12 +108,12 @@ async function update(client, msg, message) {
         }
 
         if (i.customId === 'status' + message.id) {
-            let db = await client.data.get(`showpic_${message.guild.id}`) || { 
+            let db = await client.data.get(`showpic_${message.guild.id}`) || {
                 status: false,
                 pfp: null,
                 bfp: null,
             }
-            if(db.hasOwnProperty('status')){
+            if (db.hasOwnProperty('status')) {
                 const currentStatus = db.status;
                 const newStatus = !currentStatus;
                 db.status = newStatus;
@@ -129,11 +129,11 @@ async function update(client, msg, message) {
                     content: null,
                     embeds: [{
                         title: message.guild.name + " " + "ShowPic",
-                        footer:  {text: client.config.footer.text},
+                        footer: { text: client.config.footer.text },
                         timestamp: new Date().toISOString(),
                         fields: [{
                             name: 'Statut',
-                            value: db.status? '✅ Activer' : '❌ Désactiver',
+                            value: db.status ? '✅ Activer' : '❌ Désactiver',
                             inline: true
                         }, {
                             name: 'PFP',
@@ -144,7 +144,7 @@ async function update(client, msg, message) {
                             value: `${message.guild.channels.cache.get(db?.bfp) ? message.guild.channels.cache.get(db?.bfp) : 'Non Configurer'}`,
                             inline: true
                         }]
-                    }],components: [{
+                    }], components: [{
                         type: 1,
                         components: [{
                             type: 3,
@@ -171,9 +171,9 @@ async function update(client, msg, message) {
             }
         }
     })
-    client.on('interactionCreate', async(i) => {
+    client.on('interactionCreate', async (i) => {
         if (i.customId === 'pfpc' + message.id) {
-            let db = await client.data.get(`showpic_${message.guild.id}`) || { 
+            let db = await client.data.get(`showpic_${message.guild.id}`) || {
                 status: false,
                 pfp: null,
                 bfp: null,
@@ -184,11 +184,11 @@ async function update(client, msg, message) {
                 content: null,
                 embeds: [{
                     title: message.guild.name + " " + "ShowPic",
-                    footer:  {text: client.config.footer.text},
+                    footer: { text: client.config.footer.text },
                     timestamp: new Date().toISOString(),
                     fields: [{
                         name: 'Statut',
-                        value: db.status? '✅ Activer' : '❌ Désactiver',
+                        value: db.status ? '✅ Activer' : '❌ Désactiver',
                         inline: true
                     }, {
                         name: 'PFP',
@@ -199,7 +199,7 @@ async function update(client, msg, message) {
                         value: `${message.guild.channels.cache.get(db?.bfp) ? message.guild.channels.cache.get(db?.bfp) : 'Non Configurer'}`,
                         inline: true
                     }]
-                }],components: [{
+                }], components: [{
                     type: 1,
                     components: [{
                         type: 3,
@@ -225,7 +225,7 @@ async function update(client, msg, message) {
             });
         }
         if (i.customId === 'bfpc' + message.id) {
-            let db = await client.data.get(`showpic_${message.guild.id}`) || { 
+            let db = await client.data.get(`showpic_${message.guild.id}`) || {
                 status: false,
                 pfp: null,
                 bfp: null,
@@ -236,11 +236,11 @@ async function update(client, msg, message) {
                 content: null,
                 embeds: [{
                     title: message.guild.name + " " + "ShowPic",
-                    footer:  {text: client.config.footer.text},
+                    footer: { text: client.config.footer.text },
                     timestamp: new Date().toISOString(),
                     fields: [{
                         name: 'Statut',
-                        value: db.status? '✅ Activer' : '❌ Désactiver',
+                        value: db.status ? '✅ Activer' : '❌ Désactiver',
                         inline: true
                     }, {
                         name: 'PFP',
@@ -251,7 +251,7 @@ async function update(client, msg, message) {
                         value: `${message.guild.channels.cache.get(db?.bfp) ? message.guild.channels.cache.get(db?.bfp) : 'Non Configurer'}`,
                         inline: true
                     }]
-                }],components: [{
+                }], components: [{
                     type: 1,
                     components: [{
                         type: 3,

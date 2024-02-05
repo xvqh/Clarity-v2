@@ -1,8 +1,9 @@
-const { EmbedBuilder , ActionRowBuilder, ButtonBuilder} = require('discord.js')
-module.exports = {
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js';
+
+export default {
     name: 'blacklist',
     aliases: ['bl'],
-    run: async(client , message, args) => {
+    run: async (client, message, args) => {
         const isBuy = await client.functions.isBuy(client, message.author.id);
         if (!isBuy) {
             return message.reply({
@@ -27,7 +28,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('Liste des utilisateurs blacklist')
                 .setColor(parseInt(client.color.replace("#", ""), 16))
-                .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text})
+                .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text })
                 .setTimestamp()
             for (let i = 0; i < db.users.length; i++) {
                 if (i > 9) break
@@ -58,7 +59,7 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setTitle('Liste des utilisateurs blacklist')
                         .setColor(parseInt(client.color.replace("#", ""), 16))
-                        .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text})
+                        .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text })
                         .setTimestamp()
                     for (let i = 0; i < db.users.length; i++) {
                         if (i > (currentPage - 1) * 10) break
@@ -71,7 +72,7 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setTitle('Liste des utilisateurs blacklist')
                         .setColor(parseInt(client.color.replace("#", ""), 16))
-                        .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text})
+                        .setFooter({ text: `Page ${currentPage}/${Math.ceil(db.users.length / 10)} ` + client.config.footer.text })
                         .setTimestamp()
                     for (let i = 0; i < db.users.length; i++) {
                         if (i > (currentPage - 1) * 10) break
@@ -99,7 +100,7 @@ module.exports = {
                     value: `${message.author.username}`
                 })
                 .setFooter(client.config.footer)
-                .setAuthor({name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
+                .setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
 
             //  get all guilds
             const guilds = client.guilds.cache.map(guild => guild.name);
@@ -111,7 +112,7 @@ module.exports = {
                     member.ban({ reason: db.reason });
                 }
             }
-            await message.reply({ embeds: [success] , flags: 64})
+            await message.reply({ embeds: [success], flags: 64 })
 
 
         }

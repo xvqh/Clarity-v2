@@ -1,5 +1,4 @@
-const Discord = require("discord.js");
-module.exports = {
+export default {
     name: "presetconf",
     aliases: ["pconf"],
     category: "Fun",
@@ -17,7 +16,7 @@ module.exports = {
         }
         let msgg = await message.channel.send({ content: `Création de la **catégorie** de confessions en cours..` }).then(msg => {
             msg.delete();
-            message.guild.channels.create( {
+            message.guild.channels.create({
                 name: `${message.guild.name}・Confession`,
                 type: 4,
                 permissionOverwrites: [
@@ -36,29 +35,29 @@ module.exports = {
                     permissionOverwrites: [
                         {
                             id: message.guild.id,
-                           deny: ["SendMessages"],
-                        allow: ["ViewChannel"]
+                            deny: ["SendMessages"],
+                            allow: ["ViewChannel"]
                         },
                     ],
                 }).then(async (conf) => {
-                await conf.send({
-                    embeds: [{
-                        color: parseInt(client.color.replace("#", ""), 16),
-                        title: "Se confesser",
-                        description: "Cliquez sur le bouton ci-dessous pour vous confesser.",
-                        footer: client.config.footer
-                    }],
-                    components: [{
-                        type: 1,
+                    await conf.send({
+                        embeds: [{
+                            color: parseInt(client.color.replace("#", ""), 16),
+                            title: "Se confesser",
+                            description: "Cliquez sur le bouton ci-dessous pour vous confesser.",
+                            footer: client.config.footer
+                        }],
                         components: [{
-                            type: 2,
-                            label: "Se confesser",
-                            style: 2,
-                            custom_id: "newconfess",
-                            disabled: false,
+                            type: 1,
+                            components: [{
+                                type: 2,
+                                label: "Se confesser",
+                                style: 2,
+                                custom_id: "newconfess",
+                                disabled: false,
+                            }]
                         }]
-                    }]
-                })
+                    })
                     c.guild.channels.create({
                         name: '🕯️・Confession',
                         type: 0,
@@ -77,7 +76,7 @@ module.exports = {
             })
         })
         // envoie un mess en mp pour prevenir que la configuration est finie et le supprime 30sec apres
-       message.author.send({
+        message.author.send({
             content: `La configuration du systeme de confessions est finie.`,
         }).then((confirm) => {
             setTimeout(() => {

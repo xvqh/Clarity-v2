@@ -1,5 +1,6 @@
-const { exec } = require("child_process")
-module.exports = {
+import { exec } from 'child_process';
+
+export default {
     name: "update",
     description: "update le bot",
     run: async (client, message, args) => {

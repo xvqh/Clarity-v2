@@ -1,5 +1,6 @@
-const Discord = require('discord.js')
-module.exports = {
+import Discord from 'discord.js';
+
+export default {
     name: 'servers',
     description: 'Liste des serveurs',
     aliases: ['server'],

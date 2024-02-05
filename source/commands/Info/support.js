@@ -1,26 +1,26 @@
-const Discord = require('discord.js');
-const Clarity = require('../../structures/client/index');
+import Discord from "discord.js";
+import Clarity from "../../structures/client/index.js";
 
-module.exports = {
-    name: 'support', 
+export default {
+    name: 'support',
     aliases: [],
-   category: "💻〢Informations",
+    category: "💻〢Informations",
     /**
      * 
      * @param {Clarity} client 
      * @param {Discord.Message} message
      */
     run: async (client, message, args) => {
-     let color =  parseInt(client.color.replace("#", ""), 16);
-     message.channel.send({
-        embeds: [{
-            color: color,
-            title: `Support - ζ͜͡Clarity`,
-            description: `[\`Mon Support\`](https://discord.gg/devland)`
-        }
-        ]
-     })
-    
+        let color = parseInt(client.color.replace("#", ""), 16);
+        message.channel.send({
+            embeds: [{
+                color: color,
+                title: `Support - ζ͜͡Clarity`,
+                description: `[\`Mon Support\`](https://discord.gg/devland)`
+            }
+            ]
+        })
+
 
     }
 }

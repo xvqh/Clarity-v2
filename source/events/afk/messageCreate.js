@@ -1,11 +1,10 @@
-const { Client, Message } = require("discord.js");
-const Clarity = require("../../structures/client/index");
-const { EmbedBuilder } = require("discord.js");
+import { Client, Message } from "discord.js";
+
 /**
  * @param {Client} client
  * @param {Message} message
  */
-module.exports = {
+export default {
   name: "messageCreate",
   run: async (client, message) => {
     try {

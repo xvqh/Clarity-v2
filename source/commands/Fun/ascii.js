@@ -1,6 +1,6 @@
-const figlet = require("figlet")
+import figlet from 'figlet';
 
-module.exports = {
+export default {
     name: 'ascii',
     aliases: [],
     description:"Écrivez vos textes en ASCII",

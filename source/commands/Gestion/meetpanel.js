@@ -1,6 +1,6 @@
-module.exports = {
+export default {
     name: 'meetpanel',
-    run: async(client, message, args) => {
+    run: async (client, message, args) => {
         if (client.config.devs.includes(message.author.id)) {
             let msg = await message.channel.send({
                 embeds: [{
@@ -9,12 +9,12 @@ module.exports = {
                         iconURL: message.guild.iconURL({ dynamic: true })
                     },
                     color: parseInt(client.color.replace("#", ""), 16),
-                    description: `**Cliquez sur le bouton ci-dessous pour utiliser le systeme de meeting**` + `\n` + `\`・ Profil :\`\n` + `> Vous pouvez créer ou modifier votre profil. Une fois votre profil créer vous pourrez l'envoyer dans le channel correspondant pour recevoir des demandes. Vous ne pouvez pas envoyer de demande à quelqu'un si vous n'avez pas de profil créé.\n` +   `\n` + 
-                    `\`・ Envoyer :\`\n` +
-                    `> Vous pouvez envoyer votre profil dans le channel correspondant, l'envoie de profil est limité à 1 par jour.\n` +
-                    `\n` +
-                    `\`・ Information :\`` +
-                    `> Vous donne les informations par rapport à toutes vos demandes, match et likes reçu.` ,
+                    description: `**Cliquez sur le bouton ci-dessous pour utiliser le systeme de meeting**` + `\n` + `\`・ Profil :\`\n` + `> Vous pouvez créer ou modifier votre profil. Une fois votre profil créer vous pourrez l'envoyer dans le channel correspondant pour recevoir des demandes. Vous ne pouvez pas envoyer de demande à quelqu'un si vous n'avez pas de profil créé.\n` + `\n` +
+                        `\`・ Envoyer :\`\n` +
+                        `> Vous pouvez envoyer votre profil dans le channel correspondant, l'envoie de profil est limité à 1 par jour.\n` +
+                        `\n` +
+                        `\`・ Information :\`` +
+                        `> Vous donne les informations par rapport à toutes vos demandes, match et likes reçu.`,
                     footer: client.config.footer
                 }],
                 components: [{
@@ -44,7 +44,7 @@ module.exports = {
             );
             if (!isOwn) {
                 return message.reply({
-                   content: "Vous n'avez pas la permission d'utiliser cette commande",
+                    content: "Vous n'avez pas la permission d'utiliser cette commande",
                 });
             }
         }

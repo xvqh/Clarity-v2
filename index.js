@@ -1,5 +1,4 @@
-const ClarityBots = require('./source/structures/client')
-
+import ClarityBots from './source/structures/client/index.js';
 const client = new ClarityBots()
 
 process.on("unhandledRejection", (err)=> {

@@ -1,19 +1,20 @@
-module.exports = {
+export default {
     name: "configbump",
     description: "Configurer le bump",
-  category: "🔨〢Gestion",
+    category: "🔨〢Gestion",
     run: async (client, message, args) => {
-        if (message.author.id !== message.guild.ownerId) { 
-            return message.reply({content: "Seul l owner du serveur peut configurer le bump"})} else {
-        await client.db.none(`
+        if (message.author.id !== message.guild.ownerId) {
+            return message.reply({ content: "Seul l owner du serveur peut configurer le bump" })
+        } else {
+            await client.db.none(`
         CREATE TABLE IF NOT EXISTS clarity_bump (
             guild_id VARCHAR(20) PRIMARY KEY,
             description TEXT
         )`);
-        // configbump detail : invite du serv , description du serv 
-        let msg = await message.channel.send({ content: ". . ." });
-        await embed(client, message, msg);
-            }
+            // configbump detail : invite du serv , description du serv 
+            let msg = await message.channel.send({ content: ". . ." });
+            await embed(client, message, msg);
+        }
     }
 };
 
@@ -65,7 +66,7 @@ async function embed(client, message, msg) {
                     cld.first().delete();
                     question.delete();
                     let description = cld.first().content;
-                    
+
                     client.db.any(`INSERT INTO clarity_bump (guild_id, description) VALUES ($1, $2) ON CONFLICT (guild_id) DO NOTHING`, [message.guild.id, description]);
                     await msg.edit({
                         content: null,

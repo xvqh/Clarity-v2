@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'guildMemberUpdate',
     run: async (client, oldMember, newMember) => {
         const { guild } = newMember;
@@ -24,7 +24,7 @@ module.exports = {
         if (!channel) return;
 
         // member unboost the server
-        if(oldStatus && !newStatus) {
+        if (oldStatus && !newStatus) {
             // get data info for the message and send it
             let message = logs.unboostmessage[Math.floor(Math.random() * logs.unboostmessage.length)];
             channel.send({
@@ -39,7 +39,7 @@ module.exports = {
         }
 
         // member boost the server
-        if(!oldStatus && newStatus) {
+        if (!oldStatus && newStatus) {
             // get data info for the message and send it
             let message = logs.boostmessage[Math.floor(Math.random() * logs.boostmessage.length)];
             channel.send({

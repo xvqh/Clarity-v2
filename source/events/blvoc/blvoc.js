@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "voiceStateUpdate",
     run: async (client, oldState, newState) => {
         // Check if the user joined a voice channel or switched from one channel to another

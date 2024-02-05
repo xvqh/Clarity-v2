@@ -1,9 +1,8 @@
-const Discord = require('discord.js');
-module.exports = {
+export default {
     name: "dero",
     aliases: [],
-  category: "📝〢Moderation",
-    description:"Masque tous les salon du serveur",
+    category: "📝〢Moderation",
+    description: "Masque tous les salon du serveur",
     run: async (client, message, args, prefix) => {
         if (!message.member.permissions.has('ADMINISTRATOR')) return;
 

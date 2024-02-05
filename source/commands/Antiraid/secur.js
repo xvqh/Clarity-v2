@@ -1,5 +1,5 @@
-const { EmbedBuilder ,ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } = require("discord.js");
-module.exports = {
+import { EmbedBuilder ,ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } from "discord.js";
+export default {
     name: "secur",
     category: "Anti-raid",
     run: async (client, message, args) => {

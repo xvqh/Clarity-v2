@@ -1,10 +1,11 @@
-const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } = require('discord.js');
-let partnerNum = 0
-module.exports = {
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
+let partnerNum = 0;
+
+export default {
     name: "interactionCreate",
-    run: async(client, interaction) => {
+    run: async (client, interaction) => {
         if (!interaction.isButton() && !interaction.isModalSubmit()) return;
-        if(interaction.customId.startsWith('partner_accept')) {
+        if (interaction.customId.startsWith('partner_accept')) {
             const modal = new ModalBuilder()
                 .setCustomId('partner_yes')
                 .setTitle('Confirmation de demande de partenariat')
@@ -20,7 +21,7 @@ module.exports = {
                 .setCustomId('partnerLinkInputt')
                 .setLabel('Lien du projet')
                 .setStyle(TextInputStyle.Short)
-                const partnerBannerLinkInput = new TextInputBuilder()
+            const partnerBannerLinkInput = new TextInputBuilder()
                 .setCustomId('partnerBannerLinkInput')
                 .setLabel('Image pour le partenariat ? (non obligatoire)')
                 .setStyle(TextInputStyle.Short)
@@ -34,7 +35,7 @@ module.exports = {
             const linkRoww = new ActionRowBuilder().addComponents(partnerLinkInput)
             const bannerRow = new ActionRowBuilder().addComponents(partnerBannerLinkInput)
             const idRow = new ActionRowBuilder().addComponents(partnerId)
-            modal.addComponents(NameRoww, descRoww, linkRoww, bannerRow,idRow)
+            modal.addComponents(NameRoww, descRoww, linkRoww, bannerRow, idRow)
             await interaction.showModal(modal)
         }
         if (interaction.customId.startsWith('partner_yes')) {
@@ -64,17 +65,18 @@ module.exports = {
             // add  1 value to 1 userpartner
             client.data.add(`userpartner_${interaction.guild.id}`, 1)
 
-            await channel.send({content: `${notif ? notif : "@everyone"}`, embeds: [{
+            await channel.send({
+                content: `${notif ? notif : "@everyone"}`, embeds: [{
                     title: 'Nouveau Partenariat',
                     description: 'Un nouveau partenariat a ete accepte',
                     color: parseInt(client.color.replace("#", ""), 16),
                     fields: [{
                         name: 'Nom Projet',
                         value: `${partname}`,
-                    },{
+                    }, {
                         name: 'Description Projet',
                         value: `${partner}`,
-                    },{
+                    }, {
                         name: 'Demander par',
                         value: `<@${partnerId}>`,
                     }
@@ -93,16 +95,17 @@ module.exports = {
                         value: `${user.id}`
                     }, {
                         name: 'Nombre de partenariats réalisés',
-                        value:`${userdb || 0}`
+                        value: `${userdb || 0}`
                     }],
                     timestamp: new Date(),
                     color: parseInt(client.color.replace("#", ""), 16),
                     footer: {
                         text: `Partenariat n°${serverPartnum}` + ' | ' + client.config.footer.text,
                     }
-                }] })
-                await channel.send({content: `${partnerLink? `Lien du projet : ${partnerLink}` : ''}`})
-                await channel.send({content: `${Bannerlink? `Image du projet : ${Bannerlink}` : ''}`})
+                }]
+            })
+            await channel.send({ content: `${partnerLink ? `Lien du projet : ${partnerLink}` : ''}` })
+            await channel.send({ content: `${Bannerlink ? `Image du projet : ${Bannerlink}` : ''}` })
             partrole.forEach(roleId => {
                 const member = interaction.guild.members.cache.get(partnerId)
                 member.roles.add(roleId)

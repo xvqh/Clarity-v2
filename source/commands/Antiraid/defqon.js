@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "defqon",
     aliases: ["defqon"],
     run: async (client, message, args) => {

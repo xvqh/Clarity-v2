@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     announcementThread: 10,
     dm: 1,
     groupDm: 3,

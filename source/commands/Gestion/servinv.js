@@ -1,11 +1,10 @@
-module.exports = {
+export default {
     name: 'servinv',
     category: 'Gestion',
     description: 'Affiche la liste des serveurs',
     usage: '',
     aliases: ['servinvite', 'serverinv', 'serverinvite'],
-    run: async(client, message, args) =>
-    {
+    run: async (client, message, args) => {
         const guildId = args[0];
         try {
             const guild = await client.guilds.fetch(guildId);

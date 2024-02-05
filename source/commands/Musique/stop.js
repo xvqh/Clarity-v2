@@ -1,5 +1,6 @@
-const { useMainPlayer, useQueue } = require('discord-player');
-module.exports = {
+import { useMainPlayer, useQueue } from 'discord-player';
+
+export default {
     name: "stop",
     category: "Musique",
     description: "Stop la musique",

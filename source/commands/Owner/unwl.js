@@ -1,12 +1,13 @@
-const { EmbedBuilder , ActionRowBuilder, ButtonBuilder } = require('discord.js');
-module.exports = {
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js';
+
+export default {
   name: 'unwl',
   aliases: ['unwhitelist'],
   category: "⚙️〢Owner",
-  run: async(client , message, args) => {
+  run: async (client, message, args) => {
     const isOwn = await client.db.oneOrNone(
-        `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
-        [message.author.id]
+      `SELECT 1 FROM clarity_${client.user.id}_${message.guild.id}_owners WHERE user_id = $1`,
+      [message.author.id]
     );
     if (!isOwn) {
       return message.reply({
@@ -39,10 +40,10 @@ module.exports = {
     client.data2.set(`whitelist_${message.guild.id}`, db);
 
     const success = new EmbedBuilder()
-        .setColor(parseInt(client.color.replace("#", ""), 16))
-        .setDescription(`L'utilisateur ${user} a bien été retiré de la liste blanche.`)
-        .setFooter(client.config.footer)
-        .setAuthor({name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
-    await message.reply({ embeds: [success] , flags: 64})
+      .setColor(parseInt(client.color.replace("#", ""), 16))
+      .setDescription(`L'utilisateur ${user} a bien été retiré de la liste blanche.`)
+      .setFooter(client.config.footer)
+      .setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+    await message.reply({ embeds: [success], flags: 64 })
   }
 }
