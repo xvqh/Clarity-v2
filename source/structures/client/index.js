@@ -112,12 +112,12 @@ export default class Clarity extends Client {
         for (const category of subFolders) {
             const eventsFiles = fs.readdirSync(`./source/events/${category}`).filter(file => file.endsWith(".js"))
             for (const eventFile of eventsFiles) {
-                var event = await import(`../../events/${category}/${eventFile}`);
-
-                if (event.default) {
-                    this.on(event.name, (...args) => event.run(this, ...args))
-                    if (category === 'anticrash') process.on(event.name, (...args) => event.run(this, ...args));
-                };
+                await import(`../../events/${category}/${eventFile}`).then((data) => {
+                    if (data.default) {
+                        this.on(data.default.name, (...args) => data.default.run(this, ...args))
+                        if (category === 'anticrash') process.on(data.default.name, (...args) => data.default.run(this, ...args));
+                    }
+                });
             }
         }
     }
