@@ -17,6 +17,8 @@ import channelType from './channelType.js';
 import componentType from './componentType.js';
 import buttonType from './buttonType.js';
 import colorListed from './colorListed.js';
+import ClarityDB from "clarity-db";
+import quickdb from 'quick.db';
 
 export default class Clarity extends Client {
     constructor(options = {
@@ -39,6 +41,17 @@ export default class Clarity extends Client {
         this.player.extractors.loadDefault();
         this.functions = functions
         this.ms = ms
+        this.data = new ClarityDB(`./Clarity.json`, {
+            backup: {
+                enabled: true,
+                folder: "./db_backups/",
+                interval: 3600000,
+            },
+            preset: {
+                hello: "world",
+            },
+        });
+        this.data2 = quickdb;
         this.emoji = emojis
         this.db = pgp()(config.database.PostgreSQL)
         this.pretty = pretty
@@ -47,10 +60,14 @@ export default class Clarity extends Client {
         this.componentType = componentType
         this.buttonType = buttonType
         this.colorListed = colorListed
+        this.allInvites = new Collection();
+        this.vanityCount = new Collection();
         this.translate = translate
         this.initCommands()
         this.initEvents()
         this.connectToToken()
+        this.initMongo();
+        this.initSlashCommands();
     }
 
     async connectToToken() {
