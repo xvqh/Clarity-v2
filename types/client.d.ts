@@ -44,5 +44,8 @@ declare module 'discord.js' {
         translate: translate;
         mongo: mongoose;
         prefix: string;
+        footer: {
+            text: string
+        };
     }
 }
