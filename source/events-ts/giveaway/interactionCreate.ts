@@ -1,8 +1,8 @@
-import { ButtonStyle, ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
+import { ButtonStyle, ActionRowBuilder, ButtonBuilder, EmbedBuilder, Client, Interaction } from "discord.js";
 
 export default {
     name: 'interactionCreate',
-    run: async (client, interaction) => {
+    run: async (client: Client, interaction: Interaction) => {
         if (!interaction.isButton()) return;
 
         const { customId, user } = interaction;

@@ -1,16 +1,12 @@
-import Discord from "discord.js";
-import Clarity from "../../structures/client/index.js";
+import Discord, { Client } from "discord.js";
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { exec } from 'child_process';
 
 export default {
   name: "ready",
-  /**
-* 
-* @param {Clarity} client 
-*/
-  run: async (client) => {
-    /*    const now = new Date();
+  run: async (client: Client) => {
+    /*   
+    const now = new Date();
         const timestamp = Math.floor(now.getTime() / 1000);
 
         const buyerUsers = client.users.cache.filter(u => client.config.creators.includes(u.id));
@@ -33,6 +29,5 @@ buyerUsers.forEach(u => {
 
   }]}).catch(e => {});
 });*/
-
   }
 }

@@ -9,6 +9,7 @@ export default {
     const result = await client.db.oneOrNone(
       `SELECT prefix FROM clarity_${client.user?.id}_${message.guild?.id}`
     );
+    
     if (!result) {
       prefix = client.config.prefix;
     } else {
