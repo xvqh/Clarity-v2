@@ -17,6 +17,7 @@
     "@discordjs/voice": "^0.16.0",
     "@distube/ytdl-core": "^4.13.3",
     "@plainheart/google-translate-api": "^1.2.0",
+    "@types/figlet": "^1.5.8",
     "@types/js-yaml": "^4.0.9",
     "better-sqlite3": "^9.2.2",
     "clarity-db": "^2.0.3",
