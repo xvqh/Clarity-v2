@@ -70,6 +70,7 @@ export default class Clarity extends Client {
         this.initCommands();
         this.initEvents()
         this.initMongo();
+        this.footer = config.footer;
         // this?.initSlashCommands();
     }
 

@@ -1,8 +1,8 @@
-import { ButtonStyle, ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
+import { ButtonStyle, ActionRowBuilder, ButtonBuilder, EmbedBuilder, Client, Interaction, UserResolvable, ButtonInteraction, CacheType } from "discord.js";
 
 export default {
     name: 'interactionCreate',
-    run: async (client, interaction) => {
+    run: async (client: Client, interaction: Interaction) => {
         if (!interaction.isButton()) return;
 
         const { customId, user } = interaction;
@@ -11,15 +11,16 @@ export default {
         if (customId.match(giveawayEntryRegex)) {
             const giveawayCode = customId.split('_')[2];
 
-            const giveawayData = client.data2.get(`giveaway_${interaction.guildId}_${giveawayCode}`);
+            const giveawayData = await client.data2.get(`giveaway_${interaction.guildId}_${giveawayCode}`);
+
             if (giveawayData) {
                 if (!giveawayData.participant.includes(user.id)) {
                     giveawayData.participant.push(user.id);
-                    client.data2.set(`giveaway_${interaction.guildId}_${giveawayCode}`, giveawayData);
+                    await client.data2.set(`giveaway_${interaction.guildId}_${giveawayCode}`, giveawayData);
                     interaction.reply({ content: "Vous participez maintenant au giveaway !", ephemeral: true });
                     await update(giveawayData, interaction, client, giveawayCode);
                 } else {
-                    const leaveButton = new ActionRowBuilder()
+                    const leaveButton = new ActionRowBuilder<ButtonBuilder>()
                         .addComponents(
                             new ButtonBuilder()
                                 .setCustomId(`giveaway_leave_${giveawayCode}`)
@@ -38,11 +39,12 @@ export default {
 
         if (customId.startsWith('giveaway_list_')) {
             const giveawayCode = customId.split('_')[2];
-            const giveawayData = client.data2.get(`giveaway_${interaction.guildId}_${giveawayCode}`);
+            const giveawayData = await client.data2.get(`giveaway_${interaction.guildId}_${giveawayCode}`);
+
             if (giveawayData) {
                 const participants = giveawayData.participant;
                 if (participants.length > 0) {
-                    const participantInfo = await Promise.all(participants.map(async id => {
+                    const participantInfo = await Promise.all(participants.map(async (id: UserResolvable) => {
                         const user = await client.users.fetch(id);
                         return `${user.username} (ID: ${user.id})`;
                     }));
@@ -57,13 +59,18 @@ export default {
         if (customId.startsWith('giveaway_leave_')) {
             const giveawayCode = customId.split('_')[2];
 
-            const giveawayData = client.data2.get(`giveaway_${interaction.guildId}_${giveawayCode}`);
+            const giveawayData = await client.data2.get(`giveaway_${interaction.guildId}_${giveawayCode}`);
             if (giveawayData) {
                 const index = giveawayData.participant.indexOf(user.id);
                 if (index !== -1) {
                     giveawayData.participant.splice(index, 1);
-                    client.data2.set(`giveaway_${interaction.guildId}_${giveawayCode}`, giveawayData);
-                    interaction.update({ content: "Vous avez quitté le giveaway.", components: [], ephemeral: true });
+                    await client.data2.set(`giveaway_${interaction.guildId}_${giveawayCode}`, giveawayData);
+                    
+                    interaction.update({
+                        content: "Vous avez quitté le giveaway.",
+                        components: [],
+                    });
+                    
                     await update(giveawayData, interaction, client, giveawayCode);
                 }
             }
@@ -71,16 +78,18 @@ export default {
     }
 };
 
-async function update(giveawayData, interaction, client, giveawayCode) {
-    const color = parseInt(parseInt(client.color.replace("#", ""), 16))
+async function update(giveawayData: any, interaction: ButtonInteraction<CacheType>, client: Client, giveawayCode: string) {
+    const color = parseInt(client.color.replace("#", ""), 16);
+
     const participantsCount = giveawayData.participant.length || 0;
+
     const embed = new EmbedBuilder()
         .setTitle('Giveaway')
         .setDescription(`Prix : \`${giveawayData.prix}\`\nFini : <t:${Math.floor(giveawayData.temps / 1000)}:R>\nLancée par : <@${giveawayData.host}>\nParticipant : \`${participantsCount} participants\``)
         .setFooter(client.footer)
         .setColor(color)
         .setTimestamp();
-    const row = new ActionRowBuilder()
+    const row = new ActionRowBuilder<ButtonBuilder>()
         .addComponents(
             new ButtonBuilder()
                 .setEmoji(giveawayData.emoji)
@@ -92,9 +101,9 @@ async function update(giveawayData, interaction, client, giveawayCode) {
                 .setStyle(ButtonStyle.Secondary)
         );
     const msg = giveawayData.messageid;
-    const giveawayMessage = await interaction.channel.messages.fetch(msg);
+    const giveawayMessage = await interaction.channel?.messages.fetch(msg);
 
-    giveawayMessage.edit({ embeds: [embed], components: [row], content: null });
+    giveawayMessage?.edit({ embeds: [embed], components: [row], content: null });
 }
 
 

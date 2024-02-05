@@ -1,8 +1,12 @@
+import { ButtonInteraction, CacheType, Client } from "discord.js";
+
 export default {
     name: 'interactionCreate',
-    run: async (client, interaction) => {
+    run: async (client: Client, interaction: ButtonInteraction<CacheType>) => {
+
         if (!interaction.isButton()) return;
         if (!interaction.guild) return;
+        
         let db = await client.data.get(`verifdata_${interaction.guild.id}`) || {
             channel: null,
             role: [],
@@ -28,7 +32,6 @@ export default {
             else if (db.status == false) {
                 await interaction.reply({ content: `${db.emoji} Le systeme de verif est actuellement desactiver`, flags: 64 });
             }
-        }
-
+        };
     }
 }

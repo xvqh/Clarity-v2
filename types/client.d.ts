@@ -43,5 +43,9 @@ declare module 'discord.js' {
         vanityCount: Collection;
         translate: translate;
         mongo: mongoose;
+        prefix: string;
+        footer: {
+            text: string
+        };
     }
 }
