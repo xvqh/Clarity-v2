@@ -3,7 +3,7 @@ import config from '../config/config';
 import version from '../version';
 import { singleton } from 'discord-player';
 import ms from '../utils/ms/index.js';
-import ClarityDB from 'clarity-db';
+import { ClarityDB } from 'clarity-db';
 import { QuickDB } from 'quick.db';
 import emoji from '../config/emoji.js';
 import pgp from 'pg-promise';

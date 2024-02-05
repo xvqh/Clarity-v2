@@ -18,7 +18,7 @@
     "@plainheart/google-translate-api": "^1.2.0",
     "@types/js-yaml": "^4.0.9",
     "better-sqlite3": "^9.2.2",
-    "clarity-db": "^1.0.6",
+    "clarity-db": "^2.0.3",
     "discord-backup": "^3.3.2",
     "discord-html-transcripts": "^3.2.0",
     "discord-player": "^6.6.6",

@@ -3,7 +3,6 @@ import { Player } from 'discord-player';
 
 import translate from '@plainheart/google-translate-api';
 import mongoose from 'mongoose';
-import pretty from 'pretty-ms';
 import pgp from 'pg-promise';
 import fs from 'fs';
 
@@ -22,8 +21,8 @@ import colorListed from './colorListed.js';
 import buttonType from './buttonType.js';
 import logsType from './logsType.js';
 
+import { ClarityDB } from "clarity-db";
 import { QuickDB } from 'quick.db';
-import ClarityDB from "clarity-db";
 
 export default class Clarity extends Client {
     constructor(options = {
@@ -42,7 +41,7 @@ export default class Clarity extends Client {
         this.config = config
         this.creators = creators
         this.version = version
-        this.player = Player.singleton(this);
+        this.player = Player.singleton(this as unknown as Client);
         this.player.extractors.loadDefault();
         this.functions = functions
         this.ms = ms
@@ -59,7 +58,6 @@ export default class Clarity extends Client {
         this.data2 = new QuickDB();
         this.emoji = emojis
         this.db = pgp()(config.database.PostgreSQL)
-        this.pretty = pretty
         this.logsType = logsType
         this.channelType = channelType
         this.componentType = componentType
@@ -93,6 +91,7 @@ export default class Clarity extends Client {
                 this.connectToToken()
             }, 10000)
         })
+
     }
 
     async refreshConfig() {
