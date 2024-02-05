@@ -12,3 +12,5 @@ dist
 
 json.sqlite
 Clarity.json
+source/commands/Info/dev.js
+source/events/giveaway/ready.js
