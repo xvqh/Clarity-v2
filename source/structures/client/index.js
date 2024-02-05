@@ -72,11 +72,14 @@ export default class Clarity extends Client {
             }, 10000)
         })
     }
-    refreshConfig() {
+
+    async refreshConfig() {
         delete this.config;
-        delete require.cache[require.resolve('../../../config/config')];
-        this.config = require('../../../config/config');
-    }
+
+        const currentModuleUrl = import.meta.url;
+        this.config = await import(`${currentModuleUrl}../../../config/config.js`);
+    };
+
     async initCommands() {
         const subFolders = fs.readdirSync('./source/commands');
         for (const category of subFolders) {
