@@ -68,30 +68,8 @@ export default class Clarity extends Client {
         this.translate = translate
         this.initCommands()
         this.initEvents()
-        this.connectToToken()
         this.initMongo();
         this.initSlashCommands();
-    }
-
-    async connectToToken() {
-        this.login(this.config.token).then(() => {
-            var x = setInterval(() => {
-                if (this.ws.reconnecting || this.ws.destroyed) {
-                    this.login(this.config.token).catch(e => {
-                        clearInterval(x)
-                        console.error("Erreur pendant la connexion au token :");
-                        console.error(e);
-                    })
-                }
-            }, 30000)
-        }).catch(e => {
-            console.error(e)
-            if (e?.code?.toLowerCase()?.includes("token")) return;
-            setTimeout(() => {
-                this.connectToToken()
-            }, 10000)
-        })
-
     }
 
     async refreshConfig() {
@@ -118,15 +96,15 @@ export default class Clarity extends Client {
                 if (cmd.category === 'gestion' && this.config.isPublic) continue;
                 this.commands.set(cmd.name, cmd);
                 if (cmd.aliases && cmd.aliases.length > 0) {
-                    cmd.aliases.forEach(alias => this.aliases.set(alias, cmd));
+                    cmd.aliases.forEach((alias: any) => this.aliases.set(alias, cmd));
                 }
             }
         }
         let finale = new Collection();
-        this.commands.map(cmd => {
+        this.commands.map((cmd: any) => {
             if (finale.has(cmd.name)) return;
             finale.set(cmd.name, cmd);
-            this.commands.filter(v => v.name.startsWith(cmd.name) || v.name.endsWith(cmd.name)).map(cm => finale.set(cm.name, cm));
+            this.commands.filter((v: any) => v.name.startsWith(cmd.name) || v.name.endsWith(cmd.name)).map((cm: any) => finale.set(cm.name, cm));
         })
         this.commands = finale;
     };

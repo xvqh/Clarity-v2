@@ -43,7 +43,6 @@ declare module 'discord.js' {
         translate: translate;
         initCommands: Client<boolean>;
         initEvents: Function;
-        connectToToken: Promise<void>;
         initMongo: Function;
         initSlashCommands: Promise<void>;
         mongo: mongoose
