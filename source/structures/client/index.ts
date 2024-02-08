@@ -6,9 +6,9 @@ import mongoose from 'mongoose';
 import pgp from 'pg-promise';
 import fs from 'fs';
 
-import creators from '../../../config-ts/creators.js';
-import config from '../../../config-ts/config.js';
-import emojis from '../../../config-ts/emoji.js';
+import creators from '../../../config/creators.js';
+import config from '../../../config/config.js';
+import emojis from '../../../config/emoji.js';
 
 import version from '../../../version.js'
 
@@ -72,6 +72,7 @@ export default class Clarity extends Client {
         this.initMongo();
         this.footer = config.footer;
         // this?.initSlashCommands();
+        this.login(config.token);
     }
 
     async refreshConfig() {
@@ -82,12 +83,12 @@ export default class Clarity extends Client {
     };
 
     async initCommands(): Promise<void> {
-        const subFolders = fs.readdirSync('./source/commands-ts');
+        const subFolders = fs.readdirSync('./source/commands');
         for (const category of subFolders) {
-            const commandsFiles = fs.readdirSync(`./source/commands-ts/${category}`).filter(file => file.endsWith('.js'));
+            const commandsFiles = fs.readdirSync(`./source/commands/${category}`).filter(file => file.endsWith('.js'));
             for (const commandFile of commandsFiles) {
 
-                const command = await import(`../../commands-ts/${category}/${commandFile}`);
+                const command = await import(`../../commands/${category}/${commandFile}`);
                 var cmd = command.default;
 
                 cmd.category = category
@@ -126,11 +127,11 @@ export default class Clarity extends Client {
     };
 
     async initEvents() {
-        const subFolders = fs.readdirSync(`./source/events-ts`)
+        const subFolders = fs.readdirSync(`./source/events`)
         for (const category of subFolders) {
-            const eventsFiles = fs.readdirSync(`./source/events-ts/${category}`).filter(file => file.endsWith(".js"))
+            const eventsFiles = fs.readdirSync(`./source/events/${category}`).filter(file => file.endsWith(".js"))
             for (const eventFile of eventsFiles) {
-                await import(`../../events-ts/${category}/${eventFile}`).then((data) => {
+                await import(`../../events/${category}/${eventFile}`).then((data) => {
                     if (data.default) {
                         this.on(data.default.name, (...args) => data.default.run(this, ...args))
                         if (category === 'anticrash') process.on(data.default.name, (...args) => data.default.run(this, ...args));
