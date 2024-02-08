@@ -1,6 +1,8 @@
 import { BaseGuildTextChannel, Client, Message } from 'discord.js';
 
-const Perspective = require('perspective-api-client');
+// @ts-ignore  
+import Perspective from 'perspective-api-client';
+
 const perspective = new Perspective({ apiKey: "AIzaSyCrqBjlfdgKWeb5GGb2qbKisdhBLVb7wLc" });
 
 export default {

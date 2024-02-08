@@ -1,8 +1,8 @@
 import { Client } from 'discord.js';
 import fs from 'fs';
 
-export default async function loadEvents(this: Client) {
-    const path = `${process.cwd()}/source/events`;
+export default async function loadEvents(client: Client) {
+    const path = `${process.cwd()}/dist/source/events`;
     const subFolders = fs.readdirSync(path);
 
     for (const category of subFolders) {
@@ -11,9 +11,11 @@ export default async function loadEvents(this: Client) {
         for (const eventFile of eventsFiles) {
 
             await import(`${path}/${category}/${eventFile}`).then((data) => {
-                if (data.default) {
-                    this.on(data.default.name, (...args) => data.default.run(this, ...args))
-                    if (category === 'anticrash') process.on(data.default.name, (...args) => data.default.run(this, ...args));
+                let event = data?.default;
+
+                if (event) {
+                    client.on(event.name, (...args) => event.run(client, ...args))
+                    if (category === 'anticrash') process.on(event.name, (...args) => event.run(client, ...args));
                 }
             });
 

@@ -1,4 +1,6 @@
-const NewsAPI = require("newsapi");
+// @ts-ignore 
+import NewsAPI from "newsapi";
+
 import { BaseGuildTextChannel, Client, EmbedBuilder } from "discord.js";
 
 const newsapi = new NewsAPI('0263d89534d144ca9158bda37a3e69e1');
