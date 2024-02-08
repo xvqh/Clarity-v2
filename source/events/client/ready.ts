@@ -14,7 +14,7 @@ import { Client } from "discord.js";
 export default {
   name: 'ready',
   run: async (client: Client) => {
-    console.clear();
+    // console.clear();
     checkTable(client)
     createguildtable(client)
     client.guilds.cache.forEach(async (g) => {

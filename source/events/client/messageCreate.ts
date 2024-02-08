@@ -1,15 +1,17 @@
-import { EmbedBuilder, Client, Message, BaseGuild, BaseGuildTextChannel, ChannelType } from "discord.js";
+import { EmbedBuilder, Client, Message, BaseGuildTextChannel, ChannelType } from "discord.js";
 
 export default {
   name: "messageCreate",
   run: async (client: Client, message: Message) => {
+    console.log(message)
+
     if (message.author.bot || message.channel.type === ChannelType.DM) return;
 
     let prefix;
     const result = await client.db.oneOrNone(
       `SELECT prefix FROM clarity_${client.user?.id}_${message.guild?.id}`
     );
-    
+
     if (!result) {
       prefix = client.config.prefix;
     } else {
