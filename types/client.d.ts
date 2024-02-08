@@ -18,7 +18,7 @@ import logsType from '../source/structures/client/logsType';
 declare module 'discord.js' {
     export interface Client {
         setMaxListeners: Function;
-        commands: Collection;
+        commands: Collection<string, any>;
         aliases: Collection;
         slashCommands: Collection;
         snipes: Collection;

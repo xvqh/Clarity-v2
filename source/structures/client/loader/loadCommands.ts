@@ -16,7 +16,6 @@ export default async function initCommands(client: Client): Promise<void> {
             cmd.category = category
             cmd.commandFile = commandFile
 
-            console.log(client.commands);
             client.commands.set(cmd.name, cmd);
 
             if (cmd.aliases && cmd.aliases.length > 0) {
@@ -24,16 +23,5 @@ export default async function initCommands(client: Client): Promise<void> {
             }
         }
 
-    }
-
-    let finale = new Collection();
-
-    // console.log(finale, client.commands);
-
-    // client.commands.map((cmd: any) => {
-    //     if (finale.has(cmd.name)) return;
-    //     finale.set(cmd.name, cmd);
-    //     client.commands.filter((v: any) => v.name.startsWith(cmd.name) || v.name.endsWith(cmd.name)).map((cm: any) => finale.set(cm.name, cm));
-    // })
-    // client.commands = finale;
+    };
 };
