@@ -7,7 +7,7 @@ export default {
             const giveawayKeys = await client.data2.all();
             const now = Date.now();
 
-            console.log(giveawayKeys);
+            // console.log(giveawayKeys);
 
             // for (const giveawayKey of giveawayKeys) {
             //     if (giveawayKey.ID.startsWith('giveaway_')) {
