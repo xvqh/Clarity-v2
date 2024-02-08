@@ -1,4 +1,4 @@
-import ClarityBots from './source/structures/client-ts/index.js';
+import ClarityBots from './source/structures/client/index.js';
 const client = new ClarityBots()
 
 process.on('uncaughtException', (err) => {

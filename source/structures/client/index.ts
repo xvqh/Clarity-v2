@@ -12,8 +12,8 @@ import emojis from '../../../config-ts/emoji.js';
 
 import version from '../../../version.js'
 
-import functions from '../utils-ts/index.js';
-import ms from '../utils-ts/ms/index.js';
+import functions from '../utils/index.js';
+import ms from '../utils/ms/index.js';
 
 import componentType from './componentType.js';
 import channelType from './channelType.js';

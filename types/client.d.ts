@@ -11,7 +11,7 @@ import pretty from 'pretty-ms';
 
 import translate from '@plainheart/google-translate-api';
 
-import functions from '../source/structures/utils-ts/index.js'
+import functions from '../source/structures/utils/index.js'
 import buttonType from '../source/structures/client/buttonType';
 import logsType from '../source/structures/client/logsType';
 

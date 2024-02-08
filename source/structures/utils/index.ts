@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Client from '../client-ts/index.js';
+import Client from '../client/index.js';
 import { Guild, GuildMember, User } from 'discord.js';
 
 export default {

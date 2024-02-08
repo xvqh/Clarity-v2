@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import Clarity from '../client-ts/index.js';
+import Clarity from '../client/index.js';
 import fs from 'fs';
 
 interface LangsData {
