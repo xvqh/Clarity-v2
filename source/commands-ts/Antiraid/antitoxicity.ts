@@ -149,12 +149,14 @@ async function update(client: Client, msg: Message, message: Message) {
                 msg.edit({
                     components: [{
                         type: 1,
-                        components: [{
-                            custom_id: 'wlrolesc' + message.id,
-                            type: 5,
-                            placeholder: 'Whitelisted Roles',
-                            // value: 'Whitelisted Roles'
-                        }]
+                        components: [
+                            {
+                                custom_id: 'wlrolesc' + message.id,
+                                type: 5,
+                                placeholder: 'Whitelisted Roles',
+                                // value: 'Whitelisted Roles'
+                            }
+                        ]
                     }]
                 })
             }
