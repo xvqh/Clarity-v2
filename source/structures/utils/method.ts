@@ -1,6 +1,5 @@
 import moment from 'moment';
-import Client from '../client/index.js';
-import { Guild, GuildMember, User } from 'discord.js';
+import { Client, Guild, GuildMember, User } from 'discord.js';
 
 export default {
     sleep: (ms: number) => new Promise(resolve => setTimeout(resolve, ms)),

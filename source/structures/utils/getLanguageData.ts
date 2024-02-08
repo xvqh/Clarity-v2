@@ -1,5 +1,5 @@
+import { Client } from 'discord.js';
 import yaml from 'js-yaml';
-import Clarity from '../client/index.js';
 import fs from 'fs';
 
 interface LangsData {
@@ -8,7 +8,7 @@ interface LangsData {
 
 let LangsData: LangsData = {};
 
-async function getLanguageData(client: Clarity, guildId: string) {
+async function getLanguageData(client: Client, guildId: string) {
     let lang: string = await client.data2.get(`${guildId}_guildlang`) || 'fr-FR';
 
     let dat = LangsData[lang];
