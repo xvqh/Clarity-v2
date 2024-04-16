@@ -110,6 +110,3 @@ export interface CancelToken {
 }
 
 
-// the below code fragment can be found in:
-// https://github.com/Clarity-Corp/Clarity-v2/
-
