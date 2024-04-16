@@ -1,5 +1,5 @@
 export default {
-    token: "MTE5MTgwNjkyNjUxNDgxNDk3Ng.GH_jfP.PsdP7C0WzleRo3SNz0_76PfmI04TPfyp8u_e-I",
+    token: "",
     bot_id: "1191806926514814976",
     buyer: '1072553881134972970',
     prefix: "+",
