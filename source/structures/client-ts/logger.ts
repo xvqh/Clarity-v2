@@ -19,6 +19,15 @@ let logger: Logger = {
     },
     debug: (message: string) => {
         console.debug(`[${getLocalCurrentTime()}] ${message}`.blue);
+    },
+    verbose: (message: string) => {
+        console.log(`[${getLocalCurrentTime()}] ${message}`.magenta);
+    },
+    silly: (message: string) => {
+        console.log(`[${getLocalCurrentTime()}] ${message}`.white);
+    },
+    legacy: (message: string) => {
+        console.log(`[${getLocalCurrentTime()}] ${message}`);
     }
 }
 

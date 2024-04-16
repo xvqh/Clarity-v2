@@ -30,13 +30,17 @@ export default class Clarity extends Client {
     perms: ClarityDB;
     modlogs: ClarityDB;
     embeds: ClarityDB;
-    ticket: ClarityDB;
+    ticket: SteganoDB;
     giveaway: ClarityDB;
     settings: ClarityDB;
     logs: ClarityDB;
     invites: ClarityDB; 
     pngDb: SteganoDB;
     data2: ClarityDB;
+    backup: SteganoDB;
+    reminder: SteganoDB;
+    rolemenu: SteganoDB;
+    terminal: SteganoDB;
     constructor(options = {
         intents: [3276799],
         partials: [
@@ -127,16 +131,7 @@ export default class Clarity extends Client {
               hello: "world",
             },
           });
-          this.ticket = new ClarityDB(`./DB/JSON/Ticket.json`, {
-            backup: {
-              enabled: true,
-              folder: "./db_backups/",
-              interval: 3600000,
-            },
-            preset: {
-              hello: "world",
-            },
-          });
+          this.ticket = new SteganoDB(`./DB/Stegano/Ticket.png`);
           this.embeds = new ClarityDB(`./DB/JSON/Embeds.json`, {
             backup: {
               enabled: true,
@@ -176,10 +171,14 @@ export default class Clarity extends Client {
             preset: {
               hello: "world",
             },
-          });      
+          });
+          this.terminal = new SteganoDB('./DB/Stegano/Terminal.png')
         this.emoji = emojis
         this.db = pgp()(this.config.database.PostgreSQL)
         this.pngDb = new SteganoDB('./DB/Stegano/Clarity.png');
+        this.backup = new SteganoDB('./DB/Stegano/Backup.png');
+        this.reminder = new SteganoDB('./DB/Stegano/Reminder.png');
+        this.rolemenu = new SteganoDB('./DB/Stegano/RoleMenu.png')
         this.logsType = logsType
         this.channelType = channelType
         this.componentType = componentType
