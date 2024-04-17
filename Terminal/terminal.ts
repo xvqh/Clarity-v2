@@ -1,72 +1,101 @@
-import logger from "../source/structures/client-ts/logger";
-import os from "node:os";
-import readline from 'readline';
-import fs from 'node:fs';
-import path from "path";
-import { Client } from "discord.js"
-import  wait from "../Functions/wait"
-import getIP from "../Functions/getIp"
-function niceBytes(a: Number) { let b = 0, c = parseInt((a as unknown as string), 10) || 0; for (; 1024 <= c && ++b;)c /= 1024; return c.toFixed(10 > c && 0 < b ? 1 : 0) + " " + ["bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][b] }
+import { createInterface } from 'readline';
+import { createWriteStream, existsSync, readFileSync } from 'fs';
+import os from 'os';
+import path from 'path';
+import { Client } from 'discord.js';
+import logger from '../source/structures/client-ts/logger';
+import wait from '../Functions/wait';
+import getIP from '../Functions/getIp';
 
+// Fonction pour formater les octets de manière lisible
+const niceBytes = (bytes: number): string => {
+    const suffixes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    let index = 0;
+    while (bytes >= 1024 && index < suffixes.length - 1) {
+        bytes /= 1024;
+        index++;
+    }
+    return `${bytes.toFixed(index === 0 ? 0 : 1)} ${suffixes[index]}`;
+};
 
-export default async (client: Client)=> {
-    let rl = readline.createInterface({
+// Fonction pour obtenir la date au format spécifié
+const getDateStr = (): string => {
+    const now = new Date();
+    return `${now.toLocaleString('default', { day: '2-digit' })} ${now.toLocaleString('default', { month: 'short' })} ${now.getFullYear().toString().substr(-2)} ${now.toLocaleTimeString('en-US', { hour12: false })} 2023`;
+};
+
+// Fonction pour initialiser l'interface readline
+const initReadline = (): any => {
+    return createInterface({
         input: process.stdin,
         output: process.stdout
     });
+};
 
-    let now = new Date();
-    let dateStr = `${now.toLocaleString('default', { day: '2-digit' })} ${now.toLocaleString('default', { month: 'short' })} ${now.getFullYear().toString().substr(-2)} ${now.toLocaleTimeString('en-US', { hour12: false })} 2023`.toString();
+// Fonction pour afficher les informations système
+const displaySystemInfo = async (client: Client, filePath: string): Promise<void> => {
+    const dateStr = getDateStr();
+    const ip = getIP({ useIPv6: false });
 
-    let ip = getIP({ useIPv6: false });
+    logger.info(`* Clarity Terminal is loading on: ${ip}`);
+    logger.info(`* Date: ${dateStr}`);
 
-    logger.info(`* Clarity Terminal is loading on : ${ip}`);
-    logger.info(`* Date : ${dateStr}`);
+    const table = client.terminal.table('Terminal');
+    let lastLogin = await table.get('Last_Login') || 'None';
+    let loaded2 = '127.0.0.1';
 
-    let table = client.terminal.table("Terminal");
-    let Loaded = await table.get(`Last_Login`) || "None";
-    let Loaded2 = "127.0.0.1";
-    let filePath = path.join(__dirname, "Terminal", "terminal" , "history", ".terminal_history");
-    let createFiles = fs.createWriteStream(filePath, { flags: 'a' });
-    await table.set(`Last_Login`, dateStr)
+    await table.set('Last_Login', dateStr);
+
     logger.legacy(`
     * Welcome to the Clarity Terminal
     
     * Type "help" to get started
-    
     * Type "clear" to clear the terminal
     
-    Date : ${dateStr},
+    Date: ${dateStr}
     
-    System Information : 
+    System Information: 
     
-    * OS : ${os.type()} ${os.release()} ${os.arch()}
-    
-    * Memory usage:                  ${niceBytes(os.freemem())}/${niceBytes(os.totalmem())}
-    * IPv4 address for eth0:         ${await getIP({ useIPv6: false })}
-    * IPv6 address for eth0:         ${await getIP({ useIPv6: true })}
-    * Node.js :                      ${process.version}
-    * Discord.js :                   v${client.version}
-    * Clarity :                      v${client.config.version}
-    Last Login : ${Loaded} from ${Loaded2} 
+    * OS: ${os.type()} ${os.release()} ${os.arch()}
+    * Memory usage: ${niceBytes(os.freemem())} / ${niceBytes(os.totalmem())}
+    * IPv4 address for eth0: ${await getIP({ useIPv6: false })}
+    * IPv6 address for eth0: ${await getIP({ useIPv6: true })}
+    * Node.js: ${process.version}
+    * Discord.js: v${client.version}
+    * Clarity: v${client.config.version}
+    Last Login: ${lastLogin} from ${loaded2} 
     `);
-    rl.setPrompt('contact@clarity-corp.com')
+};
+
+// Fonction pour exécuter une commande
+const executeCommand = async (commandPath: string, client: Client, args: string, filePath: string): Promise<void> => {
+    if (existsSync(commandPath)) {
+        const command = await import(commandPath);
+        command.default(client, args);
+
+        const data = readFileSync(filePath, 'utf-8');
+        const lineNumber = data.toString().split('\n').length;
+        if (commandPath) createFiles.write(`   ${lineNumber}  ${args}\r\n`);
+    } else {
+        if (commandPath) logger.warn(`Command not found: ${commandPath}`);
+    }
+};
+
+export default async function startTerminal(client: Client) {
+    const rl = initReadline();
+    const filePath = path.join(__dirname, 'Terminal', 'terminal', 'history', '.terminal_history');
+    const createFiles = createWriteStream(filePath, { flags: 'a' });
+
+    await displaySystemInfo(client, filePath);
+
+    rl.setPrompt('contact@clarity-corp.com');
     rl.prompt();
+
     rl.on('line', async (line: string) => {
         try {
-            let [commandName, ...args] = line.trim().split(' ');
-            let commandPath = `${process.cwd()}/dist/Terminal/Commands/${commandName}.js`;
-
-            if (fs.existsSync(commandPath)) {
-                let command = await import(commandPath);
-                command.default(client, args.join(' '));
-
-                var data = fs.readFileSync(filePath, 'utf-8');
-                let lineNumber = data.toString().split('\n').length;
-                if (commandName) { createFiles.write(`   ${lineNumber}  ${line}\r\n`); };
-            } else {
-                if (commandName) logger.warn(`Command not found: ${commandName}`);
-            }
+            const [commandName, ...args] = line.trim().split(' ');
+            const commandPath = `${process.cwd()}/dist/Terminal/Commands/${commandName}.js`;
+            await executeCommand(commandPath, client, args.join(' '), filePath);
         } catch (error: any) {
             logger.error(`Error: ${error.message}`);
         } finally {
