@@ -32,6 +32,19 @@ const initReadline = (): any => {
     });
 };
 
+// Fonction pour récupérer la dernière connexion
+const getLastLogin = async (client: Client): Promise<string> => {
+    const table = client.terminal.table('Terminal');
+    const lastLogin = await table.get('Last_Login');
+    return lastLogin || 'None';
+};
+
+// Fonction pour mettre à jour la dernière connexion
+const updateLastLogin = async (client: Client, dateStr: string): Promise<void> => {
+    const table = client.terminal.table('Terminal');
+    await table.set('Last_Login', dateStr);
+};
+
 // Fonction pour afficher les informations système
 const displaySystemInfo = async (client: Client, filePath: string): Promise<void> => {
     const dateStr = getDateStr();
@@ -40,11 +53,10 @@ const displaySystemInfo = async (client: Client, filePath: string): Promise<void
     logger.info(`* Clarity Terminal is loading on: ${ip}`);
     logger.info(`* Date: ${dateStr}`);
 
-    const table = client.terminal.table('Terminal');
-    let lastLogin = await table.get('Last_Login') || 'None';
-    let loaded2 = '127.0.0.1';
+    const lastLogin = await getLastLogin(client) || 'None';
+    const loaded2 = '127.0.0.1';
 
-    await table.set('Last_Login', dateStr);
+    await updateLastLogin(client, dateStr);
 
     logger.legacy(`
     * Welcome to the Clarity Terminal
@@ -66,7 +78,6 @@ const displaySystemInfo = async (client: Client, filePath: string): Promise<void
     Last Login: ${lastLogin} from ${loaded2} 
     `);
 };
-
 // Fonction pour exécuter une commande
 const executeCommand = async (commandPath: string, client: Client, args: string, filePath: string): Promise<void> => {
     if (existsSync(commandPath)) {
@@ -112,3 +123,7 @@ Copyright (c) 2024 Clarity Corp.
 The developer is :
  - Tsubasa
  */
+
+/*
+Remix of iHrz bash from https://github.com/ihrz/ihrz
+*/
